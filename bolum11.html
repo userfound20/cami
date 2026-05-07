@@ -1,0 +1,1095 @@
+<html lang="de">
+	<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Bölüm 11 - Din Eğitimi</title>
+		<style>
+		body{
+			font-family: Arial;
+			background:#f2f2f2;
+			text-align:center;
+		}
+		.box{
+			background:white;
+			width:90%;
+			max-width:600px;
+			margin:20px auto;
+			padding:20px;
+			border-radius:10px;
+			box-shadow:0 0 10px #aaa;
+		}
+		button{
+			padding:10px 20px; 
+			background:#2c7be5; 
+			color:white; 
+			border:none; 
+			border-radius:5px; 
+			cursor:pointer;
+		}
+		button:hover{
+			background:#1a5fc2;
+		}
+		a{
+			display:inline-block;
+			margin-top:20px;
+			text-decoration:none;
+			color:#2c7be5;
+		}
+		@media (max-width: 400px) {
+			h1 {
+				font-size: 1.5rem;
+			}
+			h2 {
+				font-size: 1.2rem;
+			}
+			button {
+				padding: 10px 0;
+			}
+		}
+		</style>
+	</head>
+
+	<body>
+	<div class="box">
+		<h1>Bölüm 11 - Din Eğitimi</h1>
+		<h2 id="frageText"></h2>
+		<form>
+			<input type="radio" name="ant" value="A"> <span id="textA"></span><br><br>
+			<input type="radio" name="ant" value="B"> <span id="textB"></span><br><br>
+			<input type="radio" name="ant" value="C"> <span id="textC"></span><br><br>
+			<input type="radio" name="ant" value="D"> <span id="textD"></span><br><br>
+			<button type="button" onclick="weiter()">sonraki soru</button>
+		</form>
+		<p id="meldung"></p>
+		<a href="index.html"> Ana sayfaya dön </a>
+	</div>
+	
+	<div class="box">
+	  <h2> Hangi soruya atlamak istiyorsun? </h2>
+	  <input type="number" id="frageNummer" placeholder="Sayı girin" style="width: 80px;"><br><br>
+	  <button type="button" onclick="springeZuFrage()"> Soruya git </button>
+	  <p id="meldungSprung"></p>
+	</div>
+
+	
+	<script>
+	var fragen = [
+{
+  frage: "1. Eğitim ve öğretim arasındaki temel fark aşağıdakilerden hangisidir?",
+  A: "A) Eğitim yalnızca okul ortamında gerçekleşirken öğretim her ortamda gerçekleşebilir.",
+  B: "B) Eğitim geniş kapsamlı olup bireyin tüm hayatını şekillendiren süreçken, öğretim daha çok planlı ve belirli bir amaca yönelik bir süreçtir.",
+  C: "C) Öğretim bireyin karakter gelişimini de içerirken, eğitim sadece bilgi aktarımına yöneliktir.",
+  D: "D) Eğitim belirli yaş grupları için uygulanırken, öğretim tüm yaş gruplarına hitap eder.",
+  richtig: "B"
+},
+{
+  frage: "2. Terbiye kavramının eğitimden farklı yönü aşağıdakilerden hangisidir?",
+  A: "A) Terbiye, eğitim gibi hem olumlu hem de olumsuz kazanımları içerir.",
+  B: "B) Terbiye yalnızca ahlaki ve etik değerlerin kazandırılmasına yöneliktir.",
+  C: "C) Terbiye, eğitim kavramının tamamını kapsayan bir üst başlıktır.",
+  D: "D) Terbiye yalnızca dini eğitim süreçlerinde kullanılır.",
+  richtig: "B"
+},
+{
+  frage: "3. Aşağıdaki seçeneklerden hangisi formel (kontrollü) eğitimin kapsamına girmez?",
+  A: "A) Yükseköğretim",
+  B: "B) Halk eğitimi",
+  C: "C) İş hayatındaki tecrübeler",
+  D: "D) Hizmet içi eğitim",
+  richtig: "C"
+},
+{
+  frage: "4. Aşağıdakilerden hangisi bilişsel alanın öğrenme basamaklarının en üst düzeyde olanıdır?",
+  A: "A) Uygulama düzeyi",
+  B: "B) Kavrama düzeyi",
+  C: "C) Sentez düzeyi",
+  D: "D) Değerlendirme düzeyi",
+  richtig: "D"
+},
+{
+  frage: "5. Bir öğrencinin, içkinin haram olduğu bilgisine sahip olması ancak bu bilgiyi günlük hayatında uygulamaması hangi öğrenme düzeyinde kaldığını gösterir?",
+  A: "A) Anlama düzeyi",
+  B: "B) Kavrama düzeyi",
+  C: "C) Uygulama düzeyi",
+  D: "D) Analiz düzeyi",
+  richtig: "B"
+},
+{
+  frage: "6. Kontrolsüz (enformel) eğitim sürecinin din eğitimi açısından en büyük riski aşağıdakilerden hangisidir?",
+  A: "A) İnsanların bilgi edinmesini tamamen engellemesi",
+  B: "B) Bidat, hurafe ve yanlış inanışların yayılmasına sebep olması",
+  C: "C) Eğitim sürecini daha verimli hale getirmesi",
+  D: "D) İnsanların dini konulara daha fazla ilgi duymasını sağlaması",
+  richtig: "B"
+},
+{
+  frage: "7. Aşağıdakilerden hangisi yaygın eğitimin bir özelliğidir?",
+  A: "A) Genellikle belirli yaş gruplarına yöneliktir.",
+  B: "B) Planlı ve programlı olmak zorunda değildir.",
+  C: "C) Akademik başarıyı ölçmek için sınavlar içerir.",
+  D: "D) Halk eğitim kursları, hizmet içi eğitim ve seminerleri kapsar.",
+  richtig: "D"
+},
+{
+  frage: "8. Din eğitimi biliminin diğer eğitim bilimlerinden temel farkı nedir?",
+  A: "A) Tamamen pedagojik yaklaşımlar kullanması",
+  B: "B) Bilimsel bir disiplin olmaması",
+  C: "C) Hem teorik hem de inanç temelli bir çerçevede ilerlemesi",
+  D: "D) Sadece çocuklara yönelik eğitim faaliyetlerini içermesi",
+  richtig: "C"
+},
+{
+  frage: "9. Bir öğretmenin öğrencilerine sadece ders konularını öğretmesi, ancak onların toplumsal değerleri ve etik kuralları benimsemesini önemsememesi hangi eğitim hedefini göz ardı ettiğini gösterir?",
+  A: "A) Özel hedefler",
+  B: "B) Genel hedefler",
+  C: "C) Uzak hedefler",
+  D: "D) Akademik hedefler",
+  richtig: "B"
+},
+{
+  frage: "10. Din eğitimi ile ilahiyat arasındaki temel fark aşağıdakilerden hangisidir?",
+  A: "A) Din eğitimi bireyin dini bilgileri öğrenmesini sağlarken, ilahiyat dini bilimsel bir perspektifle araştırır.",
+  B: "B) Din eğitimi sadece okul ortamında verilirken, ilahiyat camilerde öğretilir.",
+  C: "C) Din eğitimi bireysel ibadetleri öğretirken, ilahiyat sadece dini felsefi açıdan inceler.",
+  D: "D) İlahiyat sadece İslam dini ile ilgili konuları ele alırken, din eğitimi tüm dinleri kapsar.",
+  richtig: "A"
+},
+{
+  frage: "11. Aşağıdakilerden hangisi öğretim ilkelerinden biri olan 'Tedricîlik İlkesi'nin bir gereği değildir?",
+  A: "A) Öğretimde bilinenden bilinmeyene doğru bir sıra takip edilmesi",
+  B: "B) Somuttan soyuta doğru kademeli bir ilerleme sağlanması",
+  C: "C) Öğrencinin her konuya doğrudan en zor kısımdan başlaması",
+  D: "D) Konuların basitten karmaşığa doğru sıralanması",
+  richtig: "C"
+},
+{
+  frage: "12. Din öğretiminde 'İtidal İlkesi'nin temel amacı aşağıdakilerden hangisidir?",
+  A: "A) Dinî bilgilerin duygusal yoğunlukla öğretilmesini sağlamak",
+  B: "B) İnanç ve ibadetlerde aşırılıklardan kaçınıp, dengeli bir eğitim süreci oluşturmak",
+  C: "C) Öğrencinin dinî bilgileri ezberleyerek öğrenmesini sağlamak",
+  D: "D) Sadece teorik bilgilerin öğretilmesini teşvik etmek",
+  richtig: "B"
+},
+{
+  frage: "13. Din eğitimi açısından bilginin yararlılığı ile ilgili olarak aşağıdakilerden hangisi söylenemez?",
+  A: "A) Bir bilgi, bireyin veya toplumun gelişimine katkı sağlamıyorsa faydasızdır.",
+  B: "B) Bilginin değeri onun ne amaçla ve nasıl kullanıldığına bağlıdır.",
+  C: "C) Peygamberimiz, işe yaramayan bilgiden Allah’a sığınmıştır.",
+  D: "D) Tüm bilgiler dini açıdan faydalıdır, herhangi bir bilgiye yönelik eleştiri getirilemez.",
+  richtig: "D"
+},
+{
+  frage: "14. Aşağıdakilerden hangisi öğretim sürecinde öğretmenin dikkat etmesi gereken temel hususlardan biri değildir?",
+  A: "A) Öğrencilere sadece konu anlatımına odaklanmak",
+  B: "B) Öğrencilerle etkili bir iletişim kurmak",
+  C: "C) Öğrenme motivasyonunu sağlamak",
+  D: "D) Konuyu hayatla ilişkilendirmek",
+  richtig: "A"
+},
+{
+  frage: "15. 'Buluş Yoluyla Öğretim Stratejisi' aşağıdaki hangi öğretim düzeyinde daha verimli uygulanabilir?",
+  A: "A) Okul öncesi",
+  B: "B) İlköğretim birinci kademe",
+  C: "C) Ortaöğretim düzeyi",
+  D: "D) Üniversite sonrası akademik çalışmalar",
+  richtig: "C"
+},
+{
+  frage: "16. Aşağıdaki öğretim ilkelerinden hangisi, bilgilerin birbirinden kopuk öğretilmesini engelleyerek öğrencinin zihninde bütüncül bir anlayış geliştirilmesini amaçlar?",
+  A: "A) Açıklık İlkesi",
+  B: "B) Bütünlük İlkesi",
+  C: "C) Ekonomiklik İlkesi",
+  D: "D) Güncellik İlkesi",
+  richtig: "B"
+},
+{
+  frage: "17. 'Öğretmen, dersi işlerken öğrencilerin aktif katılımını sağlayarak, duyusal ve fiziksel deneyimlerle öğrenmelerine yardımcı olmalıdır.' Bu ifade hangi öğretim ilkesi ile doğrudan ilişkilidir?",
+  A: "A) Hayatilik İlkesi",
+  B: "B) Etkin Katılım İlkesi",
+  C: "C) Açıklık İlkesi",
+  D: "D) Güncellik İlkesi",
+  richtig: "B"
+},
+{
+  frage: "18. Aşağıdakilerden hangisi öğretim sürecinde öğretmenin ölçeceği en önemli hususlardan biridir?",
+  A: "A) Dersin süresi boyunca kullanılan materyallerin maliyeti",
+  B: "B) Öğrencinin neyi, ne kadar öğrendiği ve öğrenme sürecindeki eksiklikler",
+  C: "C) Öğrencinin sadece ezber yaparak bilgiyi tekrar edebilme kapasitesi",
+  D: "D) Öğrencinin öğretmenle olan kişisel ilişkisi",
+  richtig: "B"
+},
+{
+  frage: "19. Öğretim metotları ve teknikleri ile ilgili olarak aşağıdaki ifadelerden hangisi doğrudur?",
+  A: "A) Her öğretmen tek bir metodu kullanmalı ve ona bağlı kalmalıdır.",
+  B: "B) Eğitim bilimciler, öğretimde farklı metotların kombinasyonunun önemli olduğunu vurgular.",
+  C: "C) Din eğitimi yalnızca geleneksel metotlarla yürütülmelidir.",
+  D: "D) Metotsuz öğretim en verimli öğrenme yöntemidir.",
+  richtig: "B"
+},
+{
+  frage: "20. Aşağıdakilerden hangisi öğretim süreçleri kapsamında değerlendirilen temel bileşenlerden biri değildir?",
+  A: "A) Program Geliştirme",
+  B: "B) Ders İşleme",
+  C: "C) Ölçme-Değerlendirme",
+  D: "D) Sadece ezber yapmaya dayalı öğretim",
+  richtig: "D"
+},
+{
+  frage: "21. Jean Piaget’in zihinsel gelişim kuramına göre bir çocuğun Allah’ın sıfatlarını kavrayabilmesi için hangi evrede olması gereklidir?",
+  A: "A) Duyusal Devinim Evresi",
+  B: "B) İşlem Öncesi Dönem",
+  C: "C) Somut İşlemler Dönemi",
+  D: "D) Soyut İşlemler Dönemi",
+  richtig: "D"
+},
+{
+  frage: "22. Erikson’un psikososyal gelişim kuramına göre, ergenlik dönemi hangi krizle ilişkilidir?",
+  A: "A) Temel güvene karşı güvensizlik",
+  B: "B) Kimlik kazanmaya karşı rol karmaşası",
+  C: "C) Özerkliğe karşı utanç ve şüphe",
+  D: "D) Çalışkanlığa karşı aşağılık duygusu",
+  richtig: "B"
+},
+{
+  frage: "23. Piaget’in zihinsel gelişim kuramına göre çocukların soyut kavramları anlamakta zorlandığı dönem aşağıdakilerden hangisidir?",
+  A: "A) Soyut İşlemler Dönemi",
+  B: "B) Somut İşlemler Dönemi",
+  C: "C) İşlem Öncesi Dönem",
+  D: "D) Duyusal Devinim Dönemi",
+  richtig: "C"
+},
+{
+  frage: "24. Kohlberg’in ahlaki gelişim kuramına göre, hangi evrede birey evrensel ahlak ilkelerini benimseyerek otoriteyi sorgulamadan içselleştirir?",
+  A: "A) Ceza ve itaat eğilimi",
+  B: "B) Sosyal sözleşme eğilimi",
+  C: "C) Evrensel ahlak ilkeleri eğilimi",
+  D: "D) Bireysellik ve çıkar ilişkisi",
+  richtig: "C"
+},
+{
+  frage: "25. Fowler’ın dinî gelişim evrelerine göre 'Gerçek İman Evresi' hangi bilişsel gelişim dönemine karşılık gelmektedir?",
+  A: "A) Duyusal Devinim Evresi",
+  B: "B) Somut İşlemler Dönemi",
+  C: "C) Soyut İşlemler Dönemi",
+  D: "D) İşlem Öncesi Dönem",
+  richtig: "B"
+},
+{
+  frage: "26. Erikson’un psikososyal gelişim kuramına göre, bireyin sosyal çevreye uyum sağlama ve toplumsal kurallara uygun hareket etme eğilimi hangi yaş döneminde en belirgin hale gelir?",
+  A: "A) 1,5-3 yaş",
+  B: "B) 3-6 yaş",
+  C: "C) 6-12 yaş",
+  D: "D) 12-18 yaş",
+  richtig: "C"
+},
+{
+  frage: "27. Ahlaki gelişim sürecinde bireyin 'toplumsal norm ve kurallara bağlı olarak hareket ettiği' düzey aşağıdakilerden hangisidir?",
+  A: "A) Gelenek Öncesi Düzey",
+  B: "B) Geleneksel Düzey",
+  C: "C) Gelenek Ötesi Düzey",
+  D: "D) Evrensel Ahlak İlkeleri Düzeyi",
+  richtig: "B"
+},
+{
+  frage: "28. Erikson’a göre 'Yakınlığa Karşı Yalıtılmışlık' dönemi hangi yaş aralığında yaşanır?",
+  A: "A) 0-1,5 yaş",
+  B: "B) 12-18 yaş",
+  C: "C) 18-26 yaş",
+  D: "D) 40-65 yaş",
+  richtig: "C"
+},
+{
+  frage: "29. Piaget’in zihinsel gelişim evrelerine göre, çocukların zihinsel süreçlerini simgelerle ifade etmeye başladığı dönem aşağıdakilerden hangisidir?",
+  A: "A) Duyusal Devinim Evresi",
+  B: "B) İşlem Öncesi Dönem",
+  C: "C) Somut İşlemler Dönemi",
+  D: "D) Soyut İşlemler Dönemi",
+  richtig: "B"
+},
+{
+  frage: "30. Dinî gelişimin ahlaki gelişimle bağlantılı olarak incelenmesini savunan yaklaşıma göre, hangi faktör dinî gelişimi en fazla etkileyen unsurdur?",
+  A: "A) Zihinsel gelişim",
+  B: "B) Sosyal gelişim",
+  C: "C) Duyusal algılar",
+  D: "D) Kültürel etkiler",
+  richtig: "A"
+},
+{
+  frage: "31. Gelişim sürecinde bireyin olgun bir kişilik geliştirebilmesi için aşağıdaki unsurlardan hangisi en önemli ön koşuldur?",
+  A: "A) Doğru eğitim programları hazırlanması",
+  B: "B) Fiziksel gelişimin tamamlanması",
+  C: "C) Bireyin bilişsel yeteneklerinin üst düzeyde olması",
+  D: "D) İnanç, değerler ve davranışlar arasındaki dengenin sağlanması",
+  richtig: "D"
+},
+{
+  frage: "32. Bireyin çevresinde gözlemlediği olumsuz örneklerden etkilenerek kötü alışkanlıklar geliştirmesi hangi gelişim problemine işaret eder?",
+  A: "A) Sıra dışı çocuk olma",
+  B: "B) Olumsuz çevre şartları",
+  C: "C) Gelişim etkilerini kontrol güçlüğü",
+  D: "D) Ergenlik depresyonları",
+  richtig: "B"
+},
+{
+  frage: "33. Ergenlik döneminde ortaya çıkan depresif ruh hâllerinin temel sebebi aşağıdakilerden hangisiyle en iyi açıklanabilir?",
+  A: "A) Fiziksel ve hormonal değişimlerin bireyin psikolojisi üzerindeki etkileri",
+  B: "B) Bireyin zekâ düzeyine bağlı olarak farklı gelişim süreçlerinden geçmesi",
+  C: "C) Aile içi ilişkilerin ve sosyoekonomik durumun doğrudan etkisi",
+  D: "D) Bireyin öğrenme kapasitesinin sabit kalması ve gelişmemesi",
+  richtig: "A"
+},
+{
+  frage: "34. Sosyal öğrenme kuramına göre bireyin bir davranışı öğrenmesi için en temel faktör aşağıdakilerden hangisidir?",
+  A: "A) Davranışın pekiştirme yoluyla kalıcı hâle getirilmesi",
+  B: "B) Bireyin gözlem yaptığı modeli benimsemesi ve onunla özdeşleşmesi",
+  C: "C) Edimsel şartlanma yoluyla davranışın ödüllendirilmesi",
+  D: "D) Bilişsel gelişim düzeyinin yüksek olması",
+  richtig: "B"
+},
+{
+  frage: "35. Gelişim kuramına göre bireyin duyusal devinim (duyu-hareket) döneminde öğrenmesi hangi temel mekanizma ile gerçekleşir?",
+  A: "A) Deneme-yanılma yoluyla",
+  B: "B) Taklit ve gözlem yoluyla",
+  C: "C) Duygusal tepkilerle karşılık verme yoluyla",
+  D: "D) Mantıklı muhakeme yaparak öğrenme yoluyla",
+  richtig: "C"
+},
+{
+  frage: "36. Pavlov’un klasik şartlanma kuramına göre bir davranışın 'sönmesi' aşağıdaki durumlardan hangisi ile açıklanabilir?",
+  A: "A) Bireyin uzun süre belirli bir tepki vermekten kaçınması",
+  B: "B) Şartlandırılmış uyaranın pekiştirilmeden tekrarlanması",
+  C: "C) Bireyin öğrenme kapasitesinin düşmesi",
+  D: "D) Öğrenilmiş davranışın bilinçli olarak terk edilmesi",
+  richtig: "B"
+},
+{
+  frage: "37. Bilişsel öğrenme teorisine göre insan zihni bilgiyi nasıl işler ve depolar?",
+  A: "A) Doğrudan uzun süreli belleğe kaydederek",
+  B: "B) Kısa süreli bellekte işleyip uzun süreli belleğe aktararak",
+  C: "C) Algılama süreci olmaksızın refleksif tepki vererek",
+  D: "D) Yalnızca dışarıdan gelen uyaranları tekrar ederek",
+  richtig: "B"
+},
+{
+  frage: "38. Watson’un davranışçı öğrenme teorisine göre bireyin belli bir uyarana karşı geliştirdiği tepkinin tekrar edilme olasılığını artıran faktör aşağıdakilerden hangisidir?",
+  A: "A) Uyarıcının sürekli değiştirilmesi",
+  B: "B) Uyarıcının daha önce yaşanan olumsuz olaylarla ilişkilendirilmesi",
+  C: "C) Davranışın ödüllendirilmesi ve pekiştirilmesi",
+  D: "D) Öğrencinin zihinsel gelişiminin tamamlanması",
+  richtig: "C"
+},
+{
+  frage: "39. Piaget’nin gelişim kuramına göre çocukların soyut kavramları öğrenmeye başladığı dönem aşağıdakilerden hangisidir?",
+  A: "A) Somut işlemler dönemi",
+  B: "B) Duyusal devinim dönemi",
+  C: "C) İşlem öncesi dönem",
+  D: "D) Soyut işlemler dönemi",
+  richtig: "D"
+},
+{
+  frage: "40. Bandura’nın sosyal öğrenme kuramına göre bireyin gözlem yoluyla öğrenmeyi etkileyen en önemli faktör aşağıdakilerden hangisidir?",
+  A: "A) Modelin ödüllendirilip ödüllendirilmediği",
+  B: "B) Modelin fiziksel görünümü ve yaşı",
+  C: "C) Öğrenen bireyin zihinsel gelişim düzeyi",
+  D: "D) Öğrenme sürecinin tekrarlanmaması",
+  richtig: "A"
+},
+{
+    frage: "41. Din eğitiminin doğasındaki temel amaç aşağıdakilerden hangisidir?",
+    A: "A) İnsanlara dinî bilgilerin aktarılması",
+    B: "B) Bireyin zihinsel kapasitesinin geliştirilmesi",
+    C: "C) Dinî bilgiyle birlikte inanç, duygu ve davranışların kazandırılması",
+    D: "D) Toplumdaki farklı inançları anlamaya yönelik farkındalık oluşturulması",
+    richtig: "C"
+},
+{
+    frage: "42. Peygamber Efendimizin, “Her doğan fıtrat üzere doğar. Sonra ebeveyni onu ya Yahudi, ya Mecusi, ya Hristiyan yapar.” hadisi hangi temel gerçeğe işaret etmektedir?",
+    A: "A) Bireyin dinî tercihleri tamamen kendi iradesine bağlıdır.",
+    B: "B) Anne-baba, çocuğun dinî yöneliminde en temel belirleyicidir.",
+    C: "C) Dinî inanışlar doğuştan belirlenir ve değişmez.",
+    D: "D) Toplumun bireyin din eğitimi üzerinde etkisi yoktur.",
+    richtig: "B"
+},
+{
+    frage: "43. Fıtrat ve kesp kavramları açısından insanın dini yönelişinin şekillenmesini en iyi ifade eden açıklama aşağıdakilerden hangisidir?",
+    A: "A) Fıtrat, bireyin doğuştan sahip olduğu özelliklerdir, kesp ise sonradan edindiği bilgi ve alışkanlıklardır.",
+    B: "B) Kesp, bireyin doğuştan getirdiği özelliklerdir, fıtrat ise çevresel faktörlerle sonradan kazandığı inanç ve değerlerdir.",
+    C: "C) Fıtrat, bireyin sonradan kazandığı bilgi ve alışkanlıklarıdır, kesp ise doğuştan sahip olduğu eğilimlerdir.",
+    D: "D) İnsan yalnızca kesp yönüyle şekillenir; fıtrat doğuştan itibaren sabittir.",
+    richtig: "A"
+},
+{
+    frage: "44. İslam eğitiminde bilginin amele dönüşmesi hangi kavramla ifade edilir?",
+    A: "A) Taklidî iman",
+    B: "B) Kalp eğitimi",
+    C: "C) Nefis terbiyesi",
+    D: "D) Teorik öğrenme",
+    richtig: "B"
+},
+{
+    frage: "45. Aşağıdakilerden hangisi din eğitiminin temel esaslarından biri değildir?",
+    A: "A) Zihnin eğitilmesi",
+    B: "B) Kalbin eğitilmesi",
+    C: "C) Nefsin eğitilmesi",
+    D: "D) Toplumun eğitilmesi",
+    richtig: "D"
+},
+{
+    frage: "46. Kur’an’ın birçok ayetinde insanların akıllarını kullanarak düşünmeleri teşvik edilmiştir. Bu anlayış aşağıdakilerden hangisiyle en iyi ifade edilir?",
+    A: "A) Zihin eğitimi",
+    B: "B) Taklidî iman",
+    C: "C) Duygusal öğrenme",
+    D: "D) Geleneksel öğretilere bağlılık",
+    richtig: "A"
+},
+{
+    frage: "47. Kur’ân-ı Kerîm’de “Vücutta bir et parçası vardır, o sağlam olursa bütün vücut sağlam olur; o bozuk olursa bütün vücut bozuk olur. Dikkat edin, o kalptir.” hadisi hangi din eğitimi unsuruna işaret etmektedir?",
+    A: "A) Zihin eğitimi",
+    B: "B) Kalp eğitimi",
+    C: "C) Nefis terbiyesi",
+    D: "D) Bilişsel öğrenme",
+    richtig: "B"
+},
+{
+    frage: "48. Nefis eğitimi açısından Kur’an’da vurgulanan temel mesaj aşağıdakilerden hangisidir?",
+    A: "A) Nefsi tamamen yok etmek gereklidir.",
+    B: "B) Nefsî arzular insanın dünyadaki en büyük gücüdür.",
+    C: "C) Nefsî arzular kontrol altına alınmadığında insanı kötülüğe sürükler.",
+    D: "D) İnsan, akıl ve iradeden bağımsız olarak nefis doğrultusunda hareket eder.",
+    richtig: "C"
+},
+{
+    frage: "49. Meslekî din eğitiminin doğuş sebeplerinden biri aşağıdakilerden hangisidir?",
+    A: "A) Camilerdeki ibadetlerin düzenli bir şekilde yerine getirilmesini sağlamak",
+    B: "B) Halkın kendi dinî ihtiyaçlarını bireysel olarak karşılamasına imkân tanımak",
+    C: "C) İnsanların dinî bilgileri kendi kendilerine öğrenmelerini teşvik etmek",
+    D: "D) İbadetlerin bireysel olarak yapılmasını zorunlu hâle getirmek",
+    richtig: "A"
+},
+{
+    frage: "50. Yaygın din eğitiminin temel farkı nedir?",
+    A: "A) Belli bir yaş grubuna hitap etmesi",
+    B: "B) Belli bir kurum bünyesinde sistematik şekilde yürütülmesi",
+    C: "C) İhtiyaca bağlı olarak farklı zamanlarda, farklı kitlelere yönelik uygulanması",
+    D: "D) Sadece çocuk ve gençlere yönelik eğitimler sunması",
+    richtig: "C"
+},
+{
+    frage: "51. Ailede din eğitimi neden doğumdan itibaren başlamalıdır?",
+    A: "A) Çocuğun erken yaşta zihinsel ve bilişsel gelişimini desteklemek için",
+    B: "B) Dinî eğitim sadece kavramsal bilgiden ibaret olmadığı için",
+    C: "C) Okul öncesi dönemde çocuğun zihinsel gelişimi tamamen aileye bağlı olduğu için",
+    D: "D) Çocuklara öğretilecek en önemli şeyin dinî kurallar olduğu için",
+    richtig: "B"
+},
+{
+    frage: "52. Okul öncesi dönemde din eğitiminin temel amacı aşağıdakilerden hangisidir?",
+    A: "A) Çocuğa temel dinî bilgileri ve ibadetleri öğretmek",
+    B: "B) Çocuğa dinî bilgileri kavramsal düzeyde ezberletmek",
+    C: "C) Çocuğun değerler kazanmasını ve bunlar üzerine tutum ve davranış geliştirmesini sağlamak",
+    D: "D) Çocukları belli bir inanç sistemine zorunlu olarak yönlendirmek",
+    richtig: "C"
+},
+{
+    frage: "53. Ailede din eğitiminin en önemli unsurlarından biri olan 'bilinçli kontrol' kavramı aşağıdakilerden hangisini ifade eder?",
+    A: "A) Çocuğun dini eğitimini tamamen ebeveynin yönlendirmesi",
+    B: "B) Çocuğun özgürlük isteği ile ebeveynin koruma içgüdüsü arasında denge kurulması",
+    C: "C) Çocuğun kendi kararlarını almadan önce ebeveynin ona her konuda sınır koyması",
+    D: "D) Çocuğun sadece belirli ibadetleri yapmasını sağlayan bir kontrol mekanizması",
+    richtig: "B"
+},
+{
+    frage: "54. Aşağıdakilerden hangisi çocukta olumlu dinî tutum ve davranış geliştirmek için anne-babanın dikkat etmesi gereken hususlardan biri değildir?",
+    A: "A) Çocuğa sık sık nasihat vererek öğütler vermek",
+    B: "B) Çocuğun sorularını ve iletilerini karşılıksız bırakmamak",
+    C: "C) Çocuğun gözünde olumlu bir model olarak yaşamak",
+    D: "D) Çocuğa yönelik tutum ve davranışlarda tutarlılık göstermek",
+    richtig: "A"
+},
+{
+    frage: "55. “Model davranışlar gösterme” yaklaşımıyla ilgili aşağıdaki ifadelerden hangisi yanlıştır?",
+    A: "A) Çocuklar, dinî ve ahlaki değerleri büyüklerini gözleyerek öğrenir.",
+    B: "B) Çocuğa dürüstlüğü öğretmek için ebeveynlerin de dürüst davranması gerekir.",
+    C: "C) Çocuklar sadece sözel anlatımlarla dinî değerleri benimseyebilir.",
+    D: "D) Çocuklar çevresindeki yetişkinlerin davranışlarını bilinçsizce taklit eder.",
+    richtig: "C"
+},
+{
+    frage: "56. Yetişkin din eğitiminde pedagojik eğitimden farklı olarak aşağıdakilerden hangisi önceliklidir?",
+    A: "A) Öğretmenin otoritesini sürekli vurgulaması",
+    B: "B) Katılımcıların ön kabullerine uymayan bilgileri doğrudan aktarması",
+    C: "C) Yetişkinlerin ihtiyaç duydukları bilgileri öğrenmelerine öncelik verilmesi",
+    D: "D) Katılımcıların bilgileri olduğu gibi kabul etmesi",
+    richtig: "C"
+},
+{
+    frage: "57. Aşağıdaki özelliklerden hangisi yetişkin bireyin psikolojik özelliklerinden biri değildir?",
+    A: "A) Otoriter ve buyurgan davranışlardan hoşlanmamak",
+    B: "B) Benlik saygısının yüksek olması",
+    C: "C) Ön kabullerine uymayan bilgileri hemen kabul etmek",
+    D: "D) Başarısızlıktan ve küçük düşmekten korkmak",
+    richtig: "C"
+},
+{
+    frage: "58. Yetişkin din eğitiminde “öğrenme döngüsü” kapsamında bilinçsiz yetersizlik aşaması hangi durumu ifade eder?",
+    A: "A) Kişinin eksik bilgiye sahip olduğunu kabul edip öğrenmeye yönelmesi",
+    B: "B) Kişinin ihtiyacı olan bilgiyi bilmediğini ve öğrenmesi gerektiğini fark etmemesi",
+    C: "C) Kişinin eksikliğinin farkında olup bilgiye ulaşmaya çalışması",
+    D: "D) Kişinin yeni öğrendiği bilgileri uygulamaya çalışması",
+    richtig: "B"
+},
+{
+    frage: "59. Andragojik din eğitiminde başarıyı artırmak için aşağıdakilerden hangisi önerilmez?",
+    A: "A) Konuların yetişkinlerin pratik hayatında nasıl uygulanacağını göstermek",
+    B: "B) Yetişkinlerin ön kabullerine ters düşen bilgileri zorla kabul ettirmeye çalışmak",
+    C: "C) Anlatılan bilgileri günlük hayatla ilişkilendirerek öğretmek",
+    D: "D) Yetişkinlere dostça, içten ve saygılı bir üslupla hitap etmek",
+    richtig: "B"
+},
+{
+    frage: "60. Hz. Peygamber'in dinî öğretimde kullandığı yöntemlerden biri olan 'merak ve istek uyandırma' yöntemi aşağıdakilerden hangisiyle örneklendirilebilir?",
+    A: "A) 'Size haber vereyim mi?' diyerek ashabının dikkatini çekmesi",
+    B: "B) Uzun ve soyut dini kavramları doğrudan öğretmesi",
+    C: "C) Katı ve zorlayıcı yöntemlerle bilgiyi öğretmesi",
+    D: "D) Dini bilgileri herkesin aynı şekilde öğrenmesini zorunlu kılması",
+    richtig: "A"
+},
+{
+    frage: "61. Din eğitimi için özel öğretim metotlarının kullanılmasının temel sebebi aşağıdakilerden hangisidir?",
+    A: "A) Dinî bilgilerin pedagojik eğitimle aktarılmasının yeterli olması",
+    B: "B) Din eğitiminin insan psikolojisi ve kültürel değişkenlere bağlı olarak farklı hedeflere yönelmesi",
+    C: "C) Genel öğretim metotlarının dinî eğitimde kullanılmaması",
+    D: "D) Öğrencilerin dinî eğitime karşı ilgisinin az olması",
+    richtig: "B"
+},
+{
+    frage: "62. Aşağıdaki ifadelerden hangisi anlatım metodunun en önemli avantajlarından biridir?",
+    A: "A) Bütün öğrencileri aktif öğrenme sürecine dâhil etmesi",
+    B: "B) Konunun kısa sürede geniş bir kitleye ulaştırılmasını sağlaması",
+    C: "C) Öğrencilerin eleştirel düşünme becerilerini geliştirmesi",
+    D: "D) Öğretmenin derse hazırlık yapmasına gerek kalmaması",
+    richtig: "B"
+},
+{
+    frage: "63. Soru-cevap metodunun Kur’an’da sıkça kullanıldığını gösteren en iyi örnek aşağıdakilerden hangisidir?",
+    A: "A) “Ey iman edenler! Namazı dosdoğru kılınız ve zekât veriniz.”",
+    B: "B) “Biz onu (Kur’an’ı) Kadir Gecesi’nde indirdik. Kadir Gecesi nedir, bilir misin?”",
+    C: "C) “İnsan için ancak çalıştığının karşılığı vardır.”",
+    D: "D) “Allah sizi hesaba çekecektir.”",
+    richtig: "B"
+},
+{
+    frage: "64. Problem çözme metodunun din eğitiminde kullanılmasının en temel avantajı aşağıdakilerden hangisidir?",
+    A: "A) Öğrencinin bilgiyi sadece öğretmenden almasını sağlamak",
+    B: "B) Öğrencilerin bilgiyi sadece ezberleyerek öğrenmesini teşvik etmek",
+    C: "C) Dinî bilgileri hayatta karşılaşılan sorunlarla ilişkilendirerek içselleştirmek",
+    D: "D) Bilginin yüzeysel olarak kavranmasını sağlamak",
+    richtig: "C"
+},
+{
+    frage: "65. Gösteri metodunun en etkili olduğu öğretim alanlarından biri aşağıdakilerden hangisidir?",
+    A: "A) Soyut kavramların detaylı açıklanması",
+    B: "B) İbadetler ve ahlaki davranışların öğretilmesi",
+    C: "C) Felsefi tartışmaların yapılması",
+    D: "D) Teorik dinî kavramların ezberletilmesi",
+    richtig: "B"
+},
+{
+    frage: "66. Aşağıdakilerden hangisi gözlem metodunun temel amaçlarından biri değildir?",
+    A: "A) Öğrencilerin kendi yaşantılarıyla bilgiyi ilişkilendirmelerini sağlamak",
+    B: "B) Dinî bilgileri, doğal ve gerçek hayattan alınan örneklerle pekiştirmek",
+    C: "C) Öğrencileri teorik bilgilerden uzak tutmak",
+    D: "D) Olayları ve varlıkları yerinde inceleyerek ibret ve hikmet çıkarmalarına yardımcı olmak",
+    richtig: "C"
+},
+{
+    frage: "67. Rol oynama metodunun din eğitiminde en iyi uygulanabileceği alan aşağıdakilerden hangisidir?",
+    A: "A) Soyut dinî kavramların ezberlenmesi",
+    B: "B) Dinî şahsiyetlerin örnek alınması ve temsilî canlandırmaların yapılması",
+    C: "C) Tarihî olayların bilimsel olarak analiz edilmesi",
+    D: "D) Ezberleme yeteneğinin geliştirilmesi",
+    richtig: "B"
+},
+{
+    frage: "68. Örnek olay inceleme metodunun din eğitimi açısından en büyük faydası nedir?",
+    A: "A) Bilgiyi ezberleyerek öğrenmeye teşvik etmesi",
+    B: "B) Gerçek hayatta karşılaşılabilecek durumlar üzerinden değerler kazandırması",
+    C: "C) Öğrencilerin öğretmenden bağımsız düşünmesini engellemesi",
+    D: "D) Sadece teorik bilgilerin kullanılmasına imkân tanıması",
+    richtig: "B"
+},
+{
+    frage: "69. Aşağıdakilerden hangisi din eğitiminde tartışma metodunun en önemli sınırlılıklarından biridir?",
+    A: "A) Öğrencileri düşünmeye teşvik etmemesi",
+    B: "B) Her konunun tartışmaya uygun olmaması ve zihin karışıklığı yaratabilmesi",
+    C: "C) Öğrencilerin derse olan ilgisini azaltması",
+    D: "D) Öğretmenin öğrencileri yönlendirme yeteneğini artırması",
+    richtig: "B"
+},
+{
+    frage: "70. İslam’da tedricî öğretim metodunun en önemli örneği aşağıdakilerden hangisidir?",
+    A: "A) Namazın farz olarak bir anda emredilmesi",
+    B: "B) İçki yasağının aşamalı olarak getirilmesi",
+    C: "C) Zekâtın belirli bir dönemde zorunlu kılınması",
+    D: "D) Peygamberin bütün emirleri aynı anda tebliğ etmesi",
+    richtig: "B"
+},
+{
+    frage: "71. Din öğretiminde tekniklerin kullanımına dair aşağıdaki ifadelerden hangisi yanlıştır?",
+    A: "A) Din öğretiminde teknikler, bilgiyi en hızlı ve verimli şekilde aktarmayı amaçlar.",
+    B: "B) Din eğitimi alanında kullanılan teknikler, genel öğretim tekniklerinden tamamen bağımsızdır.",
+    C: "C) Yeni öğretim teknikleri, din eğitimi çalışmalarının gelişmesine katkı sağlar.",
+    D: "D) Grup çalışmaları, din eğitimi sürecinde öğrencilerin ortak öğrenme süreçlerine katılmasını kolaylaştırır.",
+    richtig: "B"
+},
+{
+    frage: "72. Beyin fırtınası tekniği ile ilgili olarak aşağıdaki ifadelerden hangisi doğrudur?",
+    A: "A) Grup üyeleri tarafından dile getirilen fikirlerin doğruluğu mutlaka tartışılmalıdır.",
+    B: "B) Beyin fırtınasında asıl amaç, belirlenen konuda az ama etkili fikirlerin ortaya çıkmasını sağlamaktır.",
+    C: "C) Öğrencilerin ciddiyetten uzaklaşmasını engellemek için öğretmen tartışmaya zaman zaman yön vermelidir.",
+    D: "D) Beyin fırtınası, en çok bireysel çalışma gerektiren derslerde uygulanır.",
+    richtig: "C"
+},
+{
+    frage: "73. Panel tekniği ile ilgili olarak aşağıdakilerden hangisi yanlıştır?",
+    A: "A) Panelde konuşmacılar, bir konu üzerinde sohbet havasında düşüncelerini ifade eder.",
+    B: "B) Panelde konuşmacılar arasında kesin bir sonuca varma zorunluluğu yoktur.",
+    C: "C) Panelde her konuşmacı, sırayla belirlenen konuyu ele alır ve yorumlar.",
+    D: "D) Panelde yarışma havası oluşturularak taraflardan biri galip ilan edilir.",
+    richtig: "D"
+},
+{
+    frage: "74. Münazara tekniği ile ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+    A: "A) Münazarada amaç, öğrencilerin kendi fikirlerini destekleyici argümanlarla savunarak ikna edici konuşmalar yapmalarını sağlamaktır.",
+    B: "B) Münazara, grup çalışmaları içinde daha az öğrenci katılımına açık olduğu için sınıflarda pek tercih edilmez.",
+    C: "C) Münazara tekniği uygulanırken öğrencilerin duygu ve düşüncelerine göre değerlendirme yapılmaz.",
+    D: "D) Münazara, sadece dini konularda uygulanabilecek bir öğretim tekniğidir.",
+    richtig: "A"
+},
+{
+    frage: "75. Din öğretiminde kullanılan öğretim teknikleri açısından proje çalışmasının en önemli avantajı aşağıdakilerden hangisidir?",
+    A: "A) Öğrencilere bilgiyi kısa sürede aktarması",
+    B: "B) Öğrencileri tamamen pasif bir öğrenme sürecine yönlendirmesi",
+    C: "C) Öğrencilerin kendi araştırmalarını yaparak öğrenme sorumluluğu kazanmalarını sağlaması",
+    D: "D) Anlatım metoduna kıyasla daha az bilgi vermesi",
+    richtig: "C"
+},
+{
+    frage: "76. Aşağıdakilerden hangisi din öğretiminde ölçme-değerlendirme aşamasının temel unsurlarından biri değildir?",
+    A: "A) Öğrenci başarısını tespit etmek",
+    B: "B) Öğretim sürecinin ne kadar etkili olduğunu belirlemek",
+    C: "C) Sadece akademik başarıya odaklanarak değerlendirme yapmak",
+    D: "D) Eksik öğrenmeleri belirleyerek öğretim sürecini geliştirmek",
+    richtig: "C"
+},
+{
+    frage: "77. Ölçme ve değerlendirme süreçleri ile ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+    A: "A) Ölçme süreci, sadece öğrencilerin bilgi düzeyini belirlemeye odaklanmalıdır.",
+    B: "B) Değerlendirme, sadece öğrencilerin aldıkları puanlar doğrultusunda yapılmalıdır.",
+    C: "C) Değerlendirme, ölçme sonuçlarının belirli bir ölçütle karşılaştırılarak yorumlanması sürecidir.",
+    D: "D) Geçerlik ve güvenirlik gibi faktörler değerlendirme süreçlerinde dikkate alınmaz.",
+    richtig: "C"
+},
+{
+    frage: "78. Aşağıdakilerden hangisi din öğretiminde kullanılan edebi metinlerin temel fonksiyonlarından biri değildir?",
+    A: "A) Öğrenilen bilgilerin akılda kalıcılığını artırmak",
+    B: "B) Öğrencilerin dini konulara ilgisini artırmak",
+    C: "C) Öğrencilere soyut kavramları somutlaştırarak anlatmak",
+    D: "D) Sadece belirli dini kuralları ezberletmek",
+    richtig: "D"
+},
+{
+    frage: "79. Teknolojik öğretim materyalleri ile ilgili aşağıdakilerden hangisi yanlıştır?",
+    A: "A) Teknolojik araçlar, öğretimi daha etkili ve görsel hale getirebilir.",
+    B: "B) Din eğitiminde elektronik cihazlar sadece oyun amaçlı kullanılmalıdır.",
+    C: "C) Bilgisayar ve internet, bilgiye hızlı erişim sağlama açısından önemli materyallerdir.",
+    D: "D) Teknolojik araçların bilinçli kullanımı, öğrencilerin öğrenme sürecine olumlu katkı sağlar.",
+    richtig: "B"
+},
+{
+    frage: "80. Din öğretiminde kullanılan öğretim materyalleri ile ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+    A: "A) Öğretim materyalleri, öğrencilerin ilgisini çekerek öğrenme sürecini daha kalıcı hale getirebilir.",
+    B: "B) Materyal kullanımı, sadece görsel öğrenme için gereklidir.",
+    C: "C) Edebî metinler, teknolojik araçlardan daha az etkilidir.",
+    D: "D) Öğrenciler öğretim materyallerine ihtiyaç duymadan konuları tamamen kavrayabilir.",
+    richtig: "A"
+},
+{
+    frage: "81. Dinî konuların öğretimiyle ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+    A: "A) Dinî öğretim süreçlerinde kullanılan her metot her konuda aynı derecede etkili değildir.",
+    B: "B) Dinî konuların öğretimi sadece teorik bilgi aktarmaya dayalı olmalıdır.",
+    C: "C) Ahlak öğretimi, diğer dinî konulara kıyasla daha az önemli bir yere sahiptir.",
+    D: "D) Kur’an öğretimi, iman ve amel konularının öğretilmesine gerek kalmadan yapılmalıdır.",
+    richtig: "A"
+},
+{
+    frage: "82. Kur’ân-ı Kerîm’in doğru ve düzgün okunmasının en önemli sebeplerinden biri aşağıdakilerden hangisidir?",
+    A: "A) Harflerin yanlış telaffuzu Kur’an’ın anlamında değişikliklere neden olabilir.",
+    B: "B) Kur’an’ı yanlış okumak, sadece Arapça dilbilgisi açısından sorun teşkil eder.",
+    C: "C) Kur’an yanlış okunsa da ibadet açısından bir sakınca teşkil etmez.",
+    D: "D) Kur’an okumada bireysel çaba yeterli olup herhangi bir öğreticiye ihtiyaç duyulmaz.",
+    richtig: "A"
+},
+{
+    frage: "83. Aşağıdakilerden hangisi Kur’an’ın öğretimi sırasında dikkat edilmesi gereken hususlardan biri değildir?",
+    A: "A) Kur’an’ın okunuş kurallarının ve tecvit kaidelerinin öğretilmesi",
+    B: "B) Kur’an’ın mana ve mesajının kavratılması",
+    C: "C) Kur’an öğrenen öğrencinin anadilinde iyi bir dilbilgisine sahip olması",
+    D: "D) Kur’an öğretiminin öğrencinin seviyesine ve kavrayışına uygun şekilde yapılması",
+    richtig: "C"
+},
+{
+    frage: "84. İman konularının öğretiminde karşılaşılan en önemli zorluk aşağıdakilerden hangisidir?",
+    A: "A) Öğrencilere sadece ezberci bir eğitim verilmesi",
+    B: "B) Şüphe ve tereddütlerden arınmış sağlam bir kabulün gerçekleştirilmesi",
+    C: "C) İman konularının öğretilmesi için öğrencinin mutlaka Arapça bilmesi",
+    D: "D) Mantıksal çözümleme yerine yalnızca duygusal anlatımların tercih edilmesi",
+    richtig: "B"
+},
+{
+    frage: "85. Bilgi ve iman arasındaki ilişkiyle ilgili aşağıdaki ifadelerden hangisi yanlıştır?",
+    A: "A) Bilgi, nesnel bir değere sahipken iman, bireyin özgür kabulüne dayanır.",
+    B: "B) Bilgi duyular yoluyla elde edilirken iman, tamamen duyulara dayalıdır.",
+    C: "C) İman konularında şüphe ve tereddütlerin ortadan kaldırılması için mantıksal gerekçeler sunulmalıdır.",
+    D: "D) Bilgi ve iman, aklın ürünü olarak birbirleriyle ilişkilidir.",
+    richtig: "B"
+},
+{
+    frage: "86. Hz. İbrahim’in kavmine karşı Allah inancını anlatırken takip ettiği yöntem hangi öğretim stratejisine örnek teşkil eder?",
+    A: "A) Soyut kavramları açıklarken somut nesnelerden hareket etmek",
+    B: "B) Dini inançları bireylere doğrudan zorla kabul ettirmek",
+    C: "C) İnanç sistemlerini sorgulamadan olduğu gibi benimsemek",
+    D: "D) İnanç öğretimini sadece ezbere dayalı olarak gerçekleştirmek",
+    richtig: "A"
+},
+{
+    frage: "87. Kavramsal çözümleme sürecinde en fazla karşılaşılan problem aşağıdakilerden hangisidir?",
+    A: "A) Dinî kavramların, öğrencilere ezber yöntemiyle öğretilmesi",
+    B: "B) Öğrencilerin dinî kavramları anlamlandıramaması nedeniyle zihinsel karmaşa yaşaması",
+    C: "C) Öğretmenin ders anlatırken çok fazla görsel materyal kullanması",
+    D: "D) Kavramların öğretilmesi sırasında öğrencilere sorgulama hakkı verilmesi",
+    richtig: "B"
+},
+{
+    frage: "88. Aşağıdakilerden hangisi Kur’an öğretimi sırasında dikkat edilmesi gereken unsurlar arasında yer almaz?",
+    A: "A) Kur’an’ı öğrenmeye başlamadan önce Mushaf, sure ve ayet gibi temel kavramların açıklanması",
+    B: "B) Öğrencilere Kur’an’ı kendi başlarına öğrenmeleri için rehberlik edilmemesi",
+    C: "C) Kur’an okuma sırasında saygı ve edeple hareket edilmesi",
+    D: "D) Kur’an’ın manasının doğru anlaşılması için öğrencilere gerekli açıklamaların yapılması",
+    richtig: "B"
+},
+{
+    frage: "89. Aşağıdakilerden hangisi Kur’an ezberleme sürecinde takip edilmesi gereken adımlardan biri değildir?",
+    A: "A) Ezberlenecek surenin içeriği ve anlamı hakkında bilgi verilmesi",
+    B: "B) Öğrencinin ezberi bireysel olarak yapıp hocaya sunması",
+    C: "C) Ezberleme sırasında harflerin mahreçlerine ve telaffuza dikkat edilmesi",
+    D: "D) Öğrencinin ezberi sürekli farklı yazımlara sahip Mushaflardan yapması",
+    richtig: "D"
+},
+{
+    frage: "90. Allah’ın sıfatları, kader ve rızık gibi soyut kavramların öğretiminde en etkili yöntem aşağıdakilerden hangisidir?",
+    A: "A) Somutlaştırma amacıyla uygun teşbih ve benzetmelerden faydalanmak",
+    B: "B) Öğrencilerin herhangi bir açıklama olmaksızın bu kavramları ezberlemelerini sağlamak",
+    C: "C) Kendi anlayışlarına bırakıp öğretici müdahalesini en aza indirmek",
+    D: "D) Öğrencilerin yanlış anlamalarına rağmen kavramları olduğu gibi kabul etmelerini sağlamak",
+    richtig: "A"
+},
+{
+    frage: "91. İslam eğitiminde bilgilerin sadece zihinde yerleşmesi yeterli görülmez, aynı zamanda bu bilgilerin tutum ve davranışa dönüşmesi istenir. Bu durum aşağıdaki kavramlardan hangisiyle ifade edilmektedir?",
+    A: "A) İcmalî iman",
+    B: "B) Amelî iman",
+    C: "C) İlmiyle amel etmek",
+    D: "D) İman-ı tahkikî",
+    richtig: "C"
+},
+{
+    frage: "92. 'İman ile amel arasındaki ilişki' konusunda aşağıdakilerden hangisi yanlıştır?",
+    A: "A) İman ve amel bir bütün oluşturur; biri eksik olursa diğeri de kemale eremez.",
+    B: "B) Amel, imanın bir parçası olarak görülmüş ve imanı tamamlayan bir unsur sayılmıştır.",
+    C: "C) Ehl-i Sünnet âlimleri iman ve amel arasında zorunlu bir bağ bulunduğunu savunarak amel etmeyen kişiyi mümin saymamıştır.",
+    D: "D) İslam’da iman ve amelin birlikteliği çok önemli olup, Kur’an’da bu ikisinin birlikte zikredildiği birçok ayet bulunmaktadır.",
+    richtig: "C"
+},
+{
+    frage: "93. İbadetlerin öğretiminde 4T yöntemi aşağıdakilerden hangisini içermez?",
+    A: "A) Telkin",
+    B: "B) Teşvik",
+    C: "C) Tefsir",
+    D: "D) Takip",
+    richtig: "C"
+},
+{
+    frage: "94. İbadetlerin öğretimi sürecinde, özellikle çocuklara yönelik eğitimde aşağıdakilerden hangisinin yapılması önerilmez?",
+    A: "A) İbadetlerin sürekli hatırlatılarak bir alışkanlık hâline getirilmesi",
+    B: "B) Çocukların ibadetleri isteyerek yapması için teşvik edilmesi",
+    C: "C) Çocuklara ibadeti zorla yaptırarak disiplin kazandırılması",
+    D: "D) Anne-babanın ve öğretmenin ibadetlerde örnek olması",
+    richtig: "C"
+},
+{
+    frage: "95. 'Muamelat' kavramının dinî öğretimdeki anlamı aşağıdakilerden hangisidir?",
+    A: "A) Günlük hayatta bireyin inancına uygun olarak yerine getirdiği davranışlar",
+    B: "B) İbadetlerin belirli bir düzen ve zaman içinde yapılması",
+    C: "C) Fıkhi hükümlerin teorik olarak öğrenilmesi",
+    D: "D) Sadece dinî ritüellerin uygulanması",
+    richtig: "A"
+},
+{
+    frage: "96. Ahlak eğitiminde 'sosyal öğrenme' süreciyle ilgili olarak aşağıdaki ifadelerden hangisi doğrudur?",
+    A: "A) İnsan, sosyal öğrenme ile sadece küçük yaşta değil, hayatı boyunca öğrenmeye devam eder.",
+    B: "B) Birey sadece akıl yürütme ve muhakeme yoluyla ahlaki değerleri öğrenir.",
+    C: "C) Sosyal öğrenme sadece okul ortamında gerçekleşir.",
+    D: "D) Sosyal öğrenme sürecinde birey, yalnızca mantıklı ve akılcı gördüğü davranışları benimser.",
+    richtig: "A"
+},
+{
+    frage: "97. Ahlak eğitimi sürecinde 'modelleme'nin önemi vurgulanmaktadır. Bu kavramla ilgili aşağıdakilerden hangisi yanlıştır?",
+    A: "A) Çocuklar küçük yaşlardan itibaren model alma yoluyla ahlaki değerleri kazanır.",
+    B: "B) Modelleme sürecinde aile ve öğretmenler çocuğa en yakın modellerdir.",
+    C: "C) Modelleme, sadece olumlu davranışları kazandırmada etkili bir yöntemdir.",
+    D: "D) Kişi, çevresinde sıkça gördüğü ve özendiği davranışları benimsemeye daha yatkındır.",
+    richtig: "C"
+},
+{
+    frage: "98. Ahlak eğitimi sürecinde bireyin değerleri kavraması ve benimsemesi için kullanılan 'anlamlandırma' yöntemi aşağıdaki aşamalardan hangisini içermez?",
+    A: "A) Bir davranışın farkına varılması ve anlamlandırma ihtiyacının hissedilmesi",
+    B: "B) Davranışın sebep-sonuç ilişkisi içinde sorgulanması",
+    C: "C) Davranışın kalıtsal olarak bireye aktarıldığının kabul edilmesi",
+    D: "D) Davranışın doğru veya yanlış olduğuna dair geçerlilik sorgulaması yapılması",
+    richtig: "C"
+},
+{
+    frage: "99. Ahlaki değerlerin öğrenilmesi sürecinde bireyin aldığı kararların farkına varması, kendi değerler sistemini oluşturması ve bağımsız düşünebilmesi için kullanılan eğitim yöntemi aşağıdakilerden hangisidir?",
+    A: "A) Değerleme yaklaşımı",
+    B: "B) Telkin yöntemi",
+    C: "C) Ezber yöntemi",
+    D: "D) Otoriter eğitim modeli",
+    richtig: "A"
+},
+{
+    frage: "100. Ahlaki davranışların sürekliliğinin sağlanabilmesi için bireyde gelişmesi gereken 'iç kontrol' mekanizmasının en önemli işlevi aşağıdakilerden hangisidir?",
+    A: "A) Bireyin davranışlarını dış baskılar olmadan kendi iradesiyle yönetebilmesi",
+    B: "B) Bireyin yanlış bir davranış yapmamak için sürekli dış denetime ihtiyaç duyması",
+    C: "C) Bireyin toplum baskısından kaçınarak kendi isteklerine göre hareket etmesi",
+    D: "D) Bireyin ahlaki değerleri sadece toplumsal normlara uygun olduğu sürece benimsemesi",
+    richtig: "A"
+},
+{
+    frage: "101. Öğretmen niteliğinin eğitim sistemleri açısından önemi ile ilgili aşağıdaki ifadelerden hangisi yanlıştır?",
+    A: "A) Eğitim kurumlarının başarısı, büyük ölçüde öğretmenlerin niteliğine bağlıdır.",
+    B: "B) Hiçbir eğitim modeli, öğretmen niteliğinin üzerinde bir başarı üretemez.",
+    C: "C) Teknolojik gelişmeler sayesinde öğretmen niteliği eğitimin başarısı üzerinde eskisi kadar etkili değildir.",
+    D: "D) Öğretmenler, eğitim-öğretim süreçlerini yöneten, değerlendiren ve geliştiren lider kişilerdir.",
+    richtig: "C"
+},
+{
+    frage: "102. Osmanlı döneminde öğretmen yetiştirme ile ilgili yapılan ilk önemli girişim aşağıdakilerden hangisidir?",
+    A: "A) Medreselerde eğitim görenlerin doğrudan öğretmen olarak görevlendirilmesi",
+    B: "B) Fatih döneminde Ayasofya ve Eyüp medreselerinde farklı bir öğretmenlik programı uygulanması",
+    C: "C) 1848 yılında Dârülmuallimîn adlı erkek öğretmen okulunun açılması",
+    D: "D) 1870 yılında Dârülmuallimât adlı kız öğretmen okulunun açılması",
+    richtig: "B"
+},
+{
+    frage: "103. Öğretmenlerin sadece sınıf içinde değil, sınıf dışındaki rollerinin de önemli olduğu belirtilmektedir. Aşağıdakilerden hangisi öğretmenin sınıf dışındaki kurumsal görevlerinden biri değildir?",
+    A: "A) Sınıfa uyum sağlamada zorlanan öğrencilerin velileriyle iş birliği yapmak",
+    B: "B) Okul içindeki ortak kullanım alanlarının düzenlenmesi konusunda diğer öğretmenlerle iş birliği yapmak",
+    C: "C) Okulda öğretim programlarını hazırlamak ve tüm derslerin müfredatını belirlemek",
+    D: "D) Okulun çevresel etkinliğini ve itibarını artıracak faaliyetlerde bulunmak",
+    richtig: "C"
+},
+{
+    frage: "104. Öğretmenin sosyal hayatta örnek olması gerektiği vurgulanmıştır. Bu bağlamda aşağıdakilerden hangisi öğretmenin sosyal davranışlarıyla ilgili yanlış bir ifadedir?",
+    A: "A) Öğretmen, sadece okul ortamında değil, toplumun her alanında bir rol model olmalıdır.",
+    B: "B) Dinî alanlarda öğretmenlik yapanlar, dinî ve ahlaki konularda hatasız ve ideal davranışlar sergilemelidir.",
+    C: "C) Öğretmenler, öğrencilerle olan sosyal mesafeyi tamamen kaldırarak onların arkadaşları gibi davranmalıdır.",
+    D: "D) Öğretmenin öğrencileri hafiye gibi takip etmeden, onların çevresel sorunlarına duyarlı olması beklenir.",
+    richtig: "C"
+},
+{
+    frage: "105. Din öğretimi alanında materyal hazırlığı yaparken dikkat edilmesi gereken hususlardan biri aşağıdakilerden hangisi değildir?",
+    A: "A) Materyalin sade, basit ve kolay anlaşılır olması",
+    B: "B) Ders materyalinin konuyla sınırlı olup dikkati başka yönlere çekmemesi",
+    C: "C) Materyallerin öğretmenin anlatımını daha etkili kılacak şekilde seçilmesi",
+    D: "D) Materyalin öğrencilerin dikkatini çekebilmesi için olabildiğince karmaşık ve detaylı olması",
+    richtig: "D"
+},
+{
+    frage: "106. Ders öncesi hazırlık sürecinde öğretmenin yapması gerekenlerden biri değildir?",
+    A: "A) Konuyla ilgili ders planı hazırlamak",
+    B: "B) Ders için gerekli materyalleri hazırlamak",
+    C: "C) Dersin işleyişini zihinsel olarak prova etmek",
+    D: "D) Öğrencilerin dersi nasıl anlaması gerektiğini önceden belirleyerek kesin sınırlar koymak",
+    richtig: "D"
+},
+{
+    frage: "107. Ders planlaması sürecinde öğretmen, yıllık planı oluştururken aşağıdaki hususlardan hangisini dikkate almaz?",
+    A: "A) O yıl veya yarıyılda ders yapılmayacak tatil ve sınav günlerini",
+    B: "B) Konuların ağırlıklarına göre ders saatlerine dağıtılmasını",
+    C: "C) Derslerin işleniş sırasını ve süresini belirlemeyi",
+    D: "D) Sadece öğretmenin ilgi alanına giren konuların müfredata eklenmesini",
+    richtig: "D"
+},
+{
+    frage: "108. Öğretmenin derse psikolojik hazırlık yapması ile ilgili aşağıdakilerden hangisi yanlıştır?",
+    A: "A) Ders öncesinde zihinsel olarak rahatlamaya çalışmalı ve öfke kontrolü sağlamalıdır.",
+    B: "B) Kendi özel problemlerini sınıfa taşımamalı ve öğrencilerine yansıtmamalıdır.",
+    C: "C) Ders sırasında beklenmedik olaylarla karşılaşabileceğini öngörerek bunlara nasıl tepki vereceğini planlamalıdır.",
+    D: "D) Duygularını bastırarak, hiçbir koşulda öğrencilere hissettirmemeli ve tamamen mekanik bir öğretim yapmalıdır.",
+    richtig: "D"
+},
+{
+    frage: "109. Öğretmenlerin beklenmedik öğrenci sorularına karşı tutumu ile ilgili aşağıdakilerden hangisi doğru değildir?",
+    A: "A) Samimi olarak sorulan sorulara sakin ve açıklayıcı bir şekilde yanıt verilmelidir.",
+    B: "B) Öğrencinin dersi kaynatmak amacıyla sorduğu sorulara karşı öğretmen öfkelenmeden tepki vermelidir.",
+    C: "C) Öğrencileri azarlayarak ve sorularını küçümseyerek sınıftaki otoritesini güçlendirmelidir.",
+    D: "D) Beklenmedik sorular karşısında hazırlıklı olup dersin akışını bozmadan yönetebilmelidir.",
+    richtig: "C"
+},
+{
+    frage: "110. Aşağıdakilerden hangisi öğretmenin ders planı hazırlarken dikkat etmesi gereken hususlardan biri değildir?",
+    A: "A) Konunun başlığını belirlerken sadece o ders saatinde işlenecek içeriği seçmek",
+    B: "B) Öğrencilere dersin hedeflerini ve kazandıracağı bilgileri açıkça belirtmek",
+    C: "C) Dersin tüm içeriğini doğrudan ezberletmek yerine etkinlikler ve materyallerle desteklemek",
+    D: "D) Ders süresini, öğrencilerin dikkat seviyesine bakılmaksızın rastgele belirlemek",
+    richtig: "D"
+},
+{
+    frage: "111. Sınıf içi öğretim sürecinin verimli bir şekilde yürütülebilmesi için öğretmenin aşağıdakilerden hangisini yapması beklenmez?",
+    A: "A) Öğretim ortamını her derse başlamadan önce denetleyerek uygun hâle getirmek",
+    B: "B) Öğrencilerin dikkatini toplamak için farklı motivasyon teknikleri kullanmak",
+    C: "C) Tek bir öğretim metoduna bağlı kalarak öğrencilerin belirli bir öğrenme stiline uyum sağlamasını sağlamak",
+    D: "D) Sürekli olarak öğrenci geribildirimlerini dikkate alarak süreci değerlendirmek",
+    richtig: "C"
+},
+{
+    frage: "112. Süreç yönetimi açısından öğretmenin ders süresince öğrencilerin dikkatini kaybetmemesi için yapması gerekenlerden biri aşağıdakilerden hangisidir?",
+    A: "A) Sadece sözel anlatım yaparak dersin tekdüze bir şekilde ilerlemesini sağlamak",
+    B: "B) Öğrencilerin sorularını mümkün olduğunca kısa tutarak konunun dışına çıkmamaya çalışmak",
+    C: "C) Konuyla ilgili farklı öğretim materyalleri kullanarak öğretimi zenginleştirmek",
+    D: "D) Konuya başlamadan önce uzun bir giriş yaparak öğrencilerin sabrını ölçmek",
+    richtig: "C"
+},
+{
+    frage: "113. Aşağıdakilerden hangisi öğretmenin sınıf içi motivasyon sağlamada kullanabileceği temel adımlardan biri değildir?",
+    A: "A) Öğrencilere konunun günlük hayattaki önemini açıklayarak merak uyandırmak",
+    B: "B) Dersin öğrenciler için ne gibi kazanımlar sağlayacağını anlatmak",
+    C: "C) Öğrencileri öğrenmeye teşvik etmek için cezalandırma yöntemleri kullanmak",
+    D: "D) Dikkat çekici sorular sorarak öğrencilerin konuya ilgisini çekmek",
+    richtig: "C"
+},
+{
+    frage: "114. Öğretmenin ders planına bağlı kalarak ders süresini etkili bir şekilde yönetmesi neden önemlidir?",
+    A: "A) Konunun bütün olarak işlenmesini ve eksiksiz tamamlanmasını sağlamak için",
+    B: "B) Öğrencilerin soru sorma sürecini kısıtlayarak zaman kaybını önlemek için",
+    C: "C) Öğrencilerin ilgisini çekmek yerine konuyu hızlı bir şekilde bitirmek için",
+    D: "D) Ders süresini yalnızca öğretmenin belirlediği sabit bir düzene oturtmak için",
+    richtig: "A"
+},
+{
+    frage: "115. Çoklu zekâ kuramına göre öğrencilerin farklı öğrenme stillerine sahip olduğu kabul edilir. Buna göre öğretmenin aşağıdakilerden hangisini yapması beklenmez?",
+    A: "A) Sayısal zekâya sahip öğrenciler için konuları sebep-sonuç ilişkileriyle açıklamak",
+    B: "B) Görsel zekâya sahip öğrenciler için şekil, şema ve görsellerden yararlanmak",
+    C: "C) Sözel zekâya sahip öğrenciler için tekrarlara dayalı anlatım kullanmak",
+    D: "D) Tüm zekâ türlerine hitap etmek için yalnızca tek bir yöntem kullanmak",
+    richtig: "D"
+},
+{
+    frage: "116. Aşağıdakilerden hangisi etkili iletişim açısından öğretmenin dikkat etmesi gereken unsurlardan biri değildir?",
+    A: "A) Öğrencilere yönelik samimi ve saygılı bir tutum sergilemek",
+    B: "B) Öğrencilerin bireysel farklılıklarını dikkate alarak iletişim kurmak",
+    C: "C) Sadece akademik bilgiyi aktarıp öğrencilerle duygusal bağ kurmaktan kaçınmak",
+    D: "D) Konuşma sırasında göz teması kurarak öğrencileri sürece dahil etmek",
+    richtig: "C"
+},
+{
+    frage: "117. Sınıf yönetimi kapsamında öğretmenin en çok dikkat etmesi gereken hususlardan biri aşağıdakilerden hangisidir?",
+    A: "A) Sınıftaki fiziksel ortamın öğrencilerin rahat ve mutlu olmasını sağlayacak şekilde düzenlenmesi",
+    B: "B) Zamanın kontrol edilmesi ve konu dışı konuşmalara izin verilmesi",
+    C: "C) Öğrenciler arasında gruplaşmalara ve ayrımcılığa izin verilmesi",
+    D: "D) Ders sürecinde öğretmenin tek otorite olarak kendini kabul ettirmesi",
+    richtig: "A"
+},
+{
+    frage: "118. Öğretmenin sınıfta kontrol ve değerlendirme yaparken dikkate alması gereken en önemli unsurlardan biri nedir?",
+    A: "A) Öğrencilerin yalnızca sınavlardan aldığı puanları başarı ölçütü olarak belirlemek",
+    B: "B) Öğrencilerin gelişim düzeylerini gözlemleyerek öğrenme sürecini değerlendirmek",
+    C: "C) Tüm öğrencilerin aynı öğrenme hızına sahip olduğunu varsaymak",
+    D: "D) Değerlendirme sürecinde öğrenci geribildirimlerine önem vermemek",
+    richtig: "B"
+},
+{
+    frage: "119. Öğretmenin sınıfta öz yönetim sağlaması neden önemlidir?",
+    A: "A) Kendi duygu ve düşüncelerini kontrol ederek öğrencilere rol model olmak için",
+    B: "B) Dersleri öğrencilere göre değil, kendi tarzına uygun şekilde işlemek için",
+    C: "C) Sınıfta otoriteyi sağlamak adına öğrencilere mesafeli ve soğuk davranmak için",
+    D: "D) Kendi öğretim tarzını asla değiştirmeden sürekli aynı yöntemleri kullanmak için",
+    richtig: "A"
+},
+{
+    frage: "120. Başarı ile ilgili temel prensiplerden biri aşağıdakilerden hangisidir?",
+    A: "A) Başarı sadece doğuştan yetenekli insanlara sunulmuş bir ayrıcalıktır",
+    B: "B) Küçük başarılar olmadan büyük başarılara ulaşılamaz",
+    C: "C) Başarı her zaman maddi kazanç ile ölçülmelidir",
+    D: "D) Başarı için tek önemli faktör öğretmenin bilgi düzeyidir",
+    richtig: "B"
+}
+	];
+	
+	var nr = 0;
+	function anzeigen() {
+    document.getElementById("frageText").innerHTML = fragen[nr].frage;
+    document.getElementById("textA").innerHTML = fragen[nr].A;
+    document.getElementById("textB").innerHTML = fragen[nr].B;
+    document.getElementById("textC").innerHTML = fragen[nr].C;
+    document.getElementById("textD").innerHTML = fragen[nr].D;
+    document.getElementById("meldung").innerHTML = "";
+
+    var radios = document.querySelectorAll('input[name="ant"]');
+    for (var i = 0; i < radios.length; i++) {
+        radios[i].checked = false;
+    }
+    document.querySelector('form').style.display = "block";
+	}
+
+	function weiter() {
+		var auswahl = document.querySelector('input[name="ant"]:checked');
+		if(auswahl == null){
+			document.getElementById("meldung").innerHTML = "Lütfen bir cevap seçiniz!";
+			return;
+		}
+		if(auswahl.value == fragen[nr].richtig){
+			nr = nr + 1;
+
+			if(nr < fragen.length){
+				anzeigen();
+			} else {
+				document.getElementById("frageText").innerHTML = "Bölüm tamamlandı";
+				document.getElementById("meldung").innerHTML = "Tüm soruları doğru cevapladın! <br> Aferin...";
+				document.querySelector('form').style.display = "none";
+				}
+		} else {
+			document.getElementById("meldung").innerHTML = "Cevabın yanlış, tekrar dene";
+		}
+	}
+	
+	function springeZuFrage() {
+    var nummer = parseInt(document.getElementById("frageNummer").value);
+    if(isNaN(nummer) || nummer < 1){
+        document.getElementById("meldungSprung").innerHTML = "Lütfen geçerli bir sayı girin!";
+        return;
+    }
+    if(nummer > fragen.length){
+        document.getElementById("meldungSprung").innerHTML = 
+            "O kadar soru yok! <br> Din Eğitimi bölümünde en fazla " + fragen.length + " soru bulunmaktadır.";
+        return;
+    }
+    nr = nummer - 1;
+    anzeigen();
+    document.getElementById("meldungSprung").innerHTML = "";
+	}
+	
+	anzeigen();
+	</script>
+	</body>
+</html>

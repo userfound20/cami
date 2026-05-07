@@ -1,0 +1,1095 @@
+<html lang="de">
+	<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Bölüm 5 - İslam Tarihi I</title>
+		<style>
+		body{
+			font-family: Arial;
+			background:#f2f2f2;
+			text-align:center;
+		}
+		.box{
+			background:white;
+			width:90%;
+			max-width:600px;
+			margin:20px auto;
+			padding:20px;
+			border-radius:10px;
+			box-shadow:0 0 10px #aaa;
+		}
+		button{
+			padding:10px 20px; 
+			background:#2c7be5; 
+			color:white; 
+			border:none; 
+			border-radius:5px; 
+			cursor:pointer;
+		}
+		button:hover{
+			background:#1a5fc2;
+		}
+		a{
+			display:inline-block;
+			margin-top:20px;
+			text-decoration:none;
+			color:#2c7be5;
+		}
+		@media (max-width: 400px) {
+			h1 {
+				font-size: 1.5rem;
+			}
+			h2 {
+				font-size: 1.2rem;
+			}
+			button {
+				padding: 10px 0;
+			}
+		}
+		</style>
+	</head>
+
+	<body>
+	<div class="box">
+		<h1>Bölüm 5 - İslam Tarihi I</h1>
+		<h2 id="frageText"></h2>
+		<form>
+			<input type="radio" name="ant" value="A"> <span id="textA"></span><br><br>
+			<input type="radio" name="ant" value="B"> <span id="textB"></span><br><br>
+			<input type="radio" name="ant" value="C"> <span id="textC"></span><br><br>
+			<input type="radio" name="ant" value="D"> <span id="textD"></span><br><br>
+			<button type="button" onclick="weiter()">sonraki soru</button>
+		</form>
+		<p id="meldung"></p>
+		<a href="index.html"> Ana sayfaya dön </a>
+	</div>
+	
+	<div class="box">
+	  <h2> Hangi soruya atlamak istiyorsun? </h2>
+	  <input type="number" id="frageNummer" placeholder="Sayı girin" style="width: 80px;"><br><br>
+	  <button type="button" onclick="springeZuFrage()"> Soruya git </button>
+	  <p id="meldungSprung"></p>
+	</div>
+
+	
+	<script>
+	var fragen = [
+{
+  frage: "1. Hz. Peygamber (s.a.v.)’in tebliğ ettiği dönemde Arabistan’ın sosyal, kültürel ve ekonomik yapısını anlamak neden önemlidir?",
+  A: "A) Sadece Mekke'nin tarihini daha iyi kavrayabilmek için",
+  B: "B) Vahyin geldiği ortamı, muhataplarını ve İslam’ın toplumdaki etkisini doğru analiz edebilmek için",
+  C: "C) Hz. Peygamber’in kişisel hayatına dair detaylı bilgi edinmek için",
+  D: "D) Arabistan’daki putperest inançların nasıl oluştuğunu öğrenmek için",
+  richtig: "B"
+},
+{
+  frage: "2. Arabistan Yarımadası’nın hangi coğrafi özelliği, bölgedeki insanların yaşam tarzını ve ekonomik faaliyetlerini büyük ölçüde şekillendirmiştir?",
+  A: "A) Bol yağış alan ve verimli topraklara sahip olması",
+  B: "B) Yoğun ormanların bulunması ve geniş nehirlerin olması",
+  C: "C) Genellikle çöl iklimine sahip olması ve kuraklıkla mücadele edilmesi",
+  D: "D) Büyük göllerin varlığı sayesinde tarımın gelişmiş olması",
+  richtig: "C"
+},
+{
+  frage: "3. Güney Arabistan’da hüküm süren Himyer Krallığı'nın özellikle hangi özelliği ile diğer krallıklardan farklı olduğu söylenebilir?",
+  A: "A) Savaşçı özellikleriyle tanınması ve komşu devletlerle sürekli mücadele içinde olması",
+  B: "B) Bölgedeki en büyük ticaret ağına sahip olması ve tamamen barışçıl politikalar izlemesi",
+  C: "C) Tarım ve hayvancılık faaliyetleri dışında ekonomik olarak gelişmemiş olması",
+  D: "D) Kendi dini inançlarını yaymak amacıyla Bizans ve İran ile işbirliği yapması",
+  richtig: "A"
+},
+{
+  frage: "4. Kuzey Arabistan'da kurulan Gassânîler ve Hîreliler devletleri hangi büyük imparatorluklara bağlı olarak varlıklarını sürdürmüşlerdir?",
+  A: "A) Bizans ve Sâsânîler",
+  B: "B) Roma ve Abbâsîler",
+  C: "C) Emevîler ve Osmanlılar",
+  D: "D) Himyerîler ve Sebeliler",
+  richtig: "A"
+},
+{
+  frage: "5. Hicaz bölgesindeki Mekke şehri, hangi özelliğiyle Arap Yarımadası’ndaki diğer şehirlerden farklılaşmıştır?",
+  A: "A) Kâbe’ye ev sahipliği yapması ve önemli bir ticaret merkezi olması",
+  B: "B) En büyük orduya sahip olması ve fetihler gerçekleştirmesi",
+  C: "C) En çok Yahudi nüfusunun yaşadığı yer olması",
+  D: "D) Tarımsal üretimiyle öne çıkan en verimli şehir olması",
+  richtig: "A"
+},
+{
+  frage: "6. Aşağıdakilerden hangisi Hz. Peygamber (s.a.v.)’in doğduğu sırada Mekke’de hüküm süren en büyük sosyal güçtü?",
+  A: "A) Hristiyanlar",
+  B: "B) Yahudiler",
+  C: "C) Kureyş Kabilesi",
+  D: "D) Gassânîler",
+  richtig: "C"
+},
+{
+  frage: "7. Mekke’nin Kâbe merkezli dini önemi zamanla nasıl değişmiştir?",
+  A: "A) Hz. İsmail’in soyundan gelenler tarafından putperestliğe yönlendirilmiştir",
+  B: "B) İlk başta tevhid inancı korunmuş ancak sonradan putperestlik yerleşmiştir",
+  C: "C) Yahudilerin bölgeye yerleşmesiyle tamamen tek tanrılı inanca dönmüştür",
+  D: "D) Hristiyan misyonerler tarafından bir ibadet merkezi haline getirilmiştir",
+  richtig: "B"
+},
+{
+  frage: "8. M.S. 570 yılında Ebrehe'nin Mekke'ye düzenlediği saldırının temel amacı neydi?",
+  A: "A) Kâbe’yi yıkıp yerine kendi yaptırdığı Kulleys Kilisesi’ni dinî merkez yapmak",
+  B: "B) Mekke’nin ekonomik gücünü ele geçirmek ve ticareti kontrol etmek",
+  C: "C) Bizans’ın desteğiyle Arabistan’da siyasi hâkimiyet kurmak",
+  D: "D) Arapları Hristiyan yapmak için bir dinî sefer düzenlemek",
+  richtig: "A"
+},
+{
+  frage: "9. Yesrib’de (Medine) Yahudilerin ekonomik gücünü artırmasının temel nedeni aşağıdakilerden hangisidir?",
+  A: "A) Sanayi ve ticaret alanında gelişmiş olmaları",
+  B: "B) Tarım, ticaret, el sanatları ve silah yapımı gibi mesleklerde uzmanlaşmaları",
+  C: "C) Bölgedeki Arap kabilelerinin Yahudi dinine geçiş yapması",
+  D: "D) Bizans ve Sâsânîler tarafından desteklenmeleri",
+  richtig: "B"
+},
+{
+  frage: "10. Tâif şehri neden Mekke ile sürekli bir ekonomik rekabet içindeydi?",
+  A: "A) Verimli arazileri ve ticaret yolları üzerinde bulunması",
+  B: "B) Kendi bağımsız ordusuna sahip olması",
+  C: "C) Mekke’nin dini merkezi olarak önemini kaybetmesini istemesi",
+  D: "D) Kâbe’nin kendi topraklarında yer almasını sağlamak için mücadele etmesi",
+  richtig: "A"
+},
+{
+  frage: "11. Câhiliye dönemi Arap toplumunda, “câhiliye” kavramı hangi anlamda kullanılmaktadır?",
+  A: "A) Sadece eğitim ve bilginin eksikliği",
+  B: "B) Bilgisizlik değil, bildiği hâlde bilgisizce ve kaba davranışlarda bulunmak",
+  C: "C) Sanatsal ve kültürel gelişimin düşük olması",
+  D: "D) Doğa olaylarını açıklayacak bilimsel bilgiye sahip olunmaması",
+  richtig: "B"
+},
+{
+  frage: "12. Câhiliye döneminde Arapların yaygın olarak uyguladığı sosyal ve dini alışkanlıkların İslam’la nasıl bir ilişkisi vardır?",
+  A: "A) İslam, câhiliye kültürünü tamamen benimseyerek devam ettirmiştir",
+  B: "B) İslam, câhiliye dönemindeki her uygulamayı yasaklamıştır",
+  C: "C) İslam, câhiliye kültüründeki kötü alışkanlıkları yasaklarken, iyi olanları sürdürmüştür",
+  D: "D) İslam, Arap toplumunun inanç sistemini değiştirmemiş, sadece ibadet yöntemlerini farklılaştırmıştır",
+  richtig: "C"
+},
+{
+  frage: "13. Câhiliye döneminde kan davası, içki, kumar ve kabile asabiyeti gibi uygulamalar hangi nedenle yaygın hale gelmiştir?",
+  A: "A) Güçlü bir merkezi otoritenin bulunmaması ve kabile sisteminin hâkim olması",
+  B: "B) Arapların ekonomik olarak gelişmiş ve düzenli bir sisteme sahip olması",
+  C: "C) Câhiliye toplumunun ticaretten uzak durması ve sadece tarımla uğraşması",
+  D: "D) Devletlerarası diplomatik ilişkilerin güçlü olması",
+  richtig: "A"
+},
+{
+  frage: "14. Câhiliye döneminde Arap toplumu içinde “asabiyet” ne anlama gelmektedir?",
+  A: "A) Kabile üyelerinin ekonomik faaliyetlerini düzenleyen bir sistem",
+  B: "B) Aynı kabile mensuplarının birbirine sıkı sıkıya bağlı olduğu bir dayanışma ruhu",
+  C: "C) Dini liderlerin toplum üzerindeki etkisini ifade eden bir kavram",
+  D: "D) Arapların farklı kabileler arasında evlilikler yaparak birleşmelerini sağlayan bir gelenek",
+  richtig: "B"
+},
+{
+  frage: "15. İslam öncesi Arap toplumunda ticaretin Mekke için önemi neydi?",
+  A: "A) Mekke, tarıma elverişli olmadığından geçim kaynağı olarak ticarete bağımlıydı",
+  B: "B) Mekke’de çok sayıda tarım alanı olduğu için ticarete ihtiyaç duyulmamaktaydı",
+  C: "C) Mekkeliler daha çok hayvancılıkla uğraştığı için ticaret geri plandaydı",
+  D: "D) Mekke, yalnızca dinsel bir merkez olarak varlığını sürdürmüştür",
+  richtig: "A"
+},
+{
+  frage: "16. İslam öncesi Arap toplumunda kız çocuklarına karşı olumsuz bakış açısının temel sebebi nedir?",
+  A: "A) Kabileler arasında kadın nüfusunun fazla olması",
+  B: "B) Erkek çocukların savaş ve ekonomik faaliyetlerde daha faydalı görülmesi",
+  C: "C) Kadınların kabile asabiyetini sürdürmede daha etkin olması",
+  D: "D) Kız çocuklarının eğitimde erkeklerden üstün kabul edilmesi",
+  richtig: "B"
+},
+{
+  frage: "17. İslam öncesi dönemde farklı evlilik türlerinden biri olan “istibdâ nikâhı” nasıl bir uygulamaydı?",
+  A: "A) Kadının kocasının izniyle başka bir erkekten çocuk sahibi olması",
+  B: "B) Eşlerin karşılıklı olarak birbirlerini boşaması",
+  C: "C) Kadının birden fazla erkekle evlenmesi",
+  D: "D) Süreli olarak yapılan geçici evlilik türü",
+  richtig: "A"
+},
+{
+  frage: "18. İslam öncesi Arap toplumunda yaygın olan putperestlik inancı nasıl ortaya çıkmıştır?",
+  A: "A) Hz. İbrahim’in tevhid inancını Mekke’ye yaymasıyla gelişmiştir",
+  B: "B) Amr b. Luhay’ın putları Mekke’ye getirmesiyle başlamıştır",
+  C: "C) Yahudi tüccarların bölgeye yerleşmesiyle ortaya çıkmıştır",
+  D: "D) Doğrudan Bizans ve Sâsânîler tarafından bölgeye getirilmiştir",
+  richtig: "B"
+},
+{
+  frage: "19. Hz. Peygamber (s.a.v.)’in soyu ile ilgili nesep bilginlerinin şüpheyle yaklaştıkları husus nedir?",
+  A: "A) Hz. Peygamber’in soyunun Adnân’a kadar kesin olarak ulaşması",
+  B: "B) Adnân ile Hz. İsmâil arasındaki nesep zincirinin belirsiz olması",
+  C: "C) Hz. Peygamber’in soyunun Yahudilere dayandığının iddia edilmesi",
+  D: "D) Hz. Peygamber’in soyu hakkında hiçbir yazılı belgenin bulunmaması",
+  richtig: "B"
+},
+{
+  frage: "20. Mekke yönetimini ele geçirerek Kureyş’in başına geçen ve şehri organize eden kişi kimdir?",
+  A: "A) Abdümenâf",
+  B: "B) Kusay b. Kilâb",
+  C: "C) Abdülmuttalib",
+  D: "D) Hâşim b. Abdümenâf",
+  richtig: "B"
+},
+{
+  frage: "21. Hz. Muhammed (s.a.v.)’in doğumuyla ilgili olarak aşağıdakilerden hangisi doğrudur?",
+  A: "A) Doğumu Fil Vakası’ndan yaklaşık on yıl sonra gerçekleşmiştir.",
+  B: "B) Rebîülevvel ayının 27’sinde ve cuma günü doğmuştur.",
+  C: "C) Fil Vakası’ndan 50 gün sonra, 571 yılında pazartesi günü doğmuştur.",
+  D: "D) Doğduğunda babası Abdullah yanında bulunmuş ve ona isim vermiştir.",
+  richtig: "C"
+},
+{
+  frage: "22. Hz. Muhammed (s.a.v.) çocukluğunda neden sütanneye verilmiştir?",
+  A: "A) Mekke’de sütannelik yaygın bir gelenek olduğu için",
+  B: "B) Sütannenin yanında daha iyi eğitim alması için",
+  C: "C) Mekke dışındaki kabilelerde askerî eğitim alması için",
+  D: "D) Onun daha sağlıklı büyümesi için çöl hayatının daha uygun görülmesi nedeniyle",
+  richtig: "D"
+},
+{
+  frage: "23. Hz. Muhammed (s.a.v.)’in amcası Ebû Tâlib’in himayesine girmesi hangi olayın ardından gerçekleşmiştir?",
+  A: "A) Babasının vefatından sonra",
+  B: "B) Dedesi Abdülmuttalib’in vefatından sonra",
+  C: "C) Ticaretle uğraşmaya başladıktan sonra",
+  D: "D) İlk vahyi aldıktan sonra",
+  richtig: "B"
+},
+{
+  frage: "24. Hz. Peygamber (s.a.v.)’in on iki yaşında amcası Ebû Tâlib ile çıktığı Şam yolculuğunda, Bahîrâ adlı rahibin Hz. Muhammed (s.a.v.) hakkında ne söylediği rivayet edilir?",
+  A: "A) Onun Arap kabilelerinin lideri olacağını",
+  B: "B) Yahudiler tarafından bir peygamber olarak tanınacağını",
+  C: "C) Onun peygamber olacağını ve Yahudilerden korunması gerektiğini",
+  D: "D) Hristiyanların onun yolunu izlemesi gerektiğini",
+  richtig: "C"
+},
+{
+  frage: "25. Hilfü’l-Fudûl (Erdemliler İttifakı) hangi amaçla kurulmuştur?",
+  A: "A) Mekke’de haksızlığa uğrayanların haklarını korumak için",
+  B: "B) Ticari anlaşmazlıkları çözmek için",
+  C: "C) Kureyş kabileleri arasında kan davalarını engellemek için",
+  D: "D) Yeni bir yönetim kurarak Kureyş’in liderini belirlemek için",
+  richtig: "A"
+},
+{
+  frage: "26. Hz. Muhammed (s.a.v.)’in Hacerülesved’in yerine konulmasında hakemlik yaptığı olayın sebebi neydi?",
+  A: "A) Kureyş kabileleri taşın yerine konulması konusunda anlaşmazlığa düşmüştü.",
+  B: "B) Kâbe’deki putlar kaldırılmak isteniyordu.",
+  C: "C) Hz. Muhammed (s.a.v.) bu görevi üstlenmek için gönüllü olmuştu.",
+  D: "D) Sadece Hâşimoğulları bu taşı yerleştirme hakkına sahipti.",
+  richtig: "A"
+},
+{
+  frage: "27. Hz. Peygamber (s.a.v.)’e gelen ilk vahiy ne zaman ve nerede nazil olmuştur?",
+  A: "A) 610 yılında, Sevr Mağarası’nda",
+  B: "B) 610 yılında, Hira Mağarası’nda",
+  C: "C) 622 yılında, Mekke’de Kâbe’nin yanında",
+  D: "D) 630 yılında, Medine’de",
+  richtig: "B"
+},
+{
+  frage: "28. Mekke müşriklerinin Hz. Muhammed (s.a.v.)’e karşı düşmanca tavırlarının en önemli sebebi aşağıdakilerden hangisidir?",
+  A: "A) Mekke’deki sosyal düzenin değişeceğinden korkmaları",
+  B: "B) Hz. Muhammed (s.a.v.)’in ticari rekabeti engellemesi",
+  C: "C) Medine halkının Mekkelilere karşı birleşmesi",
+  D: "D) Yahudilerin İslam’ı kabul etmesi",
+  richtig: "A"
+},
+{
+  frage: "29. Müşrikler, Hz. Muhammed (s.a.v.)’in risaletini etkisiz hale getirmek için hangi yolu denememişlerdir?",
+  A: "A) Onun hakkında sihirbaz ve mecnun iftiraları atmak",
+  B: "B) Müslümanlara işkence etmek ve onları yıldırmak",
+  C: "C) Onu Mekke’nin lideri yapmak için tekliflerde bulunmak",
+  D: "D) Onu Bizans’a elçi olarak göndermek",
+  richtig: "D"
+},
+{
+  frage: "30. Hz. Muhammed (s.a.v.)’in öldürülmesi için yapılan Dârünnedve toplantısında alınan karar neydi?",
+  A: "A) Her kabileden bir kişinin katılımıyla toplu bir suikast düzenlemek",
+  B: "B) Onu hapse atarak İslam’ın yayılmasını engellemek",
+  C: "C) Onu Medine’ye sürgün etmek",
+  D: "D) Onunla barış anlaşması yapmak",
+  richtig: "A"
+},
+{
+  frage: "31. Hz. Peygamber (s.a.v.) ve ashabının Mekke'deki müşrik baskılarına karşı pasif direnişi hangi temel stratejileri içermekteydi?",
+  A: "A) Silahlı mücadeleye girişerek Kureyş kabilelerine karşı savaş açmak",
+  B: "B) Müşriklerin dikkatini çekmemek için toplu ibadetlerden kaçınmak ve gizli toplantılar düzenlemek",
+  C: "C) Müşrik liderlerle diplomatik görüşmeler yaparak siyasi uzlaşma sağlamak",
+  D: "D) Medine'ye hicret etmeden önce Bizans ve Sasani devletlerinden yardım istemek",
+  richtig: "B"
+},
+{
+  frage: "32. Hz. Peygamber (s.a.v.)'in Müslümanlara Habeşistan’a hicret etmelerini tavsiye etmesinin temel nedeni aşağıdakilerden hangisidir?",
+  A: "A) Habeşistan’ın İslam'ı kabul eden bir ülke olması",
+  B: "B) Müslümanların ticaret yaparak Mekke'ye ekonomik üstünlük kurmalarını sağlamak",
+  C: "C) Müşriklerin baskı ve zulmünden korumak için güvenli bir sığınak temin etmek",
+  D: "D) Habeşistan kralı Necâşî'nin Hz. Muhammed (s.a.v.)'i Mekke'nin yeni lideri yapacağını duyurması",
+  richtig: "C"
+},
+{
+  frage: "33. Habeşistan’a hicret eden Müslümanlar, Mekke müşrikleri tarafından geri getirilmek istenmiş ancak Necâşî tarafından korunmuşlardır. Necâşî’nin Müslümanları iade etmeme kararında etkili olan temel unsur nedir?",
+  A: "A) Hz. Peygamber (s.a.v.)’in Habeşistan'a elçiler göndermesi",
+  B: "B) Müslümanların kendisine sunduğu Kur'an ayetlerinden etkilenmesi ve İslam'ı hak din olarak görmesi",
+  C: "C) Mekke müşriklerinin Habeşistan’a savaş açma tehdidinde bulunması",
+  D: "D) Yahudilerin Müslümanların Habeşistan'da kalmasını desteklemesi",
+  richtig: "B"
+},
+{
+  frage: "34. Hz. Muhammed (s.a.v.)'in Tâif’e gitmesinin en önemli sebebi aşağıdakilerden hangisidir?",
+  A: "A) Tâif şehrinin Mekke'ye rakip bir ekonomik güç olması ve İslam’ın burada daha kolay yayılabileceğini düşünmesi",
+  B: "B) Müşriklerin baskılarından kurtulmak ve yeni bir siyasi destek aramak",
+  C: "C) Evs ve Hazrec kabileleriyle müttefiklik kurarak Mekke'yi fethetmek için güç toplamak",
+  D: "D) Yahudi kabileleriyle ittifak yaparak Medine’ye göç etmeden önce destek almak",
+  richtig: "B"
+},
+{
+  frage: "35. Tâif yolculuğu sırasında Hz. Peygamber (s.a.v.)’in uğradığı kötü muameleye karşı gösterdiği tepki hangi hususu ortaya koymaktadır?",
+  A: "A) Mekke müşriklerine karşı askeri bir birlik kurma çabası içinde olduğunu",
+  B: "B) Siyasi bir lider olarak kabileler arasında tarafsızlık politikası yürüttüğünü",
+  C: "C) Sabır, metanet ve Allah’a olan teslimiyetin tebliğ sürecinde temel bir strateji olduğunu",
+  D: "D) Hicret planlarının Tâif yerine Yesrib’e yönelmesine neden olduğunu",
+  richtig: "C"
+},
+{
+  frage: "36. Yesribli Araplar, Hz. Peygamber (s.a.v.)’i kendilerine lider olarak davet ederken aşağıdakilerden hangisini amaçlamışlardır?",
+  A: "A) Evs ve Hazrec kabileleri arasındaki yıllardır süren kan davalarını sona erdirerek birlik sağlamak",
+  B: "B) Yahudilerin siyasi hâkimiyetini sona erdirerek şehri tamamen Arapların yönetimine geçirmek",
+  C: "C) Kureyş ile ittifak yaparak ticari üstünlük sağlamak",
+  D: "D) Hz. Muhammed (s.a.v.)'i bir din adamı olarak görüp sadece ibadetleri öğretmesini sağlamak",
+  richtig: "A"
+},
+{
+  frage: "37. Medinelilerin Hz. Peygamber (s.a.v.) ile yaptığı II. Akabe Biatı'nın birincisinden farkı nedir?",
+  A: "A) Birinci biat sadece dini taahhütler içerirken, ikinci biat askeri ve siyasi desteği de kapsıyordu",
+  B: "B) Birinci biat Medineliler tarafından reddedilirken, ikinci biatta bütün kabileler kabul etti",
+  C: "C) İkinci biatta Müslümanlar Mekke’ye geri dönmeyi taahhüt etmişlerdir",
+  D: "D) Birinci biatta Hz. Muhammed (s.a.v.), Yesrib’e hicret etmeyi kabul etmişti, ikinci biatta ise bu fikrinden vazgeçmiştir",
+  richtig: "A"
+},
+{
+  frage: "38. Hicretin İslam tarihinde büyük bir dönüm noktası olmasının en önemli nedeni nedir?",
+  A: "A) Müslümanların Mekke'deki baskılardan kurtulup Yesrib’de bağımsız bir toplum oluşturması",
+  B: "B) Hz. Muhammed (s.a.v.)’in Yesrib’de yeni bir ekonomik sistem kurması",
+  C: "C) Habeşistan’daki Müslümanlarla Yesrib’dekilerin birleşerek güçlü bir ordu kurmaları",
+  D: "D) Müslümanların Bizans ve Sasani İmparatorlukları ile diplomatik ilişkilere başlamaları",
+  richtig: "A"
+},
+{
+  frage: "39. Hz. Peygamber (s.a.v.), Medine’ye hicret ederken Mekke müşriklerinin suikast planlarını boşa çıkarmak için nasıl bir strateji izlemiştir?",
+  A: "A) Medine’ye doğrudan giden ana yolu kullanmak yerine farklı bir güzergâh seçerek Sevr mağarasında saklanmıştır",
+  B: "B) Kendisini koruması için Bizans İmparatorluğu’ndan yardım talep etmiştir",
+  C: "C) Medinelilerden gelen özel bir ordu tarafından Mekke'den gizlice kaçırılmıştır",
+  D: "D) Suikastçılarla pazarlık yaparak hicreti ertelemeyi başarmıştır",
+  richtig: "A"
+},
+{
+  frage: "40. Medine’ye hicretin ardından Müslümanların kazandığı en büyük avantaj aşağıdakilerden hangisidir?",
+  A: "A) İslam’ın ilk defa devlet desteğiyle yayılmaya başlaması ve siyasi bir kimlik kazanması",
+  B: "B) Kureyş müşrikleriyle barış anlaşması yaparak Mekke’de tekrar İslam’ı anlatma fırsatı elde edilmesi",
+  C: "C) Müslümanların tamamen Arap Yarımadası’na hâkim olup fetihlere başlaması",
+  D: "D) Yahudi kabilelerinin İslam’ı kabul ederek Medine’de Müslümanlarla birlikte yaşamayı tercih etmesi",
+  richtig: "A"
+},
+{
+  frage: "41. Mescid-i Nebevî'nin inşası, Medine'de İslam toplumunun oluşumunda hangi işlevleri yerine getirmiştir?",
+  A: "A) Sadece ibadet mekanı olarak kullanılmıştır.",
+  B: "B) İslam toplumu için siyasi, sosyal ve dini bir merkez olmuştur.",
+  C: "C) Müslümanlar ile Yahudiler arasında sınır çizmek amacıyla yapılmıştır.",
+  D: "D) Hz. Peygamber (s.a.v.)'in ailesi için özel bir yaşam alanı oluşturmuştur.",
+  richtig: "B"
+},
+{
+  frage: "42. Ensar-Muhacir kardeşliği uygulamasının Medine'deki sosyal yapıya en önemli etkisi ne olmuştur?",
+  A: "A) Muhacirler, ensarın kölesi olarak kabul edilmiştir.",
+  B: "B) Müslümanlar arasında kan bağı yerine akide bağına dayalı bir toplum düzeni oluşturulmuştur.",
+  C: "C) Ensar, Mekke'den gelen muhacirleri şehirden uzaklaştırmıştır.",
+  D: "D) Ensar ve muhacirler arasında sosyal ve ekonomik eşitsizlik artmıştır.",
+  richtig: "B"
+},
+{
+  frage: "43. Medine Vesikası’nın (Medine Anayasası) en önemli özelliği nedir?",
+  A: "A) Müslümanların şehirdeki Yahudilere siyasi üstünlük sağlamasını hedeflemiştir.",
+  B: "B) Medine’de yaşayan farklı toplulukları ortak hukuki zemin üzerinde birleştirmiştir.",
+  C: "C) Medine’yi Arap Yarımadası’nın tek bağımsız devleti yapmıştır.",
+  D: "D) Kureyş ile Medine arasında kalıcı bir barış ortamı oluşturmayı amaçlamıştır.",
+  richtig: "B"
+},
+{
+  frage: "44. Kıblenin Kudüs’ten Kâbe’ye çevrilmesi hangi sonucu doğurmuştur?",
+  A: "A) Müslümanların siyasi ve dini bağımsızlığını pekiştirmiştir.",
+  B: "B) Yahudilerin İslam'a daha fazla yakınlaşmasını sağlamıştır.",
+  C: "C) Müslümanlar ile müşrikler arasındaki ilişkileri yumuşatmıştır.",
+  D: "D) Medine’deki Yahudilerin İslam’ı kabul etmesini kolaylaştırmıştır.",
+  richtig: "A"
+},
+{
+  frage: "45. Medine’de Hz. Peygamber (s.a.v.)’in karşı karşıya kaldığı en tehlikeli grup aşağıdakilerden hangisidir?",
+  A: "A) Bizanslılar",
+  B: "B) Hayber Yahudileri",
+  C: "C) Mekke müşrikleri",
+  D: "D) Medine'deki münafıklar",
+  richtig: "D"
+},
+{
+  frage: "46. Mekke müşrikleri ile Müslümanlar arasında savaş izninin verilmesi hangi ayetle meşru kılınmıştır?",
+  A: "A) “Size saldıranlara karşı Allah yolunda siz de savaşın, ancak aşırı gitmeyin.”",
+  B: "B) “Kim size bir zarar verirse, siz de ona aynı zararla karşılık verin.”",
+  C: "C) “Düşmanlarınızla dostluk kurarak onların kalplerini yumuşatın.”",
+  D: "D) “Yalnızca kendinizi savunun, karşılık vermeyin.”",
+  richtig: "A"
+},
+{
+  frage: "47. Hz. Peygamber (s.a.v.) tarafından gönderilen Abdullah b. Cahş seriyyesi hangi sonuçları doğurmuştur?",
+  A: "A) Kureyş müşriklerinin Bedir Savaşı için sebep bulmasını sağlamıştır.",
+  B: "B) Mekke ile Medine arasında barışın sağlanmasına zemin hazırlamıştır.",
+  C: "C) Müslümanların Mekke’de yeniden güçlenmesini sağlamıştır.",
+  D: "D) Yahudilerle yapılan Medine Vesikası’nı ihlal etmiştir.",
+  richtig: "A"
+},
+{
+  frage: "48. Bedir Savaşı'nın İslam tarihi açısından en önemli sonucu nedir?",
+  A: "A) Müslümanların ilk büyük zaferini kazanmaları ve Kureyş’in yenilmezlik algısının kırılması",
+  B: "B) Mekke müşrikleriyle barış anlaşması imzalanması",
+  C: "C) Müslümanların Medine’den Mekke’ye geri dönmesi",
+  D: "D) Yahudilerin Medine’den tamamen çıkarılması",
+  richtig: "A"
+},
+{
+  frage: "49. Uhud Savaşı'nda Müslümanların yenilgisine neden olan temel sebep aşağıdakilerden hangisidir?",
+  A: "A) Müslümanların savaş alanını terk ederek ganimet peşine düşmeleri",
+  B: "B) Mekke müşriklerinin Bizans’tan yardım alması",
+  C: "C) Münafıkların savaş sırasında müşriklerin tarafına geçmesi",
+  D: "D) Müslüman ordusunun savaş öncesinde plan yapmamış olması",
+  richtig: "A"
+},
+{
+  frage: "50. Uhud Savaşı'nın ardından Hz. Peygamber (s.a.v.)’in Hamrâü’l-Esed Seferi’ni düzenlemesinin temel amacı nedir?",
+  A: "A) Mekkelilere karşı yeni bir saldırı planı oluşturmak",
+  B: "B) Müslümanların moralini yükseltmek ve müşriklerin Medine’ye yeni bir saldırı yapmasını engellemek",
+  C: "C) Medine Yahudileriyle yeni bir barış antlaşması yapmak",
+  D: "D) Mekke müşrikleriyle barış müzakerelerine başlamak",
+  richtig: "B"
+},
+{
+  frage: "51. Hendek Savaşı’nın hazırlık sürecinde Selmân-ı Fârisî’nin önerisi hangi stratejik sonucu doğurmuştur?",
+  A: "A) Müslümanların savunma hattını daha daraltarak düşmana doğrudan saldırmasını sağladı.",
+  B: "B) Müslümanlar Medine’yi terk ederek düşmanla açık arazide savaşmak zorunda kaldılar.",
+  C: "C) Medine’nin kuzey yönüne geniş hendekler kazılarak savunma savaşı yapılmasına imkân sağlandı.",
+  D: "D) Hendekler, yalnızca Yahudilerin bulunduğu bölgeye kazılarak düşman saldırıları önlendi.",
+  richtig: "C"
+},
+{
+  frage: "52. Nuaym b. Mes‘ûd’un Hendek Savaşı sırasında gerçekleştirdiği planın en önemli sonucu nedir?",
+  A: "A) Mekke müşrikleriyle Benî Kureyza Yahudileri arasında güven bunalımı oluşturarak birleşmelerini engellemesi",
+  B: "B) Müslümanların doğrudan düşmana saldırmasını sağlayarak zaferi hızlandırması",
+  C: "C) Mekkelilerin savaş planını bozarak Kâbe’nin savunmasını sağlaması",
+  D: "D) Yahudileri ve müşrikleri Medine’den sürerek Müslümanların hâkimiyetini artırması",
+  richtig: "A"
+},
+{
+  frage: "53. Hudeybiye Antlaşması’nın Mekke müşrikleri açısından en büyük kaybı ne olmuştur?",
+  A: "A) Müslümanları askerî olarak kesin şekilde mağlup edememeleri",
+  B: "B) Müslümanların ilk kez siyasi bir taraf olarak tanınması ve Kureyş’in prestij kaybı yaşaması",
+  C: "C) Hz. Osman’ın elçilik görevini reddetmesi ve Kureyş liderlerinin görüşmelerden çekilmesi",
+  D: "D) Medine’nin fethi için Müslümanlara yeni bir askerî fırsat sunması",
+  richtig: "B"
+},
+{
+  frage: "54. Hudeybiye Antlaşması’nda Müslümanların en fazla itiraz ettikleri madde aşağıdakilerden hangisiydi?",
+  A: "A) Müslümanların o yıl Mekke’ye giremeyecek olmaları",
+  B: "B) Mekkelilere sığınan Müslümanların iade edilmeyecek olması",
+  C: "C) Müslümanların yalnızca yolcu kılıçları taşımasına izin verilmesi",
+  D: "D) Barışın sadece beş yıl süreyle geçerli olması",
+  richtig: "B"
+},
+{
+  frage: "55. Mekke’nin fethinin hemen öncesinde Hz. Peygamber (s.a.v.)’in Ebû Süfyân’a düzenlenen geçit törenini izleterek ulaşmak istediği asıl hedef neydi?",
+  A: "A) Ebû Süfyân’ın Müslüman olmasını sağlamak",
+  B: "B) Mekkelilerin direniş göstermeden teslim olmalarını temin etmek",
+  C: "C) Hz. Ali’yi Mekke’nin valisi olarak atamak",
+  D: "D) Müslüman askerlerin morallerini yükseltmek",
+  richtig: "B"
+},
+{
+  frage: "56. Mekke’nin fethinden sonra Hz. Peygamber (s.a.v.) Kâbe’deki putları kaldırırken hangi ayeti okuyarak bu hareketini temellendirmiştir?",
+  A: "A) “Hak geldi, batıl yok oldu. Muhakkak ki batıl yok olmaya mahkûmdur.”",
+  B: "B) “Şüphesiz Allah, inkârcıları asla başarıya ulaştırmaz.”",
+  C: "C) “İman edenler, ancak Allah’a güvenenlerdir.”",
+  D: "D) “Sakın zalimlerden yana olma, yoksa azap sana da dokunur.”",
+  richtig: "A"
+},
+{
+  frage: "57. Huneyn Savaşı’nda Müslümanların başlangıçta bozguna uğramasının temel nedeni neydi?",
+  A: "A) Müslümanların sayıca üstün olmaları sebebiyle zaferi garanti görmeleri ve düşmanı hafife almaları",
+  B: "B) Hevâzinlilerin Bizans’tan yardım alması",
+  C: "C) İslam ordusunun içindeki münafıkların müşriklerle iş birliği yapması",
+  D: "D) Müslümanların çöl fırtınasına yakalanarak savaş düzenlerini kaybetmeleri",
+  richtig: "A"
+},
+{
+  frage: "58.  Bi’rimaûne Olayı, Müslümanlar açısından hangi sonucu doğurmuştur?",
+  A: "A) Hz. Peygamber (s.a.v.)’in ilk kez sabah namazlarında düşmanlarına beddua etmesine sebep olmuştur.",
+  B: "B) Mekkeliler ile Müslümanlar arasında barış görüşmelerinin başlamasına vesile olmuştur.",
+  C: "C) Medine’ye Yahudilerin tamamen hâkim olmasını sağlamıştır.",
+  D: "D) İslam’a yeni katılan kabilelerin tamamının Hicaz bölgesinden göç etmesine neden olmuştur.",
+  richtig: "A"
+},
+{
+  frage: "59. Müreysî Gazvesi’nin sonucunda hangi olay gerçekleşmiştir?",
+  A: "A) Hz. Peygamber (s.a.v.) Mustalik kabilesinin reisi Hâris b. Ebû Dırâr’ın kızı Cüveyriye ile evlenmiş ve bu evlilik kabile halkının İslam’a girmesini hızlandırmıştır.",
+  B: "B) Benî Kureyza Yahudileri, Müslümanların tarafına geçerek müşriklerle savaşmıştır.",
+  C: "C) Müslümanlar, Mekke’ye saldırarak Hudeybiye Barışı’nı ihlal etmiştir.",
+  D: "D) Ensar ve muhacirler arasında iç savaş çıkmıştır.",
+  richtig: "A"
+},
+{
+  frage: "60. Huneyn Savaşı’nın ardından Müslümanlara esir düşen Hz. Peygamber (s.a.v.)’in süt kardeşi Şeymâ ile ilgili olarak hangi karar verilmiştir?",
+  A: "A) Hz. Peygamber (s.a.v.) onu serbest bırakmış ve yurduna dönmesine izin vermiştir.",
+  B: "B) Şeymâ, Hz. Peygamber (s.a.v.)’in yanına yerleşmiş ve İslam ordusuna katılmıştır.",
+  C: "C) Müslümanlar, Şeymâ’yı esir olarak tutmaya devam etmiştir.",
+  D: "D) Hevâzin kabilesine karşı bir rehine olarak kullanılmıştır.",
+  richtig: "A"
+},
+{
+  frage: "61. Medine Yahudileri ile yapılan Medine Anayasası’nın 27. maddesi hangi hususu içermektedir?",
+  A: "A) Yahudilerin Müslüman olmaları zorunlu kılınmıştır.",
+  B: "B) Müslümanlar ve Yahudiler, dinî inanış ve yaşamlarında serbest bırakılmıştır.",
+  C: "C) Yahudiler, Hz. Peygamber (s.a.v.)'e itaat etmekle yükümlü kılınmıştır.",
+  D: "D) Yahudilere savaş sırasında Medine’yi terk etme hakkı verilmiştir.",
+  richtig: "B"
+},
+{
+  frage: "62. Benî Nadîr Yahudilerinin Medine’den sürülme sebebi aşağıdakilerden hangisidir?",
+  A: "A) Bedir Savaşı’nda müşriklere destek vermeleri",
+  B: "B) Medine’deki ticari tekellerini kaybetmemek için İslam’a karşı savaş açmaları",
+  C: "C) Hz. Peygamber (s.a.v.)'e karşı suikast girişiminde bulunmaları",
+  D: "D) Hendek Savaşı’nda Müslümanlara saldırmaları",
+  richtig: "C"
+},
+{
+  frage: "63. Benî Kureyza Gazvesi’nin temel sebebi neydi?",
+  A: "A) Hendek Savaşı sırasında Mekkelilerle iş birliği yapmaları",
+  B: "B) Medine’de kendi devletlerini kurmaya çalışmaları",
+  C: "C) Müslümanları dinlerinden döndürmeye çalışmalar",
+  D: "D) Hayber Yahudileriyle birleşerek Medine’ye saldırmaları",
+  richtig: "A"
+},
+{
+  frage: "64. Hayber Yahudilerinin Müslümanlar açısından tehlike oluşturan en büyük faaliyetleri arasında aşağıdakilerden hangisi yer almamaktadır?",
+  A: "A) Mekke müşriklerini Müslümanlara karşı kışkırtmaları",
+  B: "B) Hendek Savaşı sırasında müşrikleri desteklemeleri",
+  C: "C) Medine’deki münafıklarla iş birliği yapmaları",
+  D: "D) Hz. Peygamber (s.a.v.)'e suikast düzenlemeleri",
+  richtig: "D"
+},
+{
+  frage: "65. Hz. Peygamber (s.a.v.)’in Tebük Seferi'ni düzenleme sebebi neydi?",
+  A: "A) Medine’deki Yahudileri tamamen ortadan kaldırmak",
+  B: "B) Şam bölgesinde yaşayan Müslümanları Bizans’a karşı korumak",
+  C: "C) Bizans’ın Hicaz topraklarına saldırı yapacağı haberini alması",
+  D: "D) Münafıkların kurduğu Dırar Mescidi’ni yıkmak",
+  richtig: "C"
+},
+{
+  frage: "66. Elçiler Yılı olarak adlandırılan dönemde Hz. Peygamber (s.a.v.)’e en saygısızca davranan kabile aşağıdakilerden hangisidir?",
+  A: "A) Hanîfe",
+  B: "B) Benî Temîm",
+  C: "C) Necran",
+  D: "D) Benî Bekir",
+  richtig: "B"
+},
+{
+  frage: "67. Hz. Peygamber (s.a.v.)’in diplomatik mektuplarına en sert tepkiyi veren ve elçisini öldüren hükümdar kimdir?",
+  A: "A) Habeşistan Kralı Necâşî",
+  B: "B) Bizans Kralı Herakleios",
+  C: "C) İran Kisrâsı II. Hüsrev Pervîz",
+  D: "D) Gassânî Emiri Şürahbil b. Amr",
+  richtig: "D"
+},
+{
+  frage: "68. Hz. Peygamber (s.a.v.)’in Veda Hutbesi'nde üzerinde en çok durduğu konular arasında aşağıdakilerden hangisi bulunmaz?",
+  A: "A) Kadın hakları",
+  B: "B) İnsanların eşitliği",
+  C: "C) Sosyal adalet",
+  D: "D) Devlet yönetimi",
+  richtig: "D"
+},
+{
+  frage: "69. Hz. Peygamber (s.a.v.)’in vefatı sırasında yaptığı son dua aşağıdakilerden hangisidir?",
+  A: "A) “Allah’ım, ümmetimi koru.”",
+  B: "B) “En yüce dosta (ma‘a’r-refîki’l-a‘lâ).”",
+  C: "C) “Allah’ım, günahlarımı bağışla.”",
+  D: "D) “Ashabıma selam söyleyin.”",
+  richtig: "B"
+},
+{
+  frage: "70. Hz. Peygamber (s.a.v.)’in cenaze namazı nasıl kılınmıştır?",
+  A: "A) Hz. Ebû Bekir imam olarak kıldırmıştır.",
+  B: "B) Ensar ve muhacirler ayrı ayrı cemaatlerle kılmışlardır.",
+  C: "C) Kimse imam olmadan gruplar halinde kılınmıştır.",
+  D: "D) Hz. Ali tarafından kıldırılmıştır.",
+  richtig: "C"
+},
+{
+  frage: "71. Hz. Ebû Bekir’in halife seçilmesi sürecinde Medineli ensarın halifelik hakkındaki görüşü neydi?",
+  A: "A) Hilafetin yalnızca Kureyş’e ait olduğunu kabul ettiler.",
+  B: "B) Ensar’dan bir kişinin halife olması gerektiğini savundular.",
+  C: "C) Hz. Peygamber (s.a.v.)’in belirlediği bir halifenin olduğunu iddia ettiler.",
+  D: "D) Ensar ve muhacirlerden birer kişinin birlikte halife olmasını teklif ettiler.",
+  richtig: "D"
+},
+{
+  frage: "72. Hz. Ebû Bekir’in halife seçildiği toplantıda, hilafetin Kureyş’e ait olduğunu kanıtlamak için hangi delil öne sürülmüştür?",
+  A: "A) \"İmamlar Kureyş’tendir.\" hadisi",
+  B: "B) Hz. Peygamber (s.a.v.)’in Hz. Ebû Bekir’i yerine vekil tayin etmesi",
+  C: "C) Ensarın biat etmekte tereddüt göstermesi",
+  D: "D) Hz. Ömer’in doğrudan Hz. Ebû Bekir’i desteklemesi",
+  richtig: "A"
+},
+{
+  frage: "73. Hz. Ebû Bekir’in halifeliği döneminde ridde isyanlarının ortaya çıkmasının en temel sebebi neydi?",
+  A: "A) Bazı Arap kabilelerinin peygamberlik iddia edenlerin etrafında toplanması",
+  B: "B) Hz. Peygamber (s.a.v.)’in vefatından sonra halifenin otoritesini tanımak istememeleri",
+  C: "C) Müslümanların fetih hareketlerine hız vermeleri",
+  D: "D) Kabilelerin İslamiyet’i terk ederek putperestliğe dönmeleri",
+  richtig: "B"
+},
+{
+  frage: "74. Hz. Ebû Bekir’in ridde hareketlerine karşı gösterdiği en önemli siyasi tavır neydi?",
+  A: "A) İsyancı kabilelere diplomatik yaklaşımlar sergileyerek onları barışa ikna etti.",
+  B: "B) Zekât vermeyenleri Müslüman olarak kabul etti ancak onlara ayrıcalık tanıdı.",
+  C: "C) İsyan eden kabilelerle ittifak yaparak onların bağımsız yönetimler kurmasına izin verdi.",
+  D: "D) Zekât vermekten kaçınanları da dinden dönenlerle aynı kategoriye koyarak askeri seferler düzenledi.",
+  richtig: "D"
+},
+{
+  frage: "75. Hz. Ebû Bekir’in ridde isyanlarını bastırmak için görevlendirdiği komutanlardan biri aşağıdakilerden hangisidir?",
+  A: "A) Ebû Ubeyde b. Cerrah",
+  B: "B) Zeyd b. Sâbit",
+  C: "C) Hâlid b. Velîd",
+  D: "D) Ammar b. Yâsir",
+  richtig: "C"
+},
+{
+  frage: "76. Müseylime ve Secah ile ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+  A: "A) Müseylime, Hz. Peygamber (s.a.v.)’in vefatından sonra peygamberlik iddia etmiştir.",
+  B: "B) Secah, Yemâme Savaşı’ndan sonra Müslüman olmuştur.",
+  C: "C) Müseylime ve Secah, Hz. Ebû Bekir’e biat eden ilk kişiler arasındadır.",
+  D: "D) Müseylime, Hz. Ömer zamanında öldürülmüştür.",
+  richtig: "A"
+},
+{
+  frage: "77. Yemâme Savaşı’nın en önemli sonuçlarından biri aşağıdakilerden hangisidir?",
+  A: "A) Hz. Ebû Bekir’in ordularının yenilmesi ve isyanların büyümesi",
+  B: "B) Müseylime’nin öldürülmesi ve hafızların büyük bir kısmının şehit düşmesi",
+  C: "C) Münafıkların Medine’de açıkça isyan etmesi",
+  D: "D) Müslümanlar arasında ilk kez iç savaşın başlaması",
+  richtig: "B"
+},
+{
+  frage: "78. Hz. Ebû Bekir, Kur’an’ın toplanmasını neden gerekli görmüştür?",
+  A: "A) Hafızların büyük bir kısmının Yemâme Savaşı’nda şehit düşmesi",
+  B: "B) Zekât vermeyenlerle mücadelede Kur’an’ın otoritesine ihtiyaç duyulması",
+  C: "C) Müslümanlar arasında farklı mezheplerin ortaya çıkması",
+  D: "D) Hz. Ömer’in halife olmasını sağlamak için bir belge oluşturmak istemesi",
+  richtig: "A"
+},
+{
+  frage: "79. Hz. Ebû Bekir döneminde Kur’an’ın toplanması için kim görevlendirilmiştir?",
+  A: "A) Abdullah b. Abbas",
+  B: "B) Hâlid b. Velîd",
+  C: "C) Zeyd b. Sâbit",
+  D: "D) Abdullah b. Mesud",
+  richtig: "C"
+},
+{
+  frage: "80. Hz. Ebû Bekir döneminde toplanan mushafın sonraki dönemdeki akıbeti ne olmuştur?",
+  A: "A) Hz. Osman döneminde çoğaltılarak farklı bölgelere gönderilmiştir.",
+  B: "B) Hz. Ali tarafından Kûfe’ye taşınmıştır.",
+  C: "C) Sahabe arasında bölünerek farklı yorumlarla okunmaya başlanmıştır.",
+  D: "D) Hz. Ebû Bekir’in vefatından sonra yok edilmiştir.",
+  richtig: "A"
+},
+{
+  frage: "81. Hz. Ömer’in halifeliğe seçilmesi sürecinde bazı sahabeler neden onun sert mizacından endişe etmişlerdir?",
+  A: "A) Hz. Ebû Bekir’in yerine kendi akrabalarından birini tayin etmesini bekledikleri için",
+  B: "B) Hz. Ömer’in sert mizacının halk ve devlet yönetimi üzerinde olumsuz etki yapabileceğini düşündükleri için",
+  C: "C) Hz. Ömer’in yönetim konusunda tecrübesiz olduğunu düşündükleri için",
+  D: "D) Hz. Peygamber (s.a.v.)’in Hz. Ömer’in halife olmasını istemediğini ileri sürdükleri için",
+  richtig: "B"
+},
+{
+  frage: "82. Hz. Ömer’in halifeliği döneminde fetih hareketleri hangi temel strateji üzerine inşa edilmiştir?",
+  A: "A) Arabistan dışındaki bölgelere sefer düzenlemek yerine, mevcut toprakları tahkim etmek",
+  B: "B) İslam’ı yaymak amacıyla fetihleri hızlandırmak ve Bizans ile Sâsânîleri zayıflatmak",
+  C: "C) Sadece Arabistan Yarımadası’nda İslam devletini güçlendirmek",
+  D: "D) Öncelikle barış yoluyla İslam’ı yaymak, askeri harekâtı en son çare olarak görmek",
+  richtig: "B"
+},
+{
+  frage: "83. Kâdisiye Savaşı’nda Sâsânî ordusuna karşı Müslümanların zafer kazanmasında etkili olan en önemli faktör aşağıdakilerden hangisidir?",
+  A: "A) Müslüman ordusunun sayıca üstün olması",
+  B: "B) Sâsânîlerin iç çekişmeler nedeniyle güç kaybetmiş olması",
+  C: "C) Müslümanların savaş taktikleri ve disiplinli hareket etmeleri",
+  D: "D) Bizans ordusunun Sâsânîlere karşı Müslümanlarla ittifak yapması",
+  richtig: "C"
+},
+{
+  frage: "84. Hz. Ömer’in Kudüs’ün fethi sonrası şehre girişi ve yönetim anlayışı hakkında aşağıdaki ifadelerden hangisi doğrudur?",
+  A: "A) Kudüs’ü fetheden ordu, şehri büyük bir katliam yaparak ele geçirdi.",
+  B: "B) Hz. Ömer, Kudüs halkına can ve mal güvenliği sağlayan bir barış anlaşması yaptı.",
+  C: "C) Hz. Ömer, Kudüs’ün kiliselerini ibadete kapatarak camiye çevirdi.",
+  D: "D) Kudüs halkı, savaşmaksızın Müslümanlığı kabul etti.",
+  richtig: "B"
+},
+{
+  frage: "85. Hz. Ömer’in yönetiminde divan teşkilatının kurulmasının temel sebebi neydi?",
+  A: "A) Savaş ganimetlerini adil bir şekilde dağıtmak ve devlet gelirlerini düzenli hale getirmek",
+  B: "B) Yeni Müslüman olan toplulukları ödüllendirmek",
+  C: "C) Halifeye sadık askerleri ve devlet görevlilerini ödüllendirmek",
+  D: "D) Müslüman olmayan toplulukları devlet yönetiminden dışlamak",
+  richtig: "A"
+},
+{
+  frage: "86. Hz. Ömer’in adalet sistemini güçlendirmek için yaptığı en önemli yeniliklerden biri aşağıdakilerden hangisidir?",
+  A: "A) Kadıların valilerden bağımsız bir şekilde atanması",
+  B: "B) Müslümanlar ve gayrimüslimler arasında mahkeme ayrımı yapılması",
+  C: "C) Adalet işlerinin tamamen halifenin kontrolüne bırakılması",
+  D: "D) Şeriat dışında bir hukuk sisteminin uygulanması",
+  richtig: "A"
+},
+{
+  frage: "87. Nihâvend Savaşı’nın İslam tarihi açısından önemi nedir?",
+  A: "A) Müslümanların Bizans’ı tamamen yenilgiye uğratmaları",
+  B: "B) Müslümanların İran topraklarındaki son büyük zaferi olup Sâsânîlerin yıkılmasına neden olması",
+  C: "C) Müslümanların Anadolu seferine başlamalarını sağlaması",
+  D: "D) Müslümanların Hindistan’a doğru genişlemesini hızlandırması",
+  richtig: "B"
+},
+{
+  frage: "88. Hz. Ömer döneminde Beytülmal teşkilatının kurumsallaşmasının temel amacı neydi?",
+  A: "A) Fethedilen topraklardan gelen gelirleri düzenlemek ve devlet harcamalarını sistematik hale getirmek",
+  B: "B) Halife ve devlet yöneticilerinin maaşlarını belirlemek",
+  C: "C) Yalnızca savaşçılara ödeme yapmak",
+  D: "D) Sadece zekât gelirlerini toplamak ve dağıtmak",
+  richtig: "A"
+},
+{
+  frage: "89. Hz. Ömer’in divan sisteminde maaş dağıtımı hangi kritere göre belirlenmiştir?",
+  A: "A) Kişinin İslam’a giriş tarihi ve yaptığı hizmetler",
+  B: "B) Kabile büyüklüğü ve servet durumu",
+  C: "C) Aile statüsü ve sosyal konumu",
+  D: "D) Yalnızca savaşlara katılım durumu",
+  richtig: "A"
+},
+{
+  frage: "90. Hz. Ömer döneminde hapishane sisteminin kurulmasının temel sebebi neydi?",
+  A: "A) Suçluların cezalandırılmasını beklerken tutulacağı kalıcı bir cezaevi sisteminin oluşturulması",
+  B: "B) Siyasi muhalifleri hapsetmek",
+  C: "C) Devlete isyan edenlerin idam edilmelerini sağlamak",
+  D: "D) Vergi vermeyenleri cezalandırmak",
+  richtig: "A"
+},
+{
+  frage: "91. Hz. Osman’ın halife seçilme süreciyle ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+  A: "A) Hz. Ömer, yerine doğrudan Hz. Osman’ı halife olarak atamıştır.",
+  B: "B) Hz. Osman ve Hz. Ali haricindeki tüm adaylar adaylıktan çekilmiştir.",
+  C: "C) Abdurrahman b. Avf, halife seçiminde hakemlik yaparak Hz. Osman’ı seçmiştir.",
+  D: "D) Hz. Osman’ın halifeliği, Ensar’ın yoğun desteğiyle gerçekleşmiştir.",
+  richtig: "C"
+},
+{
+  frage: "92. Hz. Osman döneminde Kur’an’ın çoğaltılması süreciyle ilgili aşağıdakilerden hangisi yanlıştır?",
+  A: "A) Hz. Osman, kıraat farklılıklarını gidermek için Kur’an’ı çoğaltma kararı almıştır.",
+  B: "B) Kur’an nüshalarının istinsah edilmesini Zeyd b. Sâbit başkanlığında bir heyet gerçekleştirmiştir.",
+  C: "C) Resmî mushaf dışında kalan tüm mushaflar korunarak saklanmıştır.",
+  D: "D) Kur’an nüshaları Mekke, Kûfe, Basra, Şam gibi merkezlere gönderilmiştir.",
+  richtig: "C"
+},
+{
+  frage: "93. Hz. Osman’ın devlet yönetimiyle ilgili aşağıdaki uygulamalarından hangisi en çok eleştiriye uğramıştır?",
+  A: "A) Yönetimde asabiyeti teşvik etmesi ve yakın akrabalarını önemli görevlere getirmesi",
+  B: "B) Fetihlerin genişlemesiyle yeni eyaletler oluşturması",
+  C: "C) Beytülmal’den fakirlere düzenli yardımlarda bulunması",
+  D: "D) Vilayetlerdeki kıtlık dönemlerinde halk için yardımlar organize etmesi",
+  richtig: "A"
+},
+{
+  frage: "94. Hz. Osman’a yönelik isyan süreciyle ilgili aşağıdaki ifadelerden hangisi yanlıştır?",
+  A: "A) İsyancılar, Hz. Osman’ı istifa etmeye zorlamışlardır.",
+  B: "B) Mısır, Kûfe ve Basra’dan gelen gruplar Medine’ye ulaşarak Hz. Osman’ın evini kuşatmışlardır.",
+  C: "C) Hz. Osman, valilerine gönderilen gizli bir mektup yüzünden isyancılar tarafından suçlanmıştır.",
+  D: "D) Şam valisi Hz. Muâviye, derhal büyük bir ordu göndererek Hz. Osman’ı kurtarmıştır.",
+  richtig: "D"
+},
+{
+  frage: "95. Aşağıdaki ifadelerden hangisi Hz. Osman’ın öldürülmesi sürecine doğrudan etki eden faktörlerden biri değildir?",
+  A: "A) Yönetiminde Ümeyyeoğulları’nın etkisinin artması",
+  B: "B) İsyancıların Hz. Osman’ın görevden alınmasını istemesi",
+  C: "C) Hz. Osman’ın İslam coğrafyasını genişletmeye devam etmesi",
+  D: "D) Valilerin halk üzerindeki baskıcı tutumları",
+  richtig: "C"
+},
+{
+  frage: "96. Hz. Osman döneminde toplumda yaşanan içtimai değişimlerle ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+  A: "A) Fetihlerle birlikte Araplar dışındaki Müslüman unsurların sayısı artmıştır.",
+  B: "B) Hz. Osman, toplumdaki etnik farklılıkları ortadan kaldırmak için sert önlemler almıştır.",
+  C: "C) Hz. Osman döneminde Müslüman toplum tek bir etnik gruba dayanıyordu.",
+  D: "D) Yeni fethedilen bölgelerde yerli halkın İslam’a geçişi tamamen zorla gerçekleşmiştir.",
+  richtig: "A"
+},
+{
+  frage: "97. Hz. Osman döneminde ortaya çıkan iç karışıklıkların temel sebebi aşağıdakilerden hangisidir?",
+  A: "A) Yeni fetihlerin azalmasıyla birlikte toplumun iç sorunlara yönelmesi",
+  B: "B) Hz. Osman’ın ekonomik reformlarıyla halkın refaha kavuşması",
+  C: "C) Tüm vilayetlerin yönetiminden memnun olması",
+  D: "D) Hz. Osman’ın sert ve otoriter bir yönetim sergilemesi",
+  richtig: "A"
+},
+{
+  frage: "98. Aşağıdaki hadiselerden hangisi, Hz. Osman’ın öldürülmesine doğrudan zemin hazırlamıştır?",
+  A: "A) Mervân b. Hakem’in devlet yönetiminde etkili bir figür haline gelmesi",
+  B: "B) Hz. Ali’nin hilafete talip olması",
+  C: "C) Hz. Osman’ın fetihleri durdurması",
+  D: "D) Hz. Osman’ın Ebu Zer el-Gıfârî’yi sürgün etmesi",
+  richtig: "A"
+},
+{
+  frage: "99. Hz. Osman’ın halifeliğiyle ilgili aşağıdaki ifadelerden hangisi yanlıştır?",
+  A: "A) Hz. Osman, ashabın bir kısmının tepkisini çeken atamalar yapmıştır.",
+  B: "B) Fetihlerin genişlemesiyle birlikte İslam coğrafyasında kıraat farklılıkları ortaya çıkmıştır.",
+  C: "C) Hz. Osman, halifeliğinin son dönemlerinde halk desteğini büyük ölçüde kaybetmiştir.",
+  D: "D) Hz. Osman, halife seçildiğinde Kureyş’teki asabiyet çatışmalarını tamamen ortadan kaldırmıştır.",
+  richtig: "D"
+},
+{
+  frage: "100. Hz. Osman’ın ölümünden sonra İslam dünyasında meydana gelen en önemli gelişme aşağıdakilerden hangisidir?",
+  A: "A) Müslümanlar, birlik içinde yeni bir halife seçerek karışıklıkları hemen sonlandırmışlardır.",
+  B: "B) Hz. Ali halife olmuş, ancak ciddi muhalefetle karşılaşmıştır.",
+  C: "C) Hz. Osman’ın ailesi, Hz. Ali’nin halifeliğini desteklemiştir.",
+  D: "D) Hz. Muâviye ve Hz. Ali birlikte hareket ederek isyanları bastırmışlardır.",
+  richtig: "B"
+},
+{
+  frage: "101. Hz. Ali’nin halife olması süreciyle ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+  A: "A) Hz. Ali, halifeliği gönüllü olarak kabul etmiş, halkın ısrarına gerek duymamıştır.",
+  B: "B) Halifeliğe aday olan tek kişi Hz. Ali olduğu için Müslümanlar başka birini düşünmemiştir.",
+  C: "C) Hz. Ali, hem Medinelilerin baskısı hem de asilerin tehditleri sonucunda halifeliği kabul etmek zorunda kalmıştır.",
+  D: "D) Hz. Osman’ın ölümünden sonra bütün Müslümanlar, Hz. Ali’ye biat etmiş ve muhalefet olmamıştır.",
+  richtig: "C"
+},
+{
+  frage: "102. Cemel Savaşı’nın sebepleri arasında aşağıdakilerden hangisi yer almaz?",
+  A: "A) Hz. Âişe, Talha ve Zübeyr’in Hz. Osman’ın katillerinin cezalandırılmasını istemesi",
+  B: "B) Hz. Talha ve Hz. Zübeyr’in halifelik makamına talip olması",
+  C: "C) Emevîler’in Hz. Ali’ye karşı muhalefetinin artması ve Cemel grubunu desteklemesi",
+  D: "D) Hz. Ali’nin Hz. Muâviye’yi hemen Şam valiliğinden azletmesi",
+  richtig: "D"
+},
+{
+  frage: "103. Sıffîn Savaşı’nın yaşanmasına neden olan temel gelişme aşağıdakilerden hangisidir?",
+  A: "A) Hz. Muâviye’nin Hz. Osman’ın intikamını alma bahanesiyle Hz. Ali’nin halifeliğini tanımaması",
+  B: "B) Hz. Ali’nin Şam bölgesini işgal etmek istemesi",
+  C: "C) Hz. Ali’nin Cemel Savaşı’ndan sonra Mekke üzerine yürüyerek halkı zorla biate çağırması",
+  D: "D) Hz. Muâviye’nin hilafetini ilan ederek Irak üzerine sefere çıkması",
+  richtig: "A"
+},
+{
+  frage: "104. Tahkim sürecinin sonucuyla ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+  A: "A) Hakemler, Hz. Ali’nin halifeliğini onaylamış ve Hz. Muâviye’yi haksız bulmuştur.",
+  B: "B) Ebû Mûsâ ve Amr b. el-Âs, Hz. Ali ve Hz. Muâviye’yi halifelikten azlederek, şûra ile yeni bir halife seçilmesine karar vermiştir.",
+  C: "C) Hakemler, tarafların ordularına yeniden savaş izni vermiştir.",
+  D: "D) Hz. Ali’nin hakem olarak belirlediği kişi, Hz. Muâviye’yi halife ilan etmiştir.",
+  richtig: "B"
+},
+{
+  frage: "105. Tahkim süreci sonunda hangi gelişme yaşanmıştır?",
+  A: "A) Hz. Ali, hakemlerin kararı üzerine hilafetten feragat etmiş, yerine Abdullah b. Ömer halife olmuştur.",
+  B: "B) Hz. Muâviye, hakem kararıyla resmi olarak halife ilan edilmiş ve İslam dünyasında birlik sağlanmıştır.",
+  C: "C) Hz. Ali ve ordusundaki bazı gruplar, tahkim sürecine tepki olarak ayrılıp Haricîler olarak bilinmeye başlamışlardır.",
+  D: "D) Hakemler karar verememiş, bu yüzden savaş devam etmiştir.",
+  richtig: "C"
+},
+{
+  frage: "106. Sıffîn Savaşı’ndan sonra gerçekleşen Tahkim süreci, Hz. Ali'nin ordusunu bölerek ona karşı muhalif bir hareketin doğmasına sebep olmuştur. Bu süreçte, Hz. Ali’nin ordusundan ayrılan bir grup, Kur’an’da açık hükümler varken insanların hakem yapılmasını dinen kabul edilemez bulmuş ve 'Allah’tan başka hüküm verici yoktur.' sloganını benimsemiştir. Daha sonra bu grup Harûra’da toplanarak bağımsız bir oluşum içine girmiştir. <br> Bu olay, İslam tarihinde hangi grubun ortaya çıkışına zemin hazırlamıştır?",
+  A: "A) Mutezilîler",
+  B: "B) Şiîler",
+  C: "C) Hâricîler",
+  D: "D) Karmatîler",
+  richtig: "C"
+},
+{
+  frage: "107. Hz. Ali, Sıffîn Savaşı sonrasında Şam’a sefere çıkmak için hazırlık yaparken, Hâricîlerin isyan edip Nehrevân’da toplandığını öğrenmiş ve onların üzerine yürümeye karar vermiştir. Ancak Hz. Ali, ilk olarak barışçıl yöntemleri tercih ederek onları ikna etmeye çalışmış, fakat başarılı olamayınca savaşa mecbur kalmıştır. Bu savaşın sonuçları arasında aşağıdakilerden hangisi yer almaz?",
+  A: "A) Hâricîlerin büyük bir kısmı öldürülmüş ve etkisiz hale getirilmiştir.",
+  B: "B) Hz. Ali, Şam seferini ertelemek zorunda kalmıştır.",
+  C: "C) Hâricîler, tamamen yok edilmiş ve bir daha Müslüman toplum içinde varlık gösterememiştir.",
+  D: "D) Hz. Ali’nin askerleri, iç savaş sebebiyle yıprandıkları için ona olan desteklerini kaybetmeye başlamıştır.",
+  richtig: "C"
+},
+{
+frage: "108. Hz. Ali, Hâricîlerle mücadele ederken onlara elçiler göndererek anlaşma sağlamaya çalışmıştır. Ancak Hâricîler, katlettikleri insanların sorumluluğunu üstlenerek suçluların teslim edilmesi talebini reddetmişlerdir. Sonunda Hz. Ali, Nehrevân Savaşı’nı kazanmış olsa da, bu savaşın uzun vadeli sonuçlarından biri ne olmuştur?", 
+A: "A) Hz. Ali’nin ordusundaki askerlerin büyük kısmı Hz. Muâviye’nin tarafına geçmiştir.", 
+B: "B) Hâricîler, Hz. Ali’nin otoritesini zayıflatmış ve nihayetinde onu suikastle öldürmeye karar vermişlerdir.", 
+C: "C) Hâricîler, savaş sonrası tamamen yok edilmiş ve İslam tarihinde bir daha etkili olamamışlardır.", 
+D: "D) Hz. Ali, Hâricîlerle mücadele ederken Hz. Muâviye’nin ona biat etmesini sağlamıştır.", 
+richtig: "B" 
+},
+{
+frage: "109.Hz. Ali’nin, Nehrevân Savaşı’ndan sonra Hz. Muâviye üzerine yeni bir sefer düzenleyememesinin temel sebebi aşağıdakilerden hangisidir?", 
+A: "A) Hâricîlerle yapılan savaş sonucunda ordusunun zayıflaması ve askerlerinin savaşmaktan bıkması", 
+B: "B) Kûfe’de çıkan büyük bir iç isyanla mücadele etmek zorunda kalması", 
+C: "C) Şamlılarla barış antlaşması yapmış olması", 
+D: "D) Hicaz bölgesinde yeni bir hilafet merkezi kurma planları yapması", 
+richtig: "A" 
+},
+{
+frage: "110. Hz. Ali’ye düzenlenen suikast planında, Hâricîler sadece Hz. Ali’yi değil, aynı zamanda Hz. Muâviye ve Hz. Amr b. el-Âs’ı da öldürmeyi hedeflemişlerdir. Ancak bu suikast girişimi sadece Hz. Ali’ye yönelik başarılı olmuştur. Peki, bu suikast girişimi sonucunda hangi gelişme yaşanmıştır?", 
+A: "A) Hz. Muâviye, Şam bölgesinde kendisini halife ilan etmiş ve İslam dünyasında tek hâkim güç olmuştur.", 
+B: "B) Hâricîler, İslam toplumundan tamamen silinmişlerdir. ", 
+C: "C) Hz. Hasan, halifeliği ilan etmiş ve Hz. Muâviye ile savaşarak onu mağlup etmiştir.", 
+D: "D) Kûfe ve Basra halkı, Hâricîlere karşı birleşerek onları tamamen yok etmiştir. ", 
+richtig: "A" 
+},
+{
+frage: "111. Hz. Hasan halifeliğe geçtiğinde, babasının döneminde olduğu gibi Hz. Muâviye’ye karşı mücadele etmek için halkını seferber etmeye çalışmıştır. Ancak Kûfeliler, başlangıçta savaş için istekli görünseler de, savaş tehlikesi yaklaştığında büyük bir isteksizlik göstermişlerdir. Hz. Hasan’ın, Hz. Muâviye ile barış yapmaya karar vermesinde aşağıdakilerden hangisi en önemli etken olmuştur?", 
+A: "A) Hz. Muâviye’nin, Hz. Hasan’a büyük miktarda para teklif etmesi ", 
+B: "B) Hz. Hasan’ın halkına güvenmemesi ve taraftarlarının itaatsizliği ", 
+C: "C) Hz. Hasan’ın yönetimi devretmek için baştan beri istekli olması", 
+D: "D) Şam bölgesinden gelen büyük bir orduya karşı koyamayacağını anlaması", 
+richtig: "B" 
+},
+{
+frage: "112. Hz. Muâviye, Hz. Hasan’ı hilafetten vazgeçirmek için farklı stratejiler uygulamıştır. Bunlardan biri de, Hz. Hasan’ın ordu komutanı olan Hz. Ubeydullah b. Abbâs’a büyük bir maddi teklif yaparak onu kendi tarafına çekmek olmuştur. Bu olayın sonuçlarından biri ne olmuştur?", 
+A: "A) Hz. Hasan, Hz. Muâviye’nin ordusuna saldırarak savaşı kazanmıştır. ", 
+B: "B) Hz. Hasan, ordusunun zayıfladığını görünce barış yapmaya yönelmiştir.", 
+C: "C) Hz. Ubeydullah b. Abbâs, Hz. Hasan’a ihanet ettiği için idam edilmiştir. ", 
+D: "D) Hz. Hasan, yeni bir ordu kurarak savaşmaya devam etmiştir.", 
+richtig: "B" 
+},
+{
+frage: "113. Hz. Hasan, Hz. Muâviye ile barış anlaşmasını kabul etmek zorunda kaldığında, kendisini eleştirenlerden biri de kardeşi Hz. Hüseyin olmuştur. Hz. Hasan ise kendisini savunurken hangi gerekçeyi öne sürmüştür?", 
+A: "A) Müslümanların kanını dökmemek için savaştan kaçındığını", 
+B: "B) Hz. Muâviye’nin kendisine çok iyi şartlar sunduğunu", 
+C: "C) Hilafeti Şiîlerin eline bırakma planı yaptığını ", 
+D: "D) Şamlılarla savaşı kazanamayacağını ve Allah’ın böyle istediğini ", 
+richtig: "A" 
+},
+{
+frage: "114. Hz. Hasan’ın Hz. Muâviye ile yaptığı barış anlaşmasının en önemli maddelerinden biri aşağıdakilerden hangisidir?", 
+A: "A) Hz. Muâviye’nin ölümünden sonra hilafetin Hz. Hasan’a geçmesi ", 
+B: "B) Hz. Muâviye’nin Emevîler lehine hilafeti resmen ilan etmesi ", 
+C: "C) Hz. Hasan’ın ailesinin can ve mal güvenliğinin sağlanması ", 
+D: "D) Hz. Muâviye’nin Hz. Hasan’ı Kûfe valisi olarak ataması", 
+richtig: "C" 
+},
+{
+frage: "115. Hz. Muâviye, hilafeti ele geçirdikten sonra Hz. Hasan’la yaptığı barış anlaşmasının hangi maddesini ihlal etmiştir? ", 
+A: "A) Hz. Hasan’ın ölümünden sonra Hz. Hüseyin’in halife olmasını sağlamamak", 
+B: "B) Hz. Ali’ye kötü söz söylenmemesi taahhüdünü yerine getirmemek ", 
+C: "C) Hz. Hasan’ın ailesine büyük miktarda para vermek ", 
+D: "D) Hz. Hasan’a Medine’de özgürce yaşama hakkı tanımamak ", 
+richtig: "B" 
+},
+{
+frage: "116. Hz. Ali’nin hilafeti sırasında Müslümanlar arasında çıkan ilk büyük iç savaş olan Cemel Savaşı’nın temel sebeplerinden biri aşağıdakilerden hangisidir?", 
+A: "A) Hz. Ali’nin Şam üzerine sefer düzenlemesi ", 
+B: "B) Hz. Osman’ın katillerinin cezalandırılması meselesi ", 
+C: "C) Emevîler’in İslam dünyasındaki güçlerini artırmak istemesi ", 
+D: "D) Hâricîlerin yeni bir yönetim talebinde bulunması", 
+richtig: "B" 
+},
+{
+frage: "117. Sıffîn Savaşı’nda Hz. Muâviye’nin kesin bir yenilgiye uğramasını önleyen ve Hz. Ali’nin ordusunda büyük bir ayrılığa neden olan olay aşağıdakilerden hangisidir?", 
+A: "A) Hz. Muâviye’nin Hz. Osman’ın gömleğini Şam’da sergilemesi", 
+B: "B) Hâricîlerin Hz. Ali’ye karşı isyan etmesi ", 
+C: "C) Şam ordusunun mushafları mızrakların ucuna takarak tahkim istemesi ", 
+D: "D) Hz. Ali’nin ordusundaki askerlerin savaşmayı reddetmesi ", 
+richtig: "C" 
+},
+{
+frage: "118. Aşağıdakilerden hangisi Hz. Ali’nin Hâricîler ile mücadelesinin doğrudan sonuçlarından biri değildir?", 
+A: "A) Nehrevân Savaşı’nda Hâricîlerin büyük bir kısmının öldürülmesi", 
+B: "B) Hz. Ali’nin Irak’taki siyasi gücünün zayıflaması", 
+C: "C) Hâricîlerin Şam’a sığınarak Hz. Muâviye’ye biat etmeleri ", 
+D: "D) Hz. Ali’nin taraftarları arasında moral bozukluğunun artması ", 
+richtig: "C" 
+},
+{
+frage: "119. Hz. Ali’yi şehit eden Abdurrahman b. Mülcem’in, Hz. Muâviye ve Hz. Amr b. el-Âs’a suikast düzenlemek için yola çıkan diğer iki suikastçının başarısız olmasının temel nedeni aşağıdakilerden hangisidir?", 
+A: "A) Şam’da Hz. Muâviye’nin korumaları tarafından etkisiz hale getirilmeleri ", 
+B: "B) Hz. Amr b. el-Âs’ın o gün hastalanarak namaza çıkmaması ve yerine vekil göndermesi", 
+C: "C) Suikastçıların birbirleriyle anlaşmazlığa düşmeleri ", 
+D: "D) Hz. Ali’nin suikastı haber alarak önlem alması ", 
+richtig: "B" 
+},
+{
+frage: "120. Hz. Hasan ile Hz. Muâviye arasında yapılan anlaşmaya göre aşağıdakilerden hangisi doğrudur?", 
+A: "A) Hz. Muâviye’nin ölümünden sonra halifeliğin Hz. Hasan’a geçmesi şart koşulmuştur.", 
+B: "B) Hz. Hasan, Hz. Muâviye’nin kendisinden sonra yerine birini tayin etmesini kabul etmiştir. ", 
+C: "C) Hz. Hasan, ailesinin ve taraftarlarının can güvenliğinin sağlanmasını istemiştir. ", 
+D: "D) Hz. Hasan, Medine’de yönetimi devralma şartı koymuştur.", 
+richtig: "C" 
+}
+	];
+	
+	var nr = 0;
+	function anzeigen() {
+    document.getElementById("frageText").innerHTML = fragen[nr].frage;
+    document.getElementById("textA").innerHTML = fragen[nr].A;
+    document.getElementById("textB").innerHTML = fragen[nr].B;
+    document.getElementById("textC").innerHTML = fragen[nr].C;
+    document.getElementById("textD").innerHTML = fragen[nr].D;
+    document.getElementById("meldung").innerHTML = "";
+
+    var radios = document.querySelectorAll('input[name="ant"]');
+    for (var i = 0; i < radios.length; i++) {
+        radios[i].checked = false;
+    }
+    document.querySelector('form').style.display = "block";
+	}
+
+	function weiter() {
+		var auswahl = document.querySelector('input[name="ant"]:checked');
+		if(auswahl == null){
+			document.getElementById("meldung").innerHTML = "Lütfen bir cevap seçiniz!";
+			return;
+		}
+		if(auswahl.value == fragen[nr].richtig){
+			nr = nr + 1;
+
+			if(nr < fragen.length){
+				anzeigen();
+			} else {
+				document.getElementById("frageText").innerHTML = "Bölüm tamamlandı";
+				document.getElementById("meldung").innerHTML = "Tüm soruları doğru cevapladın! <br> Aferin...";
+				document.querySelector('form').style.display = "none";
+				}
+		} else {
+			document.getElementById("meldung").innerHTML = "Cevabın yanlış, tekrar dene";
+		}
+	}
+	
+	function springeZuFrage() {
+    var nummer = parseInt(document.getElementById("frageNummer").value);
+    if(isNaN(nummer) || nummer < 1){
+        document.getElementById("meldungSprung").innerHTML = "Lütfen geçerli bir sayı girin!";
+        return;
+    }
+    if(nummer > fragen.length){
+        document.getElementById("meldungSprung").innerHTML = 
+            "O kadar soru yok! <br> İslam Tarihi I bölümünde en fazla " + fragen.length + " soru bulunmaktadır.";
+        return;
+    }
+    nr = nummer - 1;
+    anzeigen();
+    document.getElementById("meldungSprung").innerHTML = "";
+	}
+	
+	anzeigen();
+	</script>
+	</body>
+</html>

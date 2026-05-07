@@ -1,0 +1,1095 @@
+<html lang="de">
+	<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Bölüm 12 - Temel Esaslar</title>
+		<style>
+		body{
+			font-family: Arial;
+			background:#f2f2f2;
+			text-align:center;
+		}
+		.box{
+			background:white;
+			width:90%;
+			max-width:600px;
+			margin:20px auto;
+			padding:20px;
+			border-radius:10px;
+			box-shadow:0 0 10px #aaa;
+		}
+		button{
+			padding:10px 20px; 
+			background:#2c7be5; 
+			color:white; 
+			border:none; 
+			border-radius:5px; 
+			cursor:pointer;
+		}
+		button:hover{
+			background:#1a5fc2;
+		}
+		a{
+			display:inline-block;
+			margin-top:20px;
+			text-decoration:none;
+			color:#2c7be5;
+		}
+		@media (max-width: 400px) {
+			h1 {
+				font-size: 1.5rem;
+			}
+			h2 {
+				font-size: 1.2rem;
+			}
+			button {
+				padding: 10px 0;
+			}
+		}
+		</style>
+	</head>
+
+	<body>
+	<div class="box">
+		<h1>Bölüm 12 - Temel Esaslar</h1>
+		<h2 id="frageText"></h2>
+		<form>
+			<input type="radio" name="ant" value="A"> <span id="textA"></span><br><br>
+			<input type="radio" name="ant" value="B"> <span id="textB"></span><br><br>
+			<input type="radio" name="ant" value="C"> <span id="textC"></span><br><br>
+			<input type="radio" name="ant" value="D"> <span id="textD"></span><br><br>
+			<button type="button" onclick="weiter()">sonraki soru</button>
+		</form>
+		<p id="meldung"></p>
+		<a href="index.html"> Ana sayfaya dön </a>
+	</div>
+	
+	<div class="box">
+	  <h2> Hangi soruya atlamak istiyorsun? </h2>
+	  <input type="number" id="frageNummer" placeholder="Sayı girin" style="width: 80px;"><br><br>
+	  <button type="button" onclick="springeZuFrage()"> Soruya git </button>
+	  <p id="meldungSprung"></p>
+	</div>
+
+	
+	<script>
+	var fragen = [
+  {
+    frage: "1. Kur'an-ı Kerim'de insanın yaratılış amacı ve yeryüzündeki sorumluluğu çeşitli ayetlerle açıklanmıştır. İnsana akıl, irade ve emaneti yükleyen Allah, onu hak ve batıl mücadelesinin içinde bir tercih yapmaya zorlamıştır. İnsanın bu mücadeledeki sorumluluğu, nefis terbiyesi ve Allah’a kulluk ile şekillenir. Ancak şeytanın vesveseleri ve dünyanın aldatıcı süsleri insanı doğru yoldan saptırabilir. Buna rağmen, Allah’ın emrine uygun hareket edenler, dünya ve ahiret saadetini kazanacaklardır.<br><br>Bu parçada vurgulanan asıl düşünce aşağıdakilerden hangisidir?",
+    A: "A) İnsan, şeytanın etkisinden kurtulamaz.",
+    B: "B) İnsan, hak ve batıl arasında bir seçim yapmakla yükümlüdür.",
+    C: "C) Dünya hayatı kalıcıdır ve insan için önemlidir.",
+    D: "D) Nefis terbiyesi, insanın özgür iradesini elinden alır.",
+    richtig: "B"
+  },
+  {
+    frage: "2. Ahzâb Suresi’nde, insanın yüklendiği emanetin büyüklüğüne dikkat çekilmiş ve göklerin, yerin ve dağların bu emaneti yüklenmekten kaçındıkları belirtilmiştir. Bu emanetin insana yüklenmesi, ona verilen sorumlulukları da beraberinde getirmiştir.<br><br>Bu emanet aşağıdakilerden hangisiyle doğrudan ilişkilidir?",
+    A: "A) İnsanlara dünya hayatında özgürlük verilmesi",
+    B: "B) İnsanın iradesiyle sorumluluklarını yerine getirmesi",
+    C: "C) Meleklerin insanlara yardımcı olması",
+    D: "D) İnsanın doğuştan masum ve günahsız olması",
+    richtig: "B"
+  },
+  {
+    frage: "3. Hak ve batıl mücadelesi, insanlık tarihi boyunca devam eden bir olgudur. Bu mücadelede, peygamberler ve onların yolundan gidenler hakkı temsil etmiş, zulmü ve adaletsizliği destekleyenler ise batılı savunmuştur. Hâbil ve Kâbil mücadelesinden, Hz. Musa ve Firavun’un karşılaşmasına kadar pek çok olay bu mücadelenin örnekleri arasında yer almaktadır.<br><br>Buna göre, aşağıdakilerden hangisi hak ve batıl mücadelesinin özelliği değildir?",
+    A: "A) Hakkın yanında yer alanlar her zaman sayıca üstün olmuştur.",
+    B: "B) Batıl, hakkın zıddıdır ve gerçekte bir temeli yoktur.",
+    C: "C) Hakkın olduğu yerde batıl yok olmaya mahkûmdur.",
+    D: "D) Peygamberler hakkı temsil etmiş ve insanları ona davet etmiştir.",
+    richtig: "A"
+  },
+  {
+    frage: "4. İnsanın imtihan sürecinde karşılaşacağı en büyük engellerden biri şeytanın vesveseleridir. Şeytan, insanları haktan uzaklaştırmak için farklı yollar dener ve onları sapkınlığa yöneltmeye çalışır. Ancak Allah, ihlaslı kulları için şeytanın bir güç sahibi olmadığını belirtmiştir.<br><br>Kur'an’a göre, şeytanın hangi özelliği insan için en büyük tehlikeyi oluşturur?",
+    A: "A) İnsanları günaha sokup sonra pişmanlık duymalarına sebep olması",
+    B: "B) Sadece zayıf iradeli insanları kandırabilmesi",
+    C: "C) Kendi gücünü insanlara zorla kabul ettirmesi",
+    D: "D) İnsanları farklı yönlerden saptırmaya çalışması",
+    richtig: "D"
+  },
+  {
+    frage: "5. Kur’an’da hak ve batıl mücadelesinin birçok örneği verilmiştir. Hz. İbrahim’in Nemrut ile olan mücadelesinde, Nemrut kendisini tanrı olarak ilan etmiş ve halkı hakikatten uzaklaştırmaya çalışmıştır. Ancak Hz. İbrahim, Nemrut’un iddiasını çürüten bir soru yönelterek onun acizliğini ortaya koymuştur.<br><br>Hz. İbrahim’in Nemrut karşısında söylediği ve Nemrut’un cevap veremediği söz aşağıdakilerden hangisidir?",
+    A: "A) “Allah sizi ve yaptıklarınızı görmektedir.”",
+    B: "B) “Allah güneşi doğudan getiriyor, haydi sen de onu batıdan getir.”",
+    C: "C) “Sana verilen mülk, seni Allah’a karşı üstün kılmaz.”",
+    D: "D) “Allah’ın varlığına şahit olan gökler ve yer nasıl inkâr edilebilir?”",
+    richtig: "B"
+  },
+  {
+    frage: "6. Mümin, onurlu bir duruşa sahip olmalı ve kınayanın kınamasından korkmamalıdır. Kur’an’da da belirtildiği gibi, iman edenler, Allah yolunda mücadele ederken başkalarının eleştirilerine aldırış etmezler. Mümin, “Başkaları ne der?” diye değil, “Allah ne der?” diye düşünerek hareket eder. Bu, hem iman bilincinin bir gereği hem de hak ve batıl mücadelesinde kararlı olmanın bir sonucudur.<br><br>Bu parçada vurgulanan temel düşünce aşağıdakilerden hangisidir?",
+    A: "A) Mümin, toplumun her kesimi tarafından sevilmeye çalışmalıdır.",
+    B: "B) İnsanlar, dini yaşarken kınanmaktan korkmamalıdır.",
+    C: "C) Başkalarının eleştirilerinden kaçınarak hareket etmek, en doğru yaklaşımdır.",
+    D: "D) Müminler, hayatlarını insanlara beğendirmek için yaşamalıdır.",
+    richtig: "B"
+  },
+  {
+    frage: "7. İnandığı gibi yaşamayan kişi, zamanla yaşadığı gibi inanmaya başlar. Bu nedenle mümin, inancına uygun bir hayat sürmeli ve hakikat karşısında tavizsiz olmalıdır. Kur’an’da, hak üzere olan kişilerin düşmanlarına karşı kararlı ve tavizsiz olduğu, fakat birbirlerine karşı merhamet dolu oldukları belirtilmiştir.<br><br>Bu bilgiler doğrultusunda aşağıdaki ifadelerden hangisi yanlıştır?",
+    A: "A) Mümin, inancına uygun bir hayat sürmelidir.",
+    B: "B) İnandığı gibi yaşamayan kişi, zamanla inancını değiştirebilir.",
+    C: "C) Hak üzere olan kişi, daima merhametli olmalı ve mücadele etmemelidir.",
+    D: "D) Müminler, hakikat konusunda kararlı ve tavizsiz olmalıdır.",
+    richtig: "C"
+  },
+  {
+    frage: "8. Mazlum ve mağdurların yanında yer almak, müminin sorumluluklarından biridir. Kur’an’da, zayıf ve zavallı insanların uğruna mücadele etmenin Allah yolunda bir görev olduğu vurgulanmaktadır. Mümin, adaletin hâkim olması için çaba göstermeli ve zulme sessiz kalmamalıdır.<br><br>Buna göre, aşağıdakilerden hangisi zulüm karşısında müminin takınması gereken doğru tavırdır?",
+    A: "A) Adaletin sağlanması için mücadele etmek",
+    B: "B) Mazlumların yanında yer almak",
+    C: "C) Haksızlık karşısında sessiz kalmamak",
+    D: "D) Hepsi",
+    richtig: "D"
+  },
+  {
+    frage: "9. Adalet, her şeyi yerli yerine koymak, haklıya hakkını vermek ve tarafsız olmak anlamına gelir. Kur’an’da Allah’ın adaleti emrettiği ve insanların adil olması gerektiği vurgulanmıştır. Adaletli yöneticiler, kıyamet gününde Allah’ın huzurunda yüksek derecelerle ödüllendirilecektir.<br><br>Aşağıdaki ifadelerden hangisi adalet anlayışına aykırıdır?",
+    A: "A) Bir topluluğa duyulan kin, adaletin uygulanmasını engellememelidir.",
+    B: "B) İnsanlar, hüküm verirken akrabalarını kayırabilir.",
+    C: "C) Adalet, her koşulda gözetilmelidir.",
+    D: "D) Allah, insanlara adil olmalarını emretmiştir.",
+    richtig: "B"
+  },
+  {
+    frage: "10. Cihat, toplumda iyinin, güzelin ve adil olanın hâkim olması, zulmün ve kötülüğün ortadan kaldırılması için verilen bir mücadeledir. Kur’an’da cihatla ilgili pek çok ayet bulunmaktadır. Hz. Peygamber (s.a.v.), cihadın en büyük ibadetlerden biri olduğunu belirtmiş ve müminin nefsiyle mücadelesinin en üstün cihat olduğunu vurgulamıştır.<br><br>Bu bilgilere göre aşağıdaki ifadelerden hangisi doğrudur?",
+    A: "A) Cihat yalnızca savaşla sınırlıdır.",
+    B: "B) Cihat, sadece bir dönem için geçerli olan bir emir olup günümüzde uygulanmaz.",
+    C: "C) Cihat, hayatın her alanında Allah’ın rızasına ulaşma gayreti olarak görülmelidir.",
+    D: "D) Cihat, sadece bireysel ibadetleri artırmak anlamına gelir.",
+    richtig: "C"
+  },
+  {
+    frage: "11. Teşkilatlanma, bir toplumun ortak hedefler doğrultusunda organize olup hareket etmesini sağlayan en önemli unsurlardan biridir. Tarih boyunca insanlar, fikirlerini yaymak, kitleleri yönlendirmek ve yönetmek amacıyla teşkilatlanmanın vazgeçilmez bir unsur olduğunu kabul etmişlerdir. Peygamber Efendimiz (s.a.v.) de İslam’ın geniş kitlelere ulaşmasını sağlamak için teşkilatlı bir çalışma sistemini benimsemiştir.<br><br>Bu parçada vurgulanan temel düşünce aşağıdakilerden hangisidir?",
+    A: "A) Teşkilatlanma olmadan bir topluluğun yönlendirilmesi mümkün değildir.",
+    B: "B) Peygamberler teşkilatlanmaya önem vermemiştir.",
+    C: "C) Bireysel çalışmalar teşkilatlanmadan daha etkilidir.",
+    D: "D) Teşkilatlanma sadece siyasi amaçlarla kullanılmalıdır.",
+    richtig: "A"
+  },
+  {
+    frage: "12. Teşkilatın temel unsurları arasında gaye, hedef, yetki sistemi, plan ve program yer almaktadır. Bir teşkilatın en önemli amacı, mensuplarını belirli bir gaye doğrultusunda yönlendirmek ve organize etmektir. Dinî bir teşkilatın temel gayesi, mensuplarını Allah’ın rızasına ulaştırmaktır.<br><br>Bu bilgilere göre aşağıdaki ifadelerden hangisi yanlıştır?",
+    A: "A) Bir teşkilatın hedefi olmadan başarılı olması mümkün değildir.",
+    B: "B) Yetki sistemi adil bir şekilde düzenlenmelidir.",
+    C: "C) Dinî teşkilatlar yalnızca bireysel ibadetlerle ilgilenmelidir.",
+    D: "D) Plan ve program, teşkilat çalışmalarının düzenli yürütülmesini sağlar.",
+    richtig: "C"
+  },
+  {
+    frage: "13. Koordinasyon, bir teşkilatın başarılı olabilmesi için önemli unsurlardan biridir. Teşkilat içinde yer alan farklı kademeler arasında uyum sağlanmadığında, çatışmalar ve çözülmeler meydana gelebilir. İyi bir koordinasyon sistemi, yönetici tarafından sağlanmalı ve teşkilatın tüm birimleri uyum içinde çalışmalıdır.<br><br>Bu bilgilere göre, aşağıdakilerden hangisi koordinasyon eksikliğinin doğuracağı sonuçlardan biri değildir?",
+    A: "A) Teşkilat içinde uyumsuzlukların ortaya çıkması",
+    B: "B) Teşkilatın verimli çalışmasının engellenmesi",
+    C: "C) Birimlerin kendi içinde bağımsız ve düzenli çalışması",
+    D: "D) Çözülme ve dağılma riskinin artması",
+    richtig: "C"
+  },
+  {
+    frage: "14. İslam Toplumu Millî Görüş (IGMG), Avrupa, Balkanlar, Avustralya ve Kanada’da teşkilatlanmış olup, Müslümanların dinî, sosyal ve kültürel ihtiyaçlarını karşılamak amacıyla faaliyet göstermektedir. İslam’ı hakkıyla yaşamak ve yaşatmak için çeşitli çalışmalar yürüten bu teşkilat, cihat anlayışı doğrultusunda hareket etmektedir.<br><br>Buna göre, aşağıdakilerden hangisi IGMG’nin temel vizyonlarından biri değildir?",
+    A: "A) Müslümanların inançlarını özgürce yaşayabilecekleri ortamlar oluşturmak",
+    B: "B) Toplumsal huzurun sağlanması için çalışmak",
+    C: "C) Yalnızca Avrupa’daki Müslümanlara hizmet sunmak",
+    D: "D) İnsan hakları, barış ve adaletin tesis edilmesi için çaba göstermek",
+    richtig: "C"
+  },
+  {
+    frage: "15. IGMG’nin teşkilat yapısı üç ana seviyeden oluşmaktadır: Genel Merkez, Bölge ve Şube. Genel Merkez, IGMG’nin en üst idari organı olup, tüm teşkilatları denetleme ve yönlendirme görevine sahiptir. Bölgeler, şubelerin bağlı olduğu üst yetkili kurumdur ve çeşitli bölgelerde teşkilatlanmıştır. Şubeler ise cemiyet, teşkilat, müteşebbis ve temsilcilik gibi farklı alt birimlerden oluşmaktadır.<br><br>Bu bilgilere göre, aşağıdakilerden hangisi IGMG teşkilat yapısında yer almaz?",
+    A: "A) Genel Merkez",
+    B: "B) Bölge",
+    C: "C) Bağımsız Bireysel Çalışma Grupları",
+    D: "D) Şube",
+    richtig: "C"
+  },
+  {
+    frage: "16. IGMG teşkilatında görev ve sorumluluklar belirli prensiplere dayanmaktadır. Her teşkilat mensubu, belirlenen yetki ve görevler çerçevesinde hizmet etmekle yükümlüdür. Bununla birlikte, atamalar belirli bir süreç dahilinde gerçekleşir. İlk aşamada istişare yapılır, ardından karar alınıp resmî bir atama gerçekleştirilir. Bu atama sürecinde uygun kişilerin seçilmesi büyük önem taşır.<br><br>Bu bilgilere göre aşağıdaki ifadelerden hangisi yanlıştır?",
+    A: "A) Görevlendirilen her yönetici, yalnızca bireysel inisiyatifi ile hareket edebilir.",
+    B: "B) Atamalar istişare süreci tamamlandıktan sonra üst makam tarafından resmîleştirilir.",
+    C: "C) İstişare, görevlendirme sürecinin en önemli aşamalarından biridir.",
+    D: "D) İstişareler, ehil ve yetkili kişilerle yapılmalıdır.",
+    richtig: "A"
+  },
+  {
+    frage: "17. IGMG teşkilat yapısında yer alan Gençlik Teşkilatı (GT) ve Kadınlar Gençlik Teşkilatı (KGT), gençlerin bilinçli ve donanımlı bireyler olarak yetişmesi için faaliyetlerde bulunur. Gençlik Teşkilatı, her hafta toplanarak kararlar alır ve bu doğrultuda çalışmalarını sürdürür. Teşkilatın temel hedeflerinden biri de yaşanılan toplumun değerlerine saygılı, aynı zamanda İslami kimliğini koruyan bireyler yetiştirmektir.<br><br>Bu parçada vurgulanan temel düşünce aşağıdakilerden hangisidir?",
+    A: "A) Gençlik Teşkilatı yalnızca dinî eğitimle ilgilenir.",
+    B: "B) Gençlik Teşkilatı, kararlarını istişare yapmadan alır.",
+    C: "C) Gençlik Teşkilatı sadece bireysel gelişime yönelik çalışmalar yapar.",
+    D: "D) Gençlik Teşkilatı, gençlerin hem topluma uyum sağlamasını hem de İslami değerlerini korumasını amaçlar.",
+    richtig: "D"
+  },
+  {
+    frage: "18. Bir teşkilatın başarılı olabilmesi için koordinasyon büyük önem taşır. Koordinasyon eksikliği, teşkilat içinde uyumsuzluklara ve çatışmalara neden olabilir. IGMG teşkilat yapısında koordinasyon, yöneticiler tarafından sağlanır ve uyum içinde çalışılması hedeflenir. Yönetici, teşkilatın birimler arasındaki iletişimi güçlendirerek uyumlu bir çalışma düzeni kurmalıdır.<br><br>Bu bilgilere göre, aşağıdakilerden hangisi koordinasyon eksikliğinin doğuracağı sonuçlardan biri değildir?",
+    A: "A) Çalışmaların düzensiz hâle gelmesi",
+    B: "B) Yönetimin daha etkili ve verimli çalışması",
+    C: "C) Teşkilat içindeki uyumun bozulması",
+    D: "D) Hedeflere ulaşmada gecikme yaşanması",
+    richtig: "B"
+  },
+  {
+    frage: "19. Teşkilat içinde birimlerin görevleri net olarak belirlenmiştir. İrşad Başkanlığı, imamların tayin ve eğitimlerinden, camilerde sunulan din hizmetlerinden ve hatip temininden sorumludur. Eğitim Başkanlığı, ilkokul ve ortaöğretim öğrencilerine yönelik dinî eğitim çalışmalarını yürütürken, eğitim materyallerinin hazırlanması ve müfredat geliştirme gibi alanlarla ilgilenir. Hac, Umre ve Seyahat Başkanlığı ise organizasyonların düzenlenmesi ve planlanmasıyla ilgilenmektedir.<br><br>Bu bilgilere göre, aşağıdakilerden hangisi İrşad Başkanlığı’nın sorumluluk alanına girmez?",
+    A: "A) Camilerde verilecek din hizmetlerini düzenlemek",
+    B: "B) Hac organizasyonlarını planlamak",
+    C: "C) Mevcut imamların eğitimlerini sağlamak",
+    D: "D) Programlara hatip temin etmek",
+    richtig: "B"
+  },
+  {
+    frage: "20. IGMG teşkilat yapısında devir teslim süreci büyük bir öneme sahiptir. Görev değişiklikleri sırasında belgelerin ve sorumlulukların eksiksiz bir şekilde devredilmesi gerekmektedir. Muhasebe kayıtlarının teslim edilmesi, resmî anlaşmaların yeni yönetime aktarılması ve mevcut durum hakkında bilgilendirme yapılması, sağlıklı bir yönetim değişimi için gereklidir. Ayrıca, devir teslim süreci sonunda resmî bir protokol düzenlenerek imzalanır.<br><br>Bu bilgilere göre, aşağıdakilerden hangisi devir teslim prosedürüne uygun bir uygulama değildir?",
+    A: "A) Eski yönetici, görevini yeni yöneticiye yazılı bir protokolle devreder.",
+    B: "B) Muhasebe raporu ve finansal kayıtlar yeni yönetime aktarılır.",
+    C: "C) Yeni yönetici, görev değişimini duyurmadan kendi inisiyatifiyle göreve başlar.",
+    D: "D) Resmî anlaşmalar ve sorumluluklar belgelerle birlikte devredilir.",
+    richtig: "C"
+  },
+  {
+    frage: "21. IGMG teşkilatı, toplumda adaletin savunulması, mazlumlara yardım edilmesi ve İslam'ın öğretilmesi amacıyla çeşitli hizmetler sunmaktadır. Teşkilat, ümmet bilinci ekseninde hareket ederek, Müslümanların ihtiyaçlarına cevap vermeye çalışmaktadır.<br><br>Bu bağlamda, aşağıdakilerden hangisi IGMG'nin temel hizmet anlayışına aykırı bir durumdur?",
+    A: "A) İslam’ın geniş kitlelere ulaşması için çalışmalar yürütmek",
+    B: "B) Dinî, sosyal ve kültürel alanlarda hizmetler sunarak ümmet bilincini pekiştirmek",
+    C: "C) Haksızlıkların giderilmesi ve mazlumlara destek olunması için insani yardım faaliyetleri yürütmek",
+    D: "D) Sadece yerel cemaatlerle ilgilenip, diğer bölgelerdeki Müslümanlara yönelik çalışmalar yapmamak",
+    richtig: "D"
+  },
+  {
+    frage: "22. IGMG teşkilatının Genel Sekreterlik birimi, Müslümanların kamusal alanda daha aktif olmalarını sağlamak ve onların haklarını savunmak amacıyla çeşitli çalışmalar yürütmektedir. Bu kapsamda, aşağıdaki görevlerden hangisi Genel Sekreterlik biriminin sorumlulukları arasında yer almaz?",
+    A: "A) İmamların tayin edilmesi ve dinî hizmetlerin düzenlenmesi",
+    B: "B) Teşkilatın tanıtım çalışmalarını yürütmek ve medya ile iletişim sağlamak",
+    C: "C) İslamofobi ve ayrımcılıkla mücadele etmek",
+    D: "D) Müslüman ve gayrimüslim toplumlar arasında diyalog faaliyetleri yürütmek",
+    richtig: "A"
+  },
+  {
+    frage: "23. IGMG teşkilatının irşad faaliyetleri kapsamında, Müslümanların dinî bilgilerini artırmak ve İslamî yaşantıyı teşvik etmek için çeşitli programlar düzenlenmektedir. Bunlar arasında imamların eğitimi, hafızlık çalışmaları, sohbet programları ve fıkıh panelleri gibi etkinlikler bulunmaktadır.<br><br>Aşağıdakilerden hangisi IGMG’nin irşad hizmetleri kapsamında yürüttüğü bir faaliyet değildir?",
+    A: "A) Hafızlık kursları düzenleyerek Kur’an ezberleme çalışmalarını teşvik etmek",
+    B: "B) Fıkıh panelleri ile İslamî meseleleri akademik düzeyde ele almak",
+    C: "C) Sohbet halkaları ve Kur’an tilavet programları düzenlemek",
+    D: "D) Kurumsal finans yönetimi eğitimi vererek işletme ve muhasebe konularında gelişimi desteklemek",
+    richtig: "D"
+  },
+  {
+    frage: "24. IGMG teşkilatının Hac, Umre ve Seyahat Başkanlığı, Müslümanlara kutsal mekânları ziyaret etme imkânı sunarken, bu ziyaretlerin en iyi şekilde gerçekleşmesi için organizasyonlar düzenlemektedir. Bu birimin sorumlulukları arasında konaklama, ulaşım, rehberlik ve sağlık hizmetleri gibi konular yer almaktadır.<br><br>Bu bilgilere göre, aşağıdaki ifadelerden hangisi yanlıştır?",
+    A: "A) Hac ve umre organizasyonları kapsamında rehberlik ve ulaşım hizmetleri sağlanır.",
+    B: "B) IGMG, sadece hac organizasyonu yaparak umre seyahatlerine katkıda bulunur.",
+    C: "C) Kutsal topraklara yönelik irşad programları ve Mâide-i Kur’an etkinlikleri düzenlenir.",
+    D: "D) Umre programları, özellikle gençlerin katılımını teşvik etmek amacıyla okul tatillerine göre ayarlanabilir.",
+    richtig: "B"
+  },
+  {
+    frage: "25. IGMG teşkilatının Sosyal Hizmetler Başkanlığı, yardımlaşma ve dayanışmayı esas alarak Müslümanların zekât, fitre ve bağışlarını ihtiyaç sahiplerine ulaştırmaktadır. Bunun yanı sıra, mazlum ve mağdurlar için insani yardım faaliyetleri yürütmektedir.<br><br>Aşağıdaki ifadelerden hangisi Sosyal Hizmetler Başkanlığı’nın çalışmalarına uygun değildir?",
+    A: "A) Müslümanların zekât ve fitrelerini toplayarak adil bir şekilde ihtiyaç sahiplerine dağıtmak",
+    B: "B) Din, dil ve ırk farkı gözetmeksizin dünya çapında insani yardım projeleri düzenlemek",
+    C: "C) Sadece belirli bir bölgedeki Müslümanlara yardım sağlayıp, uluslararası yardımları göz ardı etmek",
+    D: "D) Avrupa’daki Müslümanların sosyal haklarını koruyarak, toplumsal dayanışmayı teşvik etmek",
+    richtig: "C"
+  },
+  {
+    frage: "26. Eğitim Başkanlığı, Avrupa’daki Müslüman toplumun kimlik bilincini geliştirmek için eğitim faaliyetleri yürütmektedir. Bu çerçevede, ana sınıfından yetişkin eğitimine kadar geniş bir yelpazede hizmet sunmaktadır.<br><br>Aşağıdakilerden hangisi Eğitim Başkanlığı'nın doğrudan sunduğu bir hizmet değildir?",
+    A: "A) Üniversitelerde Müslüman öğrenci toplulukları oluşturmak",
+    B: "B) Ortaöğretim öğrencilerine yönelik ev ödevlerine yardım kursları düzenlemek",
+    C: "C) Temel Bilgiler müfredatı çerçevesinde çocuklara din eğitimi vermek",
+    D: "D) Görme engelli çocuklar için eğitim kampları düzenlemek",
+    richtig: "A"
+  },
+  {
+    frage: "27. Kadınlar Teşkilatı, Müslüman kadınların kimlik bilinci kazanmasını ve toplumda aktif rol almalarını sağlamak amacıyla çeşitli faaliyetler yürütmektedir.<br><br>Buna göre, aşağıdakilerden hangisi Kadınlar Teşkilatı’nın faaliyet alanları arasında yer almaz?",
+    A: "A) Evlilik öncesi eğitim seminerleri düzenleyerek aile yapısını güçlendirmek",
+    B: "B) İslami İlimler Kursları düzenleyerek hatibe ve vaize yetiştirmek",
+    C: "C) Avrupa Kur’ân-ı Kerîm Tilavet Yarışmaları düzenlemek",
+    D: "D) Üniversitelerde öğrenci toplulukları oluşturarak akademik eğitimde rehberlik yapmak",
+    richtig: "D"
+  },
+  {
+    frage: "28. Gençlik Teşkilatı, Müslüman gençlerin akademik, manevi ve sosyal gelişimlerini desteklemek amacıyla çeşitli organizasyonlar düzenlemektedir.<br><br>Buna göre, aşağıdakilerden hangisi Gençlik Teşkilatı'nın doğrudan yürüttüğü bir faaliyet değildir?",
+    A: "A) Gençler arasında kardeşlik ve dayanışmayı artırmak için ev sohbetleri düzenlemek",
+    B: "B) Müslüman toplumların ekonomik gelişimini desteklemek için yatırım projeleri geliştirmek",
+    C: "C) Üniversite öğrencileri için akademik seminerler ve paneller düzenlemek",
+    D: "D) Sportif faaliyetler ve kültürel geziler organize ederek gençlerin sosyal gelişimini desteklemek",
+    richtig: "B"
+  },
+  {
+    frage: "29. Kadınlar Gençlik Teşkilatı, Müslüman genç kızların İslami kimlik ve toplumsal sorumluluk bilinci ile yetişmelerini sağlamak için çeşitli projeler yürütmektedir.<br><br>Aşağıdakilerden hangisi Kadınlar Gençlik Teşkilatı'nın (KGT) düzenlediği faaliyetlerden biri değildir?",
+    A: "A) Abla-Kardeş projesi ile genç kızların kişisel rehberlik almasını sağlamak",
+    B: "B) Katarakt Projesi gibi sosyal yardım projeleri düzenlemek",
+    C: "C) İslami Ekonomi Zirvesi düzenleyerek finansal bilinç kazandırmak",
+    D: "D) Üniversite öğrencilerine yönelik ihtisas gezileri ve seminerler organize etmek",
+    richtig: "C"
+  },
+  {
+    frage: "30. IGMG Eğitim Başkanlığı, eğitim kalitesini artırmak ve öğrencilerin başarılarını desteklemek için farklı yaş gruplarına yönelik çeşitli projeler yürütmektedir.<br><br>Buna göre, aşağıdakilerden hangisi Eğitim Başkanlığı'nın eğitim hizmetleri kapsamında sunduğu çalışmalardan biri değildir?",
+    A: "A) Üniversite öğrencileri için Evliya Çelebi Dil Kursları organize etmek",
+    B: "B) Çocuk Kulübü ile 3-13 yaş arası çocuklara yönelik sosyal ve eğitsel faaliyetler düzenlemek",
+    C: "C) 'Okul Sis' projesi ile eğitim merkezlerindeki kaliteyi artırmak",
+    D: "D) Yaz okulları ve tatil kursları ile çocukların dinî ve kültürel eğitimlerini desteklemek",
+    richtig: "A"
+  },
+  {
+    frage: "31. Teşkilat çalışmalarında iş birliği ve uyumu olumsuz etkileyen enaniyet (bencillik), kişinin yalnızca kendi fikirlerini önemseyerek başkalarının düşüncelerine kapalı olması şeklinde kendini gösterebilir. Bu durum, Kur'an'da da kibir ve gururun yasaklanması ile ele alınmıştır.<br><br>Buna göre, aşağıdaki ayetlerden hangisi enaniyetin yanlış bir tutum olduğunu en iyi şekilde ifade eder?",
+    A: "A) \"Yeryüzünde böbürlenerek dolaşma. Çünkü sen (ağırlık ve azametinle) ne yeri yarabilir ne de dağlarla ululuk yarışına girebilirsin.\"",
+    B: "B) \"Onlar, Allah’a ve ahiret gününe inanırlar; iyiliği emreder, kötülükten menederler; hayırlı işlere koşuşurlar.\"",
+    C: "C) \"Şüphesiz münafıklar Allah’a oyun etmeye kalkışıyorlar; hâlbuki Allah onların oyunlarını başlarına çevirmektedir.\"",
+    D: "D) \"Ey iman edenler! Zanlardan kaçının. Çünkü zannın bir kısmı günahtır. Birbirinizin kusurunu araştırmayın.\"",
+    richtig: "A"
+  },
+  {
+    frage: "32. İslam ahlakı ve teşkilat disiplini çerçevesinde, bir Müslümanın kendisine verilen sorumlulukları aksatmadan yerine getirmesi önemlidir. Ancak tembellik, kişinin sorumluluklarını ertelemesine ve işlerin aksamasına neden olabilir.<br><br>Aşağıdakilerden hangisi, tembelliğe karşı İslam’ın önerdiği en uygun çözüm olarak gösterilebilir?",
+    A: "A) “Ey iman edenler! Zanlardan kaçının. Çünkü zannın bir kısmı günahtır.”",
+    B: "B) “Hiç kimse el emeğiyle kazandığından daha hayırlı bir lokma yememiştir.”",
+    C: "C) “Kim Allah için mütevazı davranırsa Allah onu yüceltir.”",
+    D: "D) “Kim Allah’a ve ahiret gününe inanıyorsa ya ‘hayır’ konuşsun ya da sussun.”",
+    richtig: "B"
+  },
+  {
+    frage: "33. İnsanların önemli sorumlulukları ihmal etmeleri ve işleri sürekli olarak ertelemeleri, teşkilat çalışmalarında büyük aksamalara yol açabilir. Tehircilik (erteleme hastalığı), yapılması gereken işlerin zamanında yapılmamasına ve sonuç olarak planlanan çalışmalardan beklenen faydanın azalmasına neden olur.<br><br>Buna göre, İslam’ın hayırlı işleri geciktirmemek gerektiğine dair öğütleri arasında aşağıdakilerden hangisi yer almaz?",
+    A: "A) “Hayırlı işlere koşuşurlar. İşte bunlar iyi insanlardandır.”",
+    B: "B) “Bilsin ki insan için kendi çalışmasından başka bir şey yoktur.”",
+    C: "C) “İki günü eşit olan kayıptadır.”",
+    D: "D) “Onların işleri aralarında danışma iledir.”",
+    richtig: "D"
+  },
+  {
+    frage: "34. Suizan (kötü zan), İslam’da yasaklanan ve insanların birbirlerine karşı güven duygusunu zedeleyen bir davranıştır. Suizan yapan kişi, başkaları hakkında kesin delillere sahip olmadan olumsuz düşünceler üretir ve bu durum toplumda fitne ve ayrılıklara sebep olabilir.<br><br>Aşağıdaki ayetlerden hangisi suizanın tehlikelerini en iyi şekilde açıklamaktadır?",
+    A: "A) “Şüphesiz münafıklar Allah’a oyun etmeye kalkışıyorlar; hâlbuki Allah onların oyunlarını başlarına çevirmektedir.”",
+    B: "B) “Onlar, Allah’a ve ahiret gününe inanırlar; iyiliği emreder, kötülükten menederler; hayırlı işlere koşuşurlar.”",
+    C: "C) “Ey iman edenler! Zanlardan kaçının. Çünkü zannın bir kısmı günahtır. Birbirinizin kusurunu araştırmayın.”",
+    D: "D) “Kim Allah’a ve ahiret gününe inanıyorsa ya ‘hayır’ konuşsun ya da sussun.”",
+    richtig: "C"
+  },
+  {
+    frage: "35. İstişare (danışma), İslam'da bireylerin ve toplumun alacağı kararların daha isabetli olması için teşvik edilen bir uygulamadır. Ancak inatçılık, kişinin kendi görüşüne aşırı derecede bağlı kalarak başkalarının fikirlerine değer vermemesine yol açar ve bu durum, hatalı kararların alınmasına sebep olabilir.<br><br>Buna göre, aşağıdaki ifadelerden hangisi istişarenin önemini vurgulayan bir ayet ya da hadise örnek teşkil etmez?",
+    A: "A) \"İş hakkında onlarla istişare et.\"",
+    B: "B) \"Onların işleri aralarında danışma iledir.\"",
+    C: "C) \"Akıl akıldan üstündür.\"",
+    D: "D) \"Şüphesiz münafıklar namaza kalktıklarında üşenerek kalkarlar, insanlara gösteriş yaparlar, Allah’ı da pek az hatıra getirirler.\"",
+    richtig: "D"
+  },
+  {
+    frage: "36. İslam'da insanın doğumdan ölümüne kadar sorumluluklarını yerine getirmesi gerektiği ve çalışmayı bırakmaması gerektiği vurgulanmıştır. Bu konuda aşağıdaki ayetlerden hangisi bu anlayışı en iyi şekilde desteklemektedir?",
+    A: "A) \"Kim de ahireti diler ve bir mümin olarak ona yaraşır bir çaba ile çalışırsa, işte bunların çalışmaları makbuldür.\"",
+    B: "B) \"Sabah akşam Rableri’ne, O’nun rızasını dileyerek dua edenlerle birlikte candan sebat et.\"",
+    C: "C) \"Ey iman edenler! Zanlardan kaçının. Çünkü zannın bir kısmı günahtır. Birbirinizin kusurunu araştırmayın.\"",
+    D: "D) \"Onların işleri aralarında danışma iledir.\"",
+    richtig: "A"
+  },
+  {
+    frage: "37. Toplumda birlik ve beraberliği bozacak en büyük tehlikelerden biri tefrika olarak tanımlanır. Kur’an’da Allah’ın ipine sımsıkı sarılmanın ve parçalanmamanın önemi vurgulanmıştır.<br><br>Buna göre, aşağıdaki ayetlerden hangisi tefrikaya düşmemenin önemini en iyi şekilde ifade eder?",
+    A: "A) \"Ey insanlar! Doğrusu biz sizi bir erkekle bir dişiden yarattık. Ve birbirinizle tanışmanız için sizi kavimlere ve kabilelere ayırdık. Muhakkak ki, Allah yanında en değerli olanınız, O’ndan en çok korkanınızdır.\"",
+    B: "B) \"Hep birlikte Allah’ın ipine (İslam’a) sımsıkı yapışın; parçalanmayın. Allah’ın size olan nimetini hatırlayın: Hani siz birbirinize düşman kişilerdiniz de O, gönüllerinizi birleştirmişti.\"",
+    C: "C) \"Onlar, Allah’a ve ahiret gününe inanırlar; iyiliği emreder, kötülükten menederler; hayırlı işlere koşuşurlar.\"",
+    D: "D) \"Allah’a ve Resulü’ne itaat edin ve birbirinizle çekişmeyin. Sonra gevşersiniz ve gücünüz, devletiniz elden gider. Sabırlı olun.\"",
+    richtig: "B"
+  },
+  {
+    frage: "38. İslam’da işlerin ehil kişilere verilmesi gerektiği vurgulanmıştır. Adam kayırma, hemşehricilik gibi uygulamalar adaletin zedelenmesine sebep olur ve teşkilat çalışmalarında büyük bir hata olarak görülür.<br><br>Buna göre, aşağıdaki ayetlerden hangisi işlerin ehline verilmesi gerektiğini en iyi şekilde anlatır?",
+    A: "A) \"Allah katında üstünlük takvada olandır.\"",
+    B: "B) \"Allah size, mutlaka emanetleri ehli olanlara vermenizi ve insanlar arasında hükmettiğiniz zaman adaletle hükmetmenizi emreder.\"",
+    C: "C) \"Sabah akşam Rableri’ne, O’nun rızasını dileyerek dua edenlerle birlikte candan sebat et.\"",
+    D: "D) \"Onlar namaza kalktıklarında üşenerek kalkarlar, insanlara gösteriş yaparlar, Allah’ı da pek az hatıra getirirler.\"",
+    richtig: "B"
+  },
+  {
+    frage: "39. İfrat ve tefrit, yani aşırılıklar İslam’da hoş karşılanmamış, itidal (orta yol) tavsiye edilmiştir. Bu bağlamda aşağıdaki ayetlerden hangisi dengeli ve mutedil bir toplum olmayı teşvik eden bir ayet olarak gösterilebilir?",
+    A: "A) \"İşte böylece sizin insanlığa şahitler olmanız, resulün de size şahit olması için sizi mutedil bir millet kıldık.\"",
+    B: "B) \"Allah katında üstünlük takvada olandır.\"",
+    C: "C) \"Ey iman edenler! Zanlardan kaçının. Çünkü zannın bir kısmı günahtır. Birbirinizin kusurunu araştırmayın.\"",
+    D: "D) \"Kim Allah’a ve ahiret gününe inanıyorsa ya ‘hayır’ konuşsun ya da sussun.\"",
+    richtig: "A"
+  },
+  {
+    frage: "40. Haset, İslam ahlakında kötü bir özellik olarak nitelendirilirken, gıpta etmek yani bir başkasının sahip olduğu nimeti ona zarar vermeden istemek olumlu görülmüştür. Haset etmek, Allah’ın takdirine karşı gelmek olarak değerlendirilmiştir.<br><br>Aşağıdaki ayetlerden hangisi hasetçiliğin zararlarına dikkat çeker?",
+    A: "A) \"Şüphesiz münafıklar Allah’a oyun etmeye kalkışıyorlar; hâlbuki Allah onların oyunlarını başlarına çevirmektedir.\"",
+    B: "B) \"Allah’a ve Resulü’ne itaat edin ve birbirinizle çekişmeyin. Sonra gevşersiniz ve gücünüz, devletiniz elden gider.\"",
+    C: "C) \"Ey iman edenler! Başa kakmak ve incitmek suretiyle yaptığınız hayırları boşa çıkarmayın.\"",
+    D: "D) \"Yoksa onlar, Allah’ın lütfundan verdiği şeyler için insanlara haset mi ediyorlar?\"",
+    richtig: "D"
+  },
+  {
+    frage: "41. Nefis terbiyesinde en temel noktalardan biri insanın kendi nefsinin kötülüğe meyilli olduğunu kabul etmesidir. Bu bilinç, insanı terbiye sürecine yönlendirir.<br><br>Aşağıdaki ayetlerden hangisi nefsin insanı kötülüğe sürüklediğini en iyi şekilde ifade eder?",
+    A: "A) \"Ey iman edenler! Zannın çoğundan kaçının. Çünkü zannın bir kısmı günahtır. Birbirinizin kusurunu araştırmayın.\"",
+    B: "B) \"(Bununla beraber) nefsimi temize çıkarmıyorum. Çünkü nefis aşırı şekilde kötülüğü emreder; Rabbim acıyıp korumuş başka. Şüphesiz Rabbim çok bağışlayan, pek esirgeyendir.\"",
+    C: "C) \"Allah size, mutlaka emanetleri ehli olanlara vermenizi ve insanlar arasında hükmettiğiniz zaman adaletle hükmetmenizi emreder.\"",
+    D: "D) \"Kim nefsinin cimriliğinden korunursa, işte onlar kurtuluşa erenlerdir.\"",
+    richtig: "B"
+  },
+  {
+    frage: "42. Kalp terbiyesi, kişinin böbürlenme, kibir ve gururdan uzaklaşmasıyla gerçekleşir. Allah, kibirli olanları sevmediğini Kur'an’da açıkça bildirmiştir.<br><br>Buna göre aşağıdaki ayetlerden hangisi böbürlenme ve kibirin zararlarına dikkat çekmektedir?",
+    A: "A) \"Küçümseyerek insanlardan yüz çevirme ve yeryüzünde böbürlenerek yürüme. Zira Allah, kendini beğenmiş övünüp duran kimseleri asla sevmez.\"",
+    B: "B) \"Ey iman edenler! Birbirinizle çekişmeyin. Sonra gevşersiniz ve gücünüz elden gider.\"",
+    C: "C) \"Onlar namaza kalktıklarında üşenerek kalkarlar, insanlara gösteriş yaparlar, Allah’ı da pek az hatıra getirirler.\"",
+    D: "D) \"İşte böylece sizin insanlığa şahitler olmanız, resulün de size şahit olması için sizi mutedil bir millet kıldık.\"",
+    richtig: "A"
+  },
+  {
+    frage: "43. Nefis terbiyesinde en önemli esaslardan biri Allah’ın insanın kalbini temizlemesi için dua etmektir. Peygamber Efendimiz (s.a.v.) de bu konuda dua etmiştir.<br><br>Aşağıdaki dualardan hangisi nefis terbiyesi için yapılan bir duadır?",
+    A: "A) \"Allah’ım, âcizlikten, tembellikten, korkaklıktan ve yaşlılıktan sana sığınırım.\"",
+    B: "B) \"Allah’ım, cimrilikten ve korkaklıktan sana sığınırım.\"",
+    C: "C) \"Allah’ım nefsime takvasını ver ve onu temizle… Sen temizleyenlerin en hayırlısısın, Sen velim ve Mevlam’sın.\"",
+    D: "D) \"Allah’ım, beni iffetli kıl, helal rızık ver ve kalbimi temizle.\"",
+    richtig: "C"
+  },
+  {
+    frage: "44. Kendini beğenmek (ucub) ve kibir, insanın nefis terbiyesini gerçekleştirmesini zorlaştıran hastalıklardandır. İnsan, sahip olduğu hiçbir şeyin aslında kendisine ait olmadığını idrak etmelidir.<br><br>Aşağıdaki ifadelerden hangisi kendini beğenmenin (ucub) ve kibirin zararlarını en iyi açıklar?",
+    A: "A) \"Kim nefsinin cimriliğinden korunursa, işte onlar kurtuluşa erenlerdir.\"",
+    B: "B) \"Onlar, sabah akşam Rableri’ne, O’nun rızasını dileyerek dua ederler.\"",
+    C: "C) \"Siz bir ateş çukurunun tam kenarında iken oradan da sizi O kurtarmıştı.\"",
+    D: "D) \"Kim Allah için mütevazı davranırsa Allah onu yüceltir.\"",
+    richtig: "D"
+  },
+  {
+    frage: "45. İnsan, fani dünya hayatına aldanmamalı, sonsuz olan ahiret hayatına yatırım yapmalıdır. Dünya hayatını ahiret hayatına tercih edenler Kur’an’da eleştirilmiştir.<br><br>Buna göre aşağıdaki ayetlerden hangisi insanın geçici dünya hayatına aldanmaması gerektiğini vurgular?",
+    A: "A) \"Fakat siz (ey insanlar!) dünya hayatını tercih ediyorsunuz. Oysa ahiret daha hayırlı daha devamlıdır.\"",
+    B: "B) \"Şüphesiz münafıklar Allah’a oyun etmeye kalkışıyorlar; hâlbuki Allah onların oyunlarını başlarına çevirmektedir.\"",
+    C: "C) \"Ey iman edenler! Zanlardan kaçının. Çünkü zannın bir kısmı günahtır. Birbirinizin kusurunu araştırmayın.\"",
+    D: "D) \"Onlar, Allah’a ve ahiret gününe inanırlar; iyiliği emreder, kötülükten menederler; hayırlı işlere koşuşurlar.\"",
+    richtig: "A"
+  },
+  {
+    frage: "46. Tevhit ve ubudiyet, nefsi terbiye eden en temel unsurlardan biridir. Allah (c.c.) bütün peygamberlerini tevhit mesajını iletmeleri için göndermiştir.<br><br>Aşağıdaki ayetlerden hangisi tevhit ve ubudiyetin önemini en iyi şekilde ifade eder?",
+    A: "A) \"Ey iman edenler! Allah’ı çokça zikredin ki kurtuluşa eresiniz.\"",
+    B: "B) \"Ey örtüsüne bürünen! Geceleyin kalk! Kısa bir süre hariç.\"",
+    C: "C) \"Senden önce hiçbir resul göndermedik ki ona: ‘Benden başka ilah yoktur; şu hâlde bana kulluk edin.’ diye vahyetmiş olmayalım.\"",
+    D: "D) \"Kim Allah’a güvenirse, O, ona yeter.\"",
+    richtig: "C"
+  },
+  {
+    frage: "47. İhlas, bir ameli sadece Allah rızası için yapmak, kalbi şirkten arındırmak demektir. Hicr suresinde şeytanın ihlaslı kulları saptıramayacağı bildirilmiştir.<br><br>Bu ayete göre aşağıdaki ifadelerden hangisi şeytanın ihlaslı kullara zarar veremeyeceğini en iyi şekilde açıklar?",
+    A: "A) \"Kim Allah’ı zikrederse, Allah da onu anar.\"",
+    B: "B) \"Ancak onlardan ihlaslı kulların müstesna.\"",
+    C: "C) \"Ey iman edenler! Hep birden Allah’a tövbe ediniz ki kurtuluşa eresiniz.\"",
+    D: "D) \"Allah’ın nimetlerini zikredin ki kurtuluşa erebilesiniz.\"",
+    richtig: "B"
+  },
+  {
+    frage: "48. Takva ve vera’ sahibi olmak, yalnızca haramlardan değil, şüpheli şeylerden de sakınmayı gerektirir. Bir Müslüman, şüpheli olan şeylerden uzak durarak nefsini kötülüklerden korur.<br><br>Bu anlayış doğrultusunda Peygamber Efendimiz (s.a.v.) hangi sözü ile takva ve vera’nın önemini vurgulamıştır?",
+    A: "A) \"Şüpheli olan şeyleri bırak, şüphesiz şeylere bak.\"",
+    B: "B) \"Sadaka belayı def eder.\"",
+    C: "C) \"Allah’a en sevimli gelen oruç, Dâvûd (a.s.)’ın orucudur.\"",
+    D: "D) \"Kim Allah’a güvenirse, O, ona yeter.\"",
+    richtig: "A"
+  },
+  {
+    frage: "49. Sabır, imanın yarısıdır ve Müslümanın ibadetlerini yerine getirmesi, günahlardan sakınması ve musibetlere dayanması için gereklidir.<br><br>Bu bağlamda aşağıdaki ayetlerden hangisi sabredenlerin mükâfatının sınırsız olduğunu ifade etmektedir?",
+    A: "A) \"Ey iman edenler! Hep birden Allah’a tövbe ediniz ki kurtuluşa eresiniz.\"",
+    B: "B) \"Mallarını gece ve gündüz, gizli ve açık hayra sarf edenler var ya, onların mükâfatları Allah katındadır.\"",
+    C: "C) \"Sizin yanınızdaki (dünya malı) tükenir, Allah katındakiler ise bakidir. Elbette sabırlı davrananlara yapmakta olduklarının en güzeliyle mükâfatlarını vereceğiz.\"",
+    D: "D) \"Allah yolunda mallarını harcayanların örneği, yedi başak bitiren bir tane gibidir.\"",
+    richtig: "C"
+  },
+  {
+    frage: "50. İnfak, nefsi terbiye eden en önemli ibadetlerden biridir. Allah, bollukta da darlıkta da infak edenleri övmüş ve onlara büyük mükâfatlar vaat etmiştir.<br><br>Buna göre aşağıdaki ayetlerden hangisi infak edenlerin Allah katında değerli olduklarını ve sevdiklerini belirtir?",
+    A: "A) \"Allah yolunda mallarını harcayanların örneği, yedi başak bitiren bir tane gibidir.\"",
+    B: "B) \"Allah’a en sevimli gelen namaz, Dâvûd (a.s.)’ın (gece) namazıdır; gecenin yarısına kadar uyur; gecenin üçte birinde namaz kılar.\"",
+    C: "C) \"Sadaka belayı def eder.\"",
+    D: "D) \"O takva sahipleri ki, bollukta da darlıkta da Allah için harcarlar; öfkelerini yutarlar ve insanları affederler. Allah da güzel davranışta bulunanları sever.\"",
+    richtig: "D"
+  },
+  {
+    frage: "51. Kur’an-ı Kerim’de ümmet kelimesi farklı bağlamlarda kullanılmıştır.<br><br>Aşağıdaki ifadelerden hangisi ümmet kelimesinin Kur’an’da kullanılan anlamlarından biri değildir?",
+    A: "A) Kendilerine peygamber gönderilmiş topluluk",
+    B: "B) Sadece Arap topluluklarını ifade eden bir kavram",
+    C: "C) Aynı dine mensup olan grup",
+    D: "D) Hayvanlar ve cin toplulukları",
+    richtig: "B"
+  },
+  {
+    frage: "52. Ümmetin iki temel kategorisi olan Ümmet-i İcabet ve Ümmet-i Davet kavramları hangi seçenekte doğru şekilde açıklanmıştır?",
+    A: "A) Ümmet-i İcabet, Peygamber Efendimiz (s.a.v.)’in davetini kabul eden Müslümanlardır; Ümmet-i Davet ise hâlâ İslam’a davet edilen insanlardır.",
+    B: "B) Ümmet-i İcabet, kıyamet günü Allah’ın huzuruna çağrılacak olan insanlardır; Ümmet-i Davet ise yalnızca peygamberlerin ümmetidir.",
+    C: "C) Ümmet-i İcabet, Hz. Muhammed (s.a.v.)’den önce yaşamış ümmetlerdir; Ümmet-i Davet ise yalnızca kıyamet gününe kadar yaşayacak olan ümmettir.",
+    D: "D) Ümmet-i İcabet, yalnızca Mekke ve Medine halkından oluşur; Ümmet-i Davet ise sadece Medine’de yaşayan müminlerdir.",
+    richtig: "A"
+  },
+  {
+    frage: "53. Ümmet bilincinin kaybolması ve birlikten uzaklaşılması Müslüman toplulukların karşılaştığı birçok sorunun temel sebeplerindendir. Aşağıdaki seçeneklerden hangisi ümmet bilincinin kaybolmasının sonuçlarından biri değildir?",
+    A: "A) Müslümanların birlik ve beraberlik duygularının zayıflaması",
+    B: "B) İslam düşmanlarının oyunlarına karşı dirençli bir toplumun oluşması",
+    C: "C) İslam dünyasında sosyal ve ekonomik adaletsizliklerin artması",
+    D: "D) Müslümanlar arasındaki dayanışma ruhunun zayıflaması",
+    richtig: "B"
+  },
+  {
+    frage: "54. Tevhid-i Ümmet kavramı, ümmetin bir bütün olarak hareket etmesini ifade eder. Aşağıdaki ifadelerden hangisi Tevhid-i Ümmet’in sağlanması için gerekli unsurlardan biri değildir?",
+    A: "A) Ortak bir hedef doğrultusunda hareket etmek",
+    B: "B) İslam’ın emir ve yasaklarına uymak",
+    C: "C) Farklı mezhep ve cemaatler arasında düşmanlık oluşturmak",
+    D: "D) Kardeşlik ve dayanışma bilinciyle hareket etmek",
+    richtig: "C"
+  },
+  {
+    frage: "55. Peygamber Efendimiz (s.a.v.), Müslümanların birbirleri ile olan ilişkilerinde bazı temel prensiplere dikkat etmeleri gerektiğini vurgulamıştır. Aşağıdakilerden hangisi İslam kardeşliğini kuvvetlendiren unsurlardan biridir?",
+    A: "A) Kardeşlerinin ayıplarını araştırmak",
+    B: "B) Birbirlerine kin beslemek ve düşmanlık etmek",
+    C: "C) Müslümanlar arasında fitne ve bozgunculuk çıkarmak",
+    D: "D) Birbirlerini Allah için sevmek",
+    richtig: "D"
+  },
+  {
+    frage: "56. Hz. Peygamber (s.a.v.), Müslümanların birbirleriyle olan ilişkilerinde güler yüzlü olmanın önemini vurgulamıştır. Aşağıdaki ifadelerden hangisi güler yüzlü olmanın İslam’daki yeri ile ilgili yanlış bir açıklamadır?",
+    A: "A) Din kardeşinin yüzüne gülümsemek sadaka olarak kabul edilir.",
+    B: "B) Gülümsemek, kişinin karşısındakine verdiği değeri ve sevgiyi gösterir.",
+    C: "C) Gülümsemenin İslam’da herhangi bir manevi değeri yoktur.",
+    D: "D) Hz. Peygamber (s.a.v.), hiçbir iyiliğin küçümsenmemesi gerektiğini, küçük görülen bir tebessümün dahi büyük bir değer taşıdığını söylemiştir.",
+    richtig: "C"
+  },
+  {
+    frage: "57. Müslümanların birbirlerini ziyaret etmeleri, İslam kardeşliğini pekiştiren önemli bir davranıştır. Peygamber Efendimiz (s.a.v.), Allah’ın rızası için yapılan ziyaretlerin önemini açıklamıştır. Aşağıdaki ifadelerden hangisi yanlıştır?",
+    A: "A) Bir Müslümanı ziyaret etmek, ona iyilik yapma borcunu ödemek anlamına gelir.",
+    B: "B) Bir Müslümanı sırf Allah rızası için ziyaret eden kimseyi Allah da sever.",
+    C: "C) Allah için yapılan ziyaretler, Allah’ın sevgisini kazanmaya vesile olur.",
+    D: "D) Ziyaretleşmek, Müslümanlar arasındaki sevgiyi artırır ve kalpleri birbirine bağlar.",
+    richtig: "A"
+  },
+  {
+    frage: "58. Kuran-ı Kerim’de öfkeyi yenmek ve hataları affetmek teşvik edilen davranışlardandır. Aşağıdakilerden hangisi affediciliğin İslam’daki önemini en iyi yansıtan ayet veya hadislerden biridir?",
+    A: "A) “Öfkenizi içinize atın, çünkü kızgınlığınızı dışa vurmanız sizi daha da güçlü kılar.”",
+    B: "B) “Kötülüğe kötülükle karşılık vermeyin, onu iyilikle savın ki düşmanınız bile size dost olsun.”",
+    C: "C) “Affetmek, zayıfların meziyetidir; güçlü olan kişi intikam almalıdır.”",
+    D: "D) “Herkes, yapılan kötülüğe aynı şekilde karşılık vermelidir ki adalet sağlansın.”",
+    richtig: "B"
+  },
+  {
+    frage: "59. İslam kardeşliğini güçlendiren ve Müslümanlar arasında birlik ve beraberliği sağlayan unsurlar vardır. Aşağıdakilerden hangisi İslam kardeşliğini güçlendiren davranışlardan biri değildir?",
+    A: "A) Büyüklere hürmet, küçüklere merhamet göstermek",
+    B: "B) Müslüman kardeşinin kusurlarını bağışlamak",
+    C: "C) Müslüman kardeşini alaya almak ve kötü lakaplar takmak",
+    D: "D) Birbirini Allah için sevmek",
+    richtig: "C"
+  },
+  {
+    frage: "60. Gıybet ve suizan, İslam kardeşliğini zedeleyen ve toplumda ayrışmalara sebep olan kötü huylardandır. Hz. Peygamber (s.a.v.), bu konular hakkında çeşitli uyarılarda bulunmuştur. Aşağıdaki ifadelerden hangisi gıybetin ve suizannın zararları ile ilgili doğru bir açıklamadır?",
+    A: "A) Gıybet, ölü kardeşinin etini yemek kadar çirkin bir davranış olarak nitelendirilmiştir.",
+    B: "B) Suizan, insanı daha temkinli olmaya yönlendirdiği için teşvik edilmiştir.",
+    C: "C) Hz. Peygamber (s.a.v.), insanların kötü yönlerini araştırmanın ve onları açığa çıkarmanın dini bir vazife olduğunu söylemiştir.",
+    D: "D) Gıybet etmek haramdır, fakat gıybeti dinlemek herhangi bir sorun teşkil etmez.",
+    richtig: "A"
+  },
+  {
+    frage: "61. Kur’an-ı Kerim’de insanın yaratılış amacı açıkça belirtilmiştir. Aşağıdakilerden hangisi insanın yaratılış amacına dair verilen yanlış bir açıklamadır?",
+    A: "A) İnsan, Allah’a kulluk etmek için yaratılmıştır.",
+    B: "B) İnsan, yeryüzüne halife olarak tayin edilmiştir.",
+    C: "C) İnsan, ölüm ve hayatın bir imtihan vesilesi olarak var edildiği bir düzen içinde yaratılmıştır.",
+    D: "D) İnsan, dünyada hiçbir sorumluluk taşımadan dilediği gibi yaşamak için yaratılmıştır.",
+    richtig: "D"
+  },
+  {
+    frage: "62. Adalet kavramı, İslam'da büyük bir öneme sahiptir. Aşağıdakilerden hangisi adaletin terim anlamlarından biri değildir?",
+    A: "A) İnanç, söz ve davranışta hakkı gözetmek",
+    B: "B) Bir şeyi konulması gereken yere koymak",
+    C: "C) İslam’ın hükümlerine uygun hareket etmek",
+    D: "D) Güçlü olanın hak sahibi olması",
+    richtig: "D"
+  },
+  {
+    frage: "63. İslam’a göre adaletin sahaları oldukça geniştir. Aşağıdakilerden hangisi adaletin uygulanması gereken sahalardan biri değildir?",
+    A: "A) Fertte adalet",
+    B: "B) Yönetimde adalet",
+    C: "C) Suçlulara yönelik ayrımcılıkta adalet",
+    D: "D) Hukukta adalet",
+    richtig: "C"
+  },
+  {
+    frage: "64. Peygamber Efendimiz (s.a.v.), yönetimde adaletin önemini sıkça vurgulamıştır. Aşağıdakilerden hangisi yönetimde adaletle ilgili doğru bir ifadedir?",
+    A: "A) Yönetici, güçlü kimseleri kayırarak onların desteğini almak zorundadır.",
+    B: "B) Adil bir yönetici, Allah katında özel bir makama sahiptir.",
+    C: "C) Peygamberimiz (s.a.v.), yöneticinin sadece Müslümanlara karşı adaletli olması gerektiğini belirtmiştir.",
+    D: "D) Yönetici, sadece kendi şahsi görüşüne göre hareket ederse en iyi yönetimi sergilemiş olur.",
+    richtig: "B"
+  },
+  {
+    frage: "65. Ailede adaletin sağlanması, bireylerin adil bir toplum oluşturmasında temel faktördür. Hz. Peygamber (s.a.v.), ebeveynlere bu konuda önemli nasihatlerde bulunmuştur. Aşağıdakilerden hangisi aile içinde adaletin sağlanması için önemli bir ilkedir?",
+    A: "A) Ailede güçlü olan birey, zayıf olanı yönetmeli ve üstünlük sağlamalıdır.",
+    B: "B) Anne ve baba, çocukları arasında adil davranmalı ve eşit muamelede bulunmalıdır.",
+    C: "C) Çocuklar arasında ayrım yaparak, daha yetenekli olan çocuğa daha fazla değer verilmelidir.",
+    D: "D) Ailede adalet sadece ekonomik haklar açısından önemlidir, duygusal haklar göz ardı edilebilir.",
+    richtig: "B"
+  },
+  {
+    frage: "66. Kur’an-ı Kerim’de insanın yaratılış amacı açıkça belirtilmiştir. Aşağıdakilerden hangisi insanın yaratılış amacına dair verilen yanlış bir açıklamadır?",
+    A: "A) İnsan, Allah’a kulluk etmek için yaratılmıştır.",
+    B: "B) İnsan, yeryüzüne halife olarak tayin edilmiştir.",
+    C: "C) İnsan, dünyada hiçbir sorumluluk taşımadan dilediği gibi yaşamak için yaratılmıştır.",
+    D: "D) İnsan, ölüm ve hayatın bir imtihan vesilesi olarak var edildiği bir düzen içinde yaratılmıştır.",
+    richtig: "C"
+  },
+  {
+    frage: "67. Adalet kavramı, İslam'da büyük bir öneme sahiptir. Aşağıdakilerden hangisi adaletin terim anlamlarından biri değildir?",
+    A: "A) İnanç, söz ve davranışta hakkı gözetmek",
+    B: "B) Bir şeyi konulması gereken yere koymak",
+    C: "C) İslam’ın hükümlerine uygun hareket etmek",
+    D: "D) Güçlü olanın hak sahibi olması",
+    richtig: "D"
+  },
+  {
+    frage: "68. İslam’a göre adaletin sahaları oldukça geniştir. Aşağıdakilerden hangisi adaletin uygulanması gereken sahalardan biri değildir?",
+    A: "A) Fertte adalet",
+    B: "B) Suçlulara yönelik ayrımcılıkta adalet",
+    C: "C) Yönetimde adalet",
+    D: "D) Hukukta adalet",
+    richtig: "B"
+  },
+  {
+    frage: "69. Peygamber Efendimiz (s.a.v.), yönetimde adaletin önemini sıkça vurgulamıştır. Aşağıdakilerden hangisi yönetimde adaletle ilgili doğru bir ifadedir?",
+    A: "A) Adil bir yönetici, Allah katında özel bir makama sahiptir.",
+    B: "B) Yönetici, güçlü kimseleri kayırarak onların desteğini almak zorundadır.",
+    C: "C) Peygamberimiz (s.a.v.), yöneticinin sadece Müslümanlara karşı adaletli olması gerektiğini belirtmiştir.",
+    D: "D) Yönetici, sadece kendi şahsi görüşüne göre hareket ederse en iyi yönetimi sergilemiş olur.",
+    richtig: "A"
+  },
+  {
+    frage: "70. Ailede adaletin sağlanması, bireylerin adil bir toplum oluşturmasında temel faktördür. Hz. Peygamber (s.a.v.), ebeveynlere bu konuda önemli nasihatlerde bulunmuştur. Aşağıdakilerden hangisi aile içinde adaletin sağlanması için önemli bir ilkedir?",
+    A: "A) Ailede adalet sadece ekonomik haklar açısından önemlidir, duygusal haklar göz ardı edilebilir.",
+    B: "B) Ailede güçlü olan birey, zayıf olanı yönetmeli ve üstünlük sağlamalıdır.",
+    C: "C) Çocuklar arasında ayrım yaparak, daha yetenekli olan çocuğa daha fazla değer verilmelidir.",
+    D: "D) Anne ve baba, çocukları arasında adil davranmalı ve eşit muamelede bulunmalıdır.",
+    richtig: "D"
+  },
+  {
+    frage: "71. İnsan, yeryüzünün halifesi olarak yaratılmış ve bu sorumluluğu yüklenmiştir. Ahzâb suresinde insanın bu emaneti yüklenmesi ile ilgili olarak hangi kavramlarla nitelendirildiği ifade edilmiştir?",
+    A: "A) Sabırlı ve akıllı",
+    B: "B) Zalim ve cahil",
+    C: "C) Adil ve güçlü",
+    D: "D) Merhametli ve bilge",
+    richtig: "B"
+  },
+  {
+    frage: "72. Kur’an-ı Kerim’e göre insana verilen akıl, irade ve sorumluluk hangi esasları gerektirir?",
+    A: "A) Akıl, ibadet etmeyi; irade, kaderi kabullenmeyi; sorumluluk, dünyadan el etek çekmeyi",
+    B: "B) Akıl, iman etmeyi; irade, Hakk’ı seçmeyi; sorumluluk, kulluk yapmayı",
+    C: "C) Akıl, sadece dünyevi işlerde kullanmayı; irade, nefse uymayı; sorumluluk, bireysel özgürlüğü",
+    D: "D) Akıl, çalışmayı; irade, plan yapmayı; sorumluluk, toplum kurallarına uymayı",
+    richtig: "B"
+  },
+  {
+    frage: "73. Mevlâna insanın kulluk görevini yerine getirmesi gerektiğini vurgularken hangi temel gerekçeyi öne sürmektedir?",
+    A: "A) İnsan, ölümün kaçınılmaz olduğunu bilmeli ve bu bilinçle kulluk etmeli",
+    B: "B) İnsan, nefsinin arzularına göre yaşamalı ve hayatın tadını çıkarmalı",
+    C: "C) Hayatta başarılı olmak için insanın sürekli olarak servet biriktirmesi gereklidir",
+    D: "D) İnsan, yaptığı iyiliklerin karşılığını mutlaka dünyada alacaktır",
+    richtig: "A"
+  },
+  {
+    frage: "74. İslam'da yardımlaşma ve paylaşmanın temelinde hangi anlayış vardır?",
+    A: "A) İnsanların eşit olması ve herkesin aynı servete sahip olması gerektiği",
+    B: "B) Fakirlerin her zaman fakir kalacağı ve zenginlerin onları koruması gerektiği",
+    C: "C) İnsanların kazançlarının, Allah’ın bir lütfu ve imtihanı olduğu",
+    D: "D) Toplumda yalnızca zekât verenlerin üstün olduğu",
+    richtig: "C"
+  },
+  {
+    frage: "75. Kur'an-ı Kerim’de infakın önemi vurgulanırken hangi metafor kullanılarak infak edilen malların bereketi anlatılmıştır?",
+    A: "A) Kurak bir tarlanın bir anda yeşermesi",
+    B: "B) Yedi başak veren bir tohumun her bir başağında yüz tane olması",
+    C: "C) Gölgesinde birçok insanı barındıran büyük bir ağaç",
+    D: "D) Bir vadinin içinden akan bereketli bir nehir",
+    richtig: "B"
+  },
+  {
+    frage: "76. Kur’an-ı Kerim’de infakın önemi vurgulanırken, iyiliğe ulaşmanın hangi şartla mümkün olacağı belirtilmiştir?",
+    A: "A) Sadece malın fazlasını vermekle",
+    B: "B) Fakirlere yardım etmekle",
+    C: "C) Zekât ve sadaka vermekle",
+    D: "D) Sevilen şeylerden Allah yolunda harcamakla",
+    richtig: "D"
+  },
+  {
+    frage: "77. İslam’a göre infak, sadece fakirlere yapılan bir yardım değil, aynı zamanda hangi amaçlara hizmet eden bir ibadettir?",
+    A: "A) Sadece toplumda adaletin sağlanmasına",
+    B: "B) Kişinin kendi malını artırmasına",
+    C: "C) Zenginlerin toplumda saygınlık kazanmasına",
+    D: "D) İmani ve ahlaki sorunların azaltılmasına, nesillerin yetiştirilmesine ve toplumun ihyâsına",
+    richtig: "D"
+  },
+  {
+    frage: "78. Kur’an-ı Kerim’de infakın birey ve toplum üzerindeki etkisi nasıl tanımlanmıştır?",
+    A: "A) Bireysel zenginliği artıran bir ibadet olarak",
+    B: "B) Toplumu bir arada tutan ve bireyleri birbirine bağlayan bir ibadet olarak",
+    C: "C) Kişinin dünyevi statüsünü yükselten bir davranış olarak",
+    D: "D) Fakirlerin zenginlere minnet duymasını sağlayan bir vesile olarak",
+    richtig: "B"
+  },
+  {
+    frage: "79. Peygamber Efendimiz (s.a.v.), infakın insan üzerindeki etkisini açıklarken, hangi örnekle bunu anlatmıştır?",
+    A: "A) Cimri insanın zırhı daraltan ve sıkan bir kişi gibi olduğunu, cömert insanın ise ferahlık içinde olduğunu",
+    B: "B) Fakir bir insanın, infak eden kişi sayesinde rahat ettiğini",
+    C: "C) Dünya nimetlerinin, infak eden kişi için arttığını",
+    D: "D) Sadece malın değil, dua etmenin de bir infak sayıldığını",
+    richtig: "A"
+  },
+  {
+    frage: "80. Kurban ibadetiyle ilgili olarak, Kur’an-ı Kerim’de kesilen kurbanın Allah’a ulaşan kısmı hangi kavramla açıklanmıştır?",
+    A: "A) Kurbanın eti ve kanı Allah’a ulaşır",
+    B: "B) Kurban kesen kişi tüm günahlarından arınır",
+    C: "C) Allah’a ulaşan, kulun samimiyeti ve takvasıdır",
+    D: "D) Kurban yalnızca sosyal dayanışmayı sağlamak için kesilir",
+    richtig: "C"
+  },
+  {
+    frage: "81. Kur’an-ı Kerim'de cihat, Müslümanlar için nasıl bir anlam taşımaktadır?",
+    A: "A) Sadece savaşarak Allah yolunda mücadele etmek",
+    B: "B) Hem nefisle hem de dış dünyadaki engellerle mücadele etmek",
+    C: "C) Başkalarını zorla İslam’a sokmak için yapılan mücadele",
+    D: "D) Sadece bireysel ibadetleri yerine getirmek",
+    richtig: "B"
+  },
+  {
+    frage: "82. Kur’an-ı Kerim’de cihadın azaptan kurtuluş için nasıl bir ticaret olduğu anlatılmaktadır?",
+    A: "A) Cihadın insanı dünyada zengin kıldığı",
+    B: "B) Cihadın bir karşılık beklemeden yapılan ibadet olduğu",
+    C: "C) Cihadın Allah yolunda mallar ve canlarla yapılan bir mücadele olduğu",
+    D: "D) Sadece savaşla yapılan bir fedakarlık olduğu",
+    richtig: "C"
+  },
+  {
+    frage: "83. İslam ilim geleneğinde 'cehd/cühd' kökünden türeyen üç kavram aşağıdakilerden hangisidir?",
+    A: "A) Savaş, ticaret, infak",
+    B: "B) Cihat, içtihat, mücahede",
+    C: "C) Namaz, oruç, hac",
+    D: "D) Tebliğ, zekât, sadaka",
+    richtig: "B"
+  },
+  {
+    frage: "84. Cihat kavramı ile ilgili yanlış ve eksik yaklaşımlardan biri olan 'içini tamamen boşaltanlar' ifadesi neyi ifade eder?",
+    A: "A) Cihadı sadece savaştan ibaret görenler",
+    B: "B) Cihadı sadece nefisle mücadele olarak değerlendirenler",
+    C: "C) Cihat kavramına olumsuz anlamlar yükleyerek onu itibarsızlaştırmaya çalışanlar",
+    D: "D) Cihadı sadece tebliğ ve davetle sınırlayanlar",
+    richtig: "C"
+  },
+  {
+    frage: "85. Cihat ibadetinin en önemli özelliklerinden biri olan 'en büyük ibadet ve ibadetlerin zirvesi' olması, aşağıdaki hadislerden hangisiyle desteklenmektedir?",
+    A: "A) “Cihat, İslam’ın direği ve zirvesidir.”",
+    B: "B) “Kim bir Müslüman kardeşinin ihtiyacını giderirse Allah da onun bir ihtiyacını giderir.”",
+    C: "C) “Zekât malı eksiltmez, aksine bereketlendirir.”",
+    D: "D) “Namaz dinin direğidir.”",
+    richtig: "A"
+  },
+  {
+    frage: "86. Hz. Peygamber (s.a.v.), cihat etmeyen ancak zekât ve ibadetlerini yerine getiren bir kişiye ne şekilde uyarıda bulunmuştur?",
+    A: "A) “Zekât yok, cihat yok, öyleyse ne ile cennete gireceksiniz?”",
+    B: "B) “Cennetin yolu sadece namaz kılmaktan geçer.”",
+    C: "C) “Sadaka vermek, cihat yerine geçer.”",
+    D: "D) “Sadece dua ile cennete ulaşabilirsiniz.”",
+    richtig: "A"
+  },
+  {
+    frage: "87. Kur’an-ı Kerim’de en fazla geçen ibadet aşağıdakilerden hangisidir?",
+    A: "A) Namaz",
+    B: "B) Oruç",
+    C: "C) Cihat",
+    D: "D) Hac",
+    richtig: "C"
+  },
+  {
+    frage: "88. Cihat kavramı aşağıdakilerden hangisini amaçlamaz?",
+    A: "A) İnsanları İslam’a zorla sokmayı",
+    B: "B) Toplumda huzur ve barışı sağlamayı",
+    C: "C) İnsanların inanç özgürlüğü önündeki engelleri kaldırmayı",
+    D: "D) Haksızlık ve zulümle mücadele etmeyi",
+    richtig: "A"
+  },
+  {
+    frage: "89. Aşağıdakilerden hangisi İslam’ın güvence altına almayı hedeflediği temel haklardan biri değildir?",
+    A: "A) Din güvenliği",
+    B: "B) Can güvenliği",
+    C: "C) İktidar güvencesi",
+    D: "D) Mal güvenliği",
+    richtig: "C"
+  },
+  {
+    frage: "90. Kur’an’a göre Müslümanların parçalanmaması ve güçlü bir birliktelik oluşturması için ne yapmaları emredilmiştir?",
+    A: "A) Farklı mezhepler oluşturarak birbirinden bağımsız hareket etmeleri",
+    B: "B) Dinlerine ve kitaplarına sımsıkı sarılmaları",
+    C: "C) Sadece bireysel ibadetlere yönelmeleri",
+    D: "D) Sadece kendilerini ilgilendiren konulara odaklanmaları",
+    richtig: "B"
+  },
+  {
+    frage: "91. İlkeli bir duruşun temel unsurları arasında aşağıdakilerden hangisi yer almaz?",
+    A: "A) İtikadımız",
+    B: "B) Ahlaki duruşumuz",
+    C: "C) Amellerimiz",
+    D: "D) Maddi kazançlarımız",
+    richtig: "D"
+  },
+  {
+    frage: "92. IGMG'nin dünyadaki gelişmelere karşı temel yaklaşımı aşağıdakilerden hangisidir?",
+    A: "A) Gelişmelere tamamen kapalı kalmak",
+    B: "B) Yaşanan değişimleri reddedip içine kapanmak",
+    C: "C) Sorunları çözmeye ve Müslümanlar için yaşama alanları açmaya çalışmak",
+    D: "D) Kültürel ve dini değerlerden ödün vermek",
+    richtig: "C"
+  },
+  {
+    frage: "93. IGMG'nin İslam anlayışında belirleyici olan temel kaynaklar nelerdir?",
+    A: "A) Felsefi öğretiler ve bireysel yorumlar",
+    B: "B) Kur’an ve sünnet",
+    C: "C) Tarihi gelenekler ve modern ideolojiler",
+    D: "D) Sosyal normlar ve kişisel tecrübeler",
+    richtig: "B"
+  },
+  {
+    frage: "94. Kur’an-ı Kerim’e göre her insanın sahip olduğu temel haklardan biri aşağıdakilerden hangisidir?",
+    A: "A) Yaşama, inancını yaşama, mülk sahibi olma, neslini muhafaza etme ve aklını koruma hakları",
+    B: "B) Sadece Müslümanlar için geçerli olan özel haklar",
+    C: "C) Herkesin mutlak eşit gelir sahibi olması",
+    D: "D) Belirli grupların diğerlerinden üstün olması",
+    richtig: "A"
+  },
+  {
+    frage: "95. Aşağıdakilerden hangisi IGMG’nin temel hakları koruma yolunda benimsediği ilkelerden biri değildir?",
+    A: "A) İnandığı gibi yaşamak",
+    B: "B) Kınayanın kınamasından korkmamak",
+    C: "C) Mazlumun yanında olmak",
+    D: "D) Sadece bireysel refahı ön planda tutmak",
+    richtig: "D"
+  },
+  {
+    frage: "96. Müslümanların mazlumun yanında, zalimin karşısında olması gerektiğini belirten temel ilke aşağıdakilerden hangisidir?",
+    A: "A) Sadece kendisini düşünmek",
+    B: "B) Güçlüden yana olmak",
+    C: "C) Sadece dini pratikleri yerine getirmekle yetinmek",
+    D: "D) Hukuku her şeyin üstünde tutmak ve adaleti savunmak",
+    richtig: "D"
+  },
+  {
+    frage: "97. Hz. Nuh’un (a.s.) ilkeli duruşunu sergileyen en önemli olaylardan biri aşağıdakilerden hangisidir?",
+    A: "A) Kavmi gemi yaparken onu kınadığında, Allah’ın emrine teslim olup aldırış etmemesi",
+    B: "B) Kendi toplumunu terk edip inzivaya çekilmesi",
+    C: "C) Gelenekleri değiştirmeye çalışmadan uyum sağlaması",
+    D: "D) Maddi refaha ulaşmak için toplumu yönlendirmesi",
+    richtig: "A"
+  },
+  {
+    frage: "98. IGMG’nin Müslümanların Avrupa'daki varlığı için benimsediği üç temel seçeneği değerlendirirken tercih ettiği yol aşağıdakilerden hangisidir?",
+    A: "A) Uyum adı altında asimilasyona yönelmek",
+    B: "B) Kendini koruma adına tamamen içine kapanmak",
+    C: "C) Siyasal, toplumsal ve kültürel kabul için aktif mücadele etmek",
+    D: "D) Hiçbir şekilde toplumsal hayata katılmamak",
+    richtig: "C"
+  },
+  {
+    frage: "99. IGMG’nin Avrupa’daki çalışmaları arasında aşağıdakilerden hangisi yer almaz?",
+    A: "A) Müslümanların eğitimine destek vermek",
+    B: "B) Mültecilere yardım etmek",
+    C: "C) Cami saldırılarına karşı mücadele etmek",
+    D: "D) Müslümanları sadece kendi içine kapanmaya teşvik etmek",
+    richtig: "D"
+  },
+  {
+    frage: "100. IGMG’nin din dersleri ve ilahiyat fakülteleri konusunda yürüttüğü çalışmalar arasında aşağıdakilerden hangisi yer almaktadır?",
+    A: "A) İslam eğitimini tamamen devlet kontrolüne bırakmak",
+    B: "B) Ders müfredatlarının Ehl-i Sünnet anlayışına uygun olarak hazırlanması",
+    C: "C) Sadece geleneksel eğitim yöntemlerini benimsemek",
+    D: "D) İlahiyat eğitimi yerine seküler eğitimi teşvik etmek",
+    richtig: "B"
+  },
+  {
+    frage: "101. Kur’an’a göre insanın yeryüzünde yaratılmasının temel gayesi aşağıdakilerden hangisidir?",
+    A: "A) Yeryüzünde ilâhî hükümranlığı gerçekleştirmek ve Allah’a kulluk etmek",
+    B: "B) Maddi zenginlik ve güç elde etmek",
+    C: "C) Doğayı kendi isteğine göre yönetmek",
+    D: "D) Toplumda en üstün kişi olmak",
+    richtig: "A"
+  },
+  {
+    frage: "102. Aşağıdakilerden hangisi insanın fıtrat üzere yaratılmasının anlamı değildir?",
+    A: "A) İnsanların yaratılış itibariyle belirli ortak özelliklere sahip olması",
+    B: "B) Bütün insanların fiziksel ve ruhsal açıdan tamamen aynı olması",
+    C: "C) İnsanların yaratılışında esas olan ortak bir temel bulunması",
+    D: "D) İnsanların doğuştan getirdiği ilahi özelliklere sahip olması",
+    richtig: "B"
+  },
+  {
+    frage: "103. Hz. Ali (r.a.)'ın gençlerin eğitimi konusundaki görüşü aşağıdakilerden hangisidir?",
+    A: "A) Gençlerin geçmiş nesillerin aynısı gibi yetiştirilmesi gerektiği",
+    B: "B) Gençlerin eğitime ihtiyaç duymadan kendi yollarını bulmaları gerektiği",
+    C: "C) Eğitimin sadece ibadet ve ahlaki kuralları öğretmekle sınırlı kalması gerektiği",
+    D: "D) Gençlerin kendi zamanlarının şartlarına göre eğitilmesi gerektiği",
+    richtig: "D"
+  },
+  {
+    frage: "104. Eğitimin en önemli amaçlarından biri aşağıdakilerden hangisidir?",
+    A: "A) Gençleri toplumun beklentilerine göre şekillendirmek",
+    B: "B) Gençleri hayata hazırlamak ve onların kimliklerini korumasını sağlamak",
+    C: "C) Gençleri sadece mesleki anlamda eğitmek",
+    D: "D) Gençleri tamamen özgür bırakıp, her konuda kendi kararlarını vermelerini sağlamak",
+    richtig: "B"
+  },
+  {
+    frage: "105. İnsanın en temel üç yetisi olan akıl, öfke ve şehvetin kontrol altında tutulması için aşağıdaki erdemlerden hangisi gereklidir?",
+    A: "A) Akıl - Hikmet, Öfke - Şecaat, Şehvet - İffet",
+    B: "B) Akıl - Cesaret, Öfke - Sabır, Şehvet - Hırs",
+    C: "C) Akıl - Bilgelik, Öfke - Merhamet, Şehvet - Kanaatkârlık",
+    D: "D) Akıl - Korku, Öfke - Sinirlilik, Şehvet - Tembellik",
+    richtig: "A"
+  },
+  {
+    frage: "106. Aşağıdakilerden hangisi hayırlı bir neslin özelliklerinden biri değildir?",
+    A: "A) İnancı sağlam olması",
+    B: "B) Kendi inanç ve değerlerinden uzak bir yaşam sürmesi",
+    C: "C) Sözünde durması ve itaatkâr olması",
+    D: "D) Çalışkan ve davasını bilen bir birey olması",
+    richtig: "B"
+  },
+  {
+    frage: "107. Hayırlı bir neslin misyonunu aşağıdakilerden hangisi en iyi özetler?",
+    A: "A) Maddi refaha ulaşmak için sürekli çalışmak",
+    B: "B) Toplum içinde kendi menfaatlerini öncelemek",
+    C: "C) Allah’a kulluk etmek, Kur’an’ı rehber edinmek ve hakikati savunmak",
+    D: "D) Dinin bireysel bir mesele olduğunu kabul edip, toplumsal sorumluluklardan uzak durmak",
+    richtig: "C"
+  },
+  {
+    frage: "108. Hayırlı bir nesil yetişmezse toplum üzerinde oluşabilecek en büyük tehlike aşağıdakilerden hangisidir?",
+    A: "A) Toplumda ekonomik zorlukların artması",
+    B: "B) Gelecek nesillerin inanç ve değerlerini kaybetmesi",
+    C: "C) İnsanların eğitim alanında başarısız olması",
+    D: "D) Gençlerin daha uzun süre eğitim görmeleri",
+    richtig: "B"
+  },
+  {
+    frage: "109. Hz. Ömer (r.a.)'ın insan yetiştirmenin önemine dair verdiği örnekte, bir oda dolusu hangi tür insanlara sahip olmak istediğini ifade etmiştir?",
+    A: "A) Bilgiye ve ahlaka sahip ilim ve dava insanlarına",
+    B: "B) Servet sahibi zengin insanlara",
+    C: "C) Savaşçı ve güçlü askerlerden oluşan bir topluluğa",
+    D: "D) Sadece maddi yardımlarla topluma katkı sağlayan insanlara",
+    richtig: "A"
+  },
+  {
+    frage: "110. Aşağıdakilerden hangisi hayırlı bir nesil yetiştirme çalışmalarında dikkat edilmesi gereken hususlardan biridir?",
+    A: "A) Eğitime sadece dini bilgilerle sınırlı olarak yön vermek",
+    B: "B) Eğitimin yalnızca akademik başarıya odaklanması",
+    C: "C) Eğitimin bireysel bir mesele olduğunu düşünerek cemaat ve teşkilattan bağımsız yürütülmesi",
+    D: "D) Gençlerin geleceğe hazırlıklı olması için bilinçlendirilmesi",
+    richtig: "D"
+  },
+  {
+    frage: "111. Aşağıdakilerden hangisi vefa kavramının anlamlarından biri değildir?",
+    A: "A) Sözünde durmak ve verilen sözü yerine getirmek",
+    B: "B) Kendini sevenleri ve iyilik edenleri unutmamak",
+    C: "C) Maddi kazanç elde etmek için fırsat kollamak",
+    D: "D) Dostluk ve bağlılıkta sadakat göstermek",
+    richtig: "C"
+  },
+  {
+    frage: "112. Kur’an’a göre, ahde vefa göstermeyenleri bekleyen menfi sonuçlardan biri aşağıdakilerden hangisidir?",
+    A: "A) Onlara büyük mükâfat verilecektir.",
+    B: "B) Allah kıyamet günü onlara hitap etmeyecektir.",
+    C: "C) Onlar daha fazla dünya nimetlerine sahip olacaklardır.",
+    D: "D) Melekler onların duasını kabul edecektir.",
+    richtig: "B"
+  },
+  {
+    frage: "113. Elest Bezmi’nde Allah ile yapılan sözleşme hangi sorumluluğu doğurmuştur?",
+    A: "A) İnsanın Allah’ı Rab olarak kabul edip, kulluk etmesini",
+    B: "B) İnsanların birbirleriyle adil ticari ilişkiler kurmasını",
+    C: "C) İnsanların sadece dünyevi işleriyle ilgilenmesini",
+    D: "D) İnsanların kendi başına karar vermesi için özgür bırakılmasını",
+    richtig: "A"
+  },
+  {
+    frage: "114. Aşağıdakilerden hangisi Allah’a vefa göstermek için yapılması gerekenlerden biri değildir?",
+    A: "A) Allah’a hakkıyla kul olmak",
+    B: "B) Allah’ın emanetlerini korumaya gayret göstermek",
+    C: "C) Hayatı sadece dünyevi çıkarlar doğrultusunda yaşamak",
+    D: "D) Allah’ın emir ve yasaklarına uymak",
+    richtig: "C"
+  },
+  {
+    frage: "115. Peygamber Efendimiz (s.a.v.)’e vefa göstermenin en önemli sebeplerinden biri aşağıdakilerden hangisidir?",
+    A: "A) Onun emirlerine karşı gelmek",
+    B: "B) Onun maddi gücünü artırmak için destek sağlamak",
+    C: "C) Onun yerine başka bir peygamber arayışı içine girmek",
+    D: "D) Onun bize duyduğu merhamet ve bizlere İslam’ı tebliğ etmesi",
+    richtig: "D"
+  },
+  {
+    frage: "116. Sahabeye vefa göstermenin en temel nedeni aşağıdakilerden hangisidir?",
+    A: "A) Sahabenin büyük bir servete sahip olması",
+    B: "B) Sahabenin İslam’ı yaymak için büyük mücadele vermesi",
+    C: "C) Sahabenin tüm insanların hizmetinde olması",
+    D: "D) Sahabenin yalnızca kendi kabilelerine hizmet etmesi",
+    richtig: "B"
+  },
+  {
+    frage: "117. Sahabeye vefa göstermek için aşağıdakilerden hangisini yapmak gereklidir?",
+    A: "A) Onların hayatını öğrenmek ve ahlaklarını örnek almak",
+    B: "B) Sahabeler arasında ayrım yaparak bazılarını yüceltmek",
+    C: "C) Onları sadece tarihî figürler olarak görmek",
+    D: "D) Onların görüşlerini dikkate almadan hareket etmek",
+    richtig: "A"
+  },
+  {
+    frage: "118. Müslümanlara vefa göstermenin en önemli göstergelerinden biri aşağıdakilerden hangisidir?",
+    A: "A) Sadece güçlü Müslümanlarla ilişkileri sürdürmek",
+    B: "B) Müslümanlar arasında sürekli rekabeti artırmak",
+    C: "C) Müslümanların sevinç ve kederlerini paylaşmak",
+    D: "D) Müslüman kardeşlik hukukunu görmezden gelmek",
+    richtig: "C"
+  },
+  {
+    frage: "119. Teşkilatımıza vefa göstermek için aşağıdakilerden hangisini yapmak yanlıştır?",
+    A: "A) Teşkilatın temel esaslarını benimsemek",
+    B: "B) Teşkilat çalışmalarına katılmak",
+    C: "C) Teşkilatın prensiplerine uygun davranmak",
+    D: "D) Teşkilatın faaliyetlerini sadece uzaktan takip etmek",
+    richtig: "D"
+  },
+  {
+    frage: "120. Mücadele büyüklerine (öncülere) vefa göstermek için yapılması gerekenlerden biri aşağıdakilerden hangisidir?",
+    A: "A) Onları rahmetle anmak ve mücadelelerini örnek almak",
+    B: "B) Onların mirasını unutmak ve yeni yollar aramak",
+    C: "C) Onların verdikleri mücadeleleri sorgulamak",
+    D: "D) Onların emeklerini küçümsemek",
+    richtig: "A"
+  }
+	];
+	
+	var nr = 0;
+	function anzeigen() {
+    document.getElementById("frageText").innerHTML = fragen[nr].frage;
+    document.getElementById("textA").innerHTML = fragen[nr].A;
+    document.getElementById("textB").innerHTML = fragen[nr].B;
+    document.getElementById("textC").innerHTML = fragen[nr].C;
+    document.getElementById("textD").innerHTML = fragen[nr].D;
+    document.getElementById("meldung").innerHTML = "";
+
+    var radios = document.querySelectorAll('input[name="ant"]');
+    for (var i = 0; i < radios.length; i++) {
+        radios[i].checked = false;
+    }
+    document.querySelector('form').style.display = "block";
+	}
+
+	function weiter() {
+		var auswahl = document.querySelector('input[name="ant"]:checked');
+		if(auswahl == null){
+			document.getElementById("meldung").innerHTML = "Lütfen bir cevap seçiniz!";
+			return;
+		}
+		if(auswahl.value == fragen[nr].richtig){
+			nr = nr + 1;
+
+			if(nr < fragen.length){
+				anzeigen();
+			} else {
+				document.getElementById("frageText").innerHTML = "Bölüm tamamlandı";
+				document.getElementById("meldung").innerHTML = "Tüm soruları doğru cevapladın! <br> Aferin...";
+				document.querySelector('form').style.display = "none";
+				}
+		} else {
+			document.getElementById("meldung").innerHTML = "Cevabın yanlış, tekrar dene";
+		}
+	}
+	
+	function springeZuFrage() {
+    var nummer = parseInt(document.getElementById("frageNummer").value);
+    if(isNaN(nummer) || nummer < 1){
+        document.getElementById("meldungSprung").innerHTML = "Lütfen geçerli bir sayı girin!";
+        return;
+    }
+    if(nummer > fragen.length){
+        document.getElementById("meldungSprung").innerHTML = 
+            "O kadar soru yok! <br> Temel Esaslar bölümünde en fazla " + fragen.length + " soru bulunmaktadır.";
+        return;
+    }
+    nr = nummer - 1;
+    anzeigen();
+    document.getElementById("meldungSprung").innerHTML = "";
+	}
+	
+	anzeigen();
+	</script>
+	</body>
+</html>

@@ -1,0 +1,1121 @@
+<html lang="de">
+	<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Bölüm 13 - Arapça</title>
+		<style>
+		body{
+			font-family: Arial;
+			background:#f2f2f2;
+			text-align:center;
+		}
+		.box{
+			background:white;
+			width:90%;
+			max-width:600px;
+			margin:20px auto;
+			padding:20px;
+			border-radius:10px;
+			box-shadow:0 0 10px #aaa;
+		}
+		button{
+			padding:10px 20px; 
+			background:#2c7be5; 
+			color:white; 
+			border:none; 
+			border-radius:5px; 
+			cursor:pointer;
+		}
+		button:hover{
+			background:#1a5fc2;
+		}
+		a{
+			display:inline-block;
+			margin-top:20px;
+			text-decoration:none;
+			color:#2c7be5;
+		}
+		@media (max-width: 400px) {
+			h1 {
+				font-size: 1.5rem;
+			}
+			h2 {
+				font-size: 1.2rem;
+			}
+			button {
+				padding: 10px 0;
+			}
+		}
+		</style>
+	</head>
+
+	<body>
+	<div class="box">
+		<h1>Bölüm 13 - Arapça</h1>
+		<h2 id="frageText"></h2>
+		<form>
+			<input type="radio" name="ant" value="A"> <span id="textA"></span><br><br>
+			<input type="radio" name="ant" value="B"> <span id="textB"></span><br><br>
+			<input type="radio" name="ant" value="C"> <span id="textC"></span><br><br>
+			<input type="radio" name="ant" value="D"> <span id="textD"></span><br><br>
+			<button type="button" onclick="weiter()">sonraki soru</button>
+		</form>
+		<p id="meldung"></p>
+		<a href="index.html"> Ana sayfaya dön </a>
+	</div>
+	
+	<div class="box">
+	  <h2> Hangi soruya atlamak istiyorsun? </h2>
+	  <input type="number" id="frageNummer" placeholder="Sayı girin" style="width: 80px;"><br><br>
+	  <button type="button" onclick="springeZuFrage()"> Soruya git </button>
+	  <p id="meldungSprung"></p>
+	</div>
+
+	
+	<script>
+	var fragen = [
+{
+  frage: "1. الطَّالِبُ مُجْتَهِدٌ <br>Yukarıdaki cümlenin Türkçe tercümesi hangisidir?",
+  A: "A) Öğrenci çalışkandır.",
+  B: "B) Çalışkan öğrenci.",
+  C: "C) Öğrenci sınıftadır.",
+  D: "D) Öğretmen çalışkandır.",
+  richtig: "A"
+},
+{
+  frage: "2. بَابُ البَيْتِ مَفْتُوحٌ <br> Cümlesinde muzâf hangisidir?",
+  A: "A) بَابُ",
+  B: "B) البَيْتِ",
+  C: "C) مَفْتُوحٌ",
+  D: "D) بَابُ البَيْتِ",
+  richtig: "A"
+},
+{
+  frage: "3. هَذَا كِتَابٌ <br> Cümlesinde işaret ismi hangisidir?",
+  A: "A) كِتَابٌ",
+  B: "B) هَذَا",
+  C: "C) ـٌ",
+  D: "D) yoktur",
+  richtig: "B"
+},
+{
+  frage: "4. الفُغراء في التنبل الصّيغِية <br> Yukarıdaki cümlede sıfat hangisidir?",
+  A: "A) التنبل",
+  B: "B) يف",
+  C: "C) الصّيغِية",
+  D: "D) الفُغراء",
+  richtig: "C"
+},
+{
+  frage: "5. الْمُعَلِّمُ فِي الْفَصْلِ. Cümlesinde harf-i cer hangisidir?",
+  A: "A) الْفَصْلِ",
+  B: "B) فِي",
+  C: "C) الْمُعَلِّمُ",
+  D: "D) فَصْل",
+  richtig: "B"
+},
+{
+  frage: "6. الطَّالِبَانِ مُجْتَهِدَانِ. Cümlesinde tesniye hangisidir?",
+  A: "A) الطَّالِبَانِ",
+  B: "B) مُجْتَهِدَانِ",
+  C: "C) الطَّالِبُ",
+  D: "D) مُجْتَهِدٌ",
+  richtig: "A"
+},
+{
+  frage: "7. هُمْ طُلَّابٌ. Cümlesinde zamir hangisidir?",
+  A: "A) طُلَّابٌ",
+  B: "B) هُمْ",
+  C: "C) هَذَا",
+  D: "D) هَذِهِ",
+  richtig: "B"
+},
+{
+  frage: "8. أَنَا مُدَرِّسٌ. Cümlesinde zamir hangisidir?",
+  A: "A) مُدَرِّسٌ",
+  B: "B) أَنَا",
+  C: "C) أَنْتَ",
+  D: "D) هُوَ",
+  richtig: "B"
+},
+{
+  frage: "9. الْبِنْتُ فِي الْبَيْتِ. Cümlesinde harf-i cer hangisidir?",
+  A: "A) الْبَيْتِ",
+  B: "B) فِي",
+  C: "C) الْبِنْتُ",
+  D: "D) بَيْت",
+  richtig: "B"
+},
+{
+  frage: "10. هَؤُلَاءِ طُلَّابٌ. Cümlesinde çoğul işaret ismi hangisidir?",
+  A: "A) هَؤُلَاءِ",
+  B: "B) طُلَّابٌ",
+  C: "C) هَذَا",
+  D: "D) هَذِهِ",
+  richtig: "A"
+},
+{
+  frage: "11. الطَّالِبَاتُ مُجْتَهِدَاتٌ. Cümlesinde cemî müennes sâlim hangisidir?",
+  A: "A) الطَّالِبَاتُ",
+  B: "B) مُجْتَهِدَاتٌ",
+  C: "C) الطَّالِبَةُ",
+  D: "D) مُجْتَهِدَةٌ",
+  richtig: "A"
+},
+{
+  frage: "12. الطَّالِبُونَ مُجْتَهِدُونَ. Cümlesinde cemî müzekker sâlim hangisidir?",
+  A: "A) الطَّالِبُونَ",
+  B: "B) مُجْتَهِدُونَ",
+  C: "C) الطَّالِبُ",
+  D: "D) مُجْتَهِدٌ",
+  richtig: "A"
+},
+{
+  frage: "13. الْكِتَابُ عَلَى الطَّاوِلَةِ. Cümlesinde harf-i cer hangisidir?",
+  A: "A) الطَّاوِلَةِ",
+  B: "B) عَلَى",
+  C: "C) الْكِتَابُ",
+  D: "D) كِتَاب",
+  richtig: "B"
+},
+{
+  frage: "14. هُوَ طَالِبٌ. Cümlesinde zamir hangisidir?",
+  A: "A) طَالِبٌ",
+  B: "B) هُوَ",
+  C: "C) أَنَا",
+  D: "D) أَنْتَ",
+  richtig: "B"
+},
+{
+  frage: "15. نَحْنُ طُلَّابٌ. Cümlesinde zamir hangisidir?",
+  A: "A) طُلَّابٌ",
+  B: "B) نَحْنُ",
+  C: "C) هُمْ",
+  D: "D) هِيَ",
+  richtig: "B"
+},
+{
+  frage: "16. هَذَانِ طَالِبَانِ. Cümlesinde tesniye hangisidir?",
+  A: "A) هَذَانِ",
+  B: "B) طَالِبَانِ",
+  C: "C) طَالِبٌ",
+  D: "D) هَذَا",
+  richtig: "B"
+},
+{
+  frage: "17. الْبَيْتُ كَبِيرٌ. Cümlesinde sıfat hangisidir?",
+  A: "A) الْبَيْتُ",
+  B: "B) كَبِيرٌ",
+  C: "C) بَيْت",
+  D: "D) كَبِير",
+  richtig: "B"
+},
+{
+  frage: "18. الطَّالِبُ فِي الْمَدْرَسَةِ. Cümlesinde harf-i cer hangisidir?",
+  A: "A) الْمَدْرَسَةِ",
+  B: "B) فِي",
+  C: "C) الطَّالِبُ",
+  D: "D) مَدْرَسَة",
+  richtig: "B"
+},
+{
+  frage: "19. الْوَلَدُ صَغِيرٌ. Cümlesinde sıfat hangisidir?",
+  A: "A) الْوَلَدُ",
+  B: "B) صَغِيرٌ",
+  C: "C) وَلَد",
+  D: "D) صَغِير",
+  richtig: "B"
+},
+{
+  frage: "20. هَذِهِ بِنْتٌ. Cümlesinde işaret ismi hangisidir?",
+  A: "A) بِنْتٌ",
+  B: "B) هَذِهِ",
+  C: "C) هَذَا",
+  D: "D) بِنْت",
+  richtig: "B"
+},
+{
+  frage: "21. ...... الكِتَابُ\nBoşluğa uygun haber hangisidir?",
+  A: "A) جَدِيدٌ",
+  B: "B) فِي",
+  C: "C) عَلَى",
+  D: "D) مِنْ",
+  richtig: "A"
+},
+{
+  frage: "22. رَأَيْتُ ...... فِي المَسْجِدِ. Boşluğa uygun kelime hangisidir?",
+  A: "A) رَجُل",
+  B: "B) رَجُل",
+  C: "C) رَجُلًّا",
+  D: "D) رَجُلُ",
+  richtig: "C"
+},
+{
+  frage: "23. الطَّالِبَاتُ مُجْتَهِدَات ...... Boşluğa uygun işaret ismi hangisidir?",
+  A: "A) هَذَا",
+  B: "B) هَذِهِ",
+  C: "C) هَؤُلَاءِ",
+  D: "D) ذَلِكَ",
+  richtig: "C"
+},
+{
+  frage: "24. نَحْنُ ...... الدَّرْسَ كُلَّ يَوْم. Boşluğa uygun muzâri fiil hangisidir?",
+  A: "A) نَقْرَأُ",
+  B: "B) يَقْرَأُ",
+  C: "C) قَرَأَ",
+  D: "D) اِقْرَأْ",
+  richtig: "A"
+},
+{
+  frage: "25. المُعَلِّمَانِ ...... فِي الصَّف. Boşluğa uygun fiil hangisidir?",
+  A: "A) يَجْلِسُ",
+  B: "B) يَجْلِسَانِ",
+  C: "C) يَجْلِسُونَ",
+  D: "D) تَجْلِسُ",
+  richtig: "B"
+},
+{
+  frage: "26. اُكْتُبْ ...... يَا عَلِيّ! Boşluğa uygun kelime hangisidir?",
+  A: "A) الدَّرْسُ",
+  B: "B) الدَّرْس",
+  C: "C) الدَّرْسَ",
+  D: "D) دَرْس",
+  richtig: "C"
+},
+
+{
+  frage: "27. ...... الطَّالِبُ. Boşluğa uygun haber hangisidir?",
+  A: "A) فِي",
+  B: "B) مُجْتَهِد",
+  C: "C) طَالِب",
+  D: "D) إِلَى",
+  richtig: "B"
+},
+{
+  frage: "28. شَاهَدْتُ ...... فِي السُّوقِ. Boşluğa uygun kelime hangisidir?",
+  A: "A) وَلَد",
+  B: "B) وَلَد",
+  C: "C) وَلَدًا",
+  D: "D) وَلَدُ",
+  richtig: "C"
+},
+{
+  frage: "29. الطَّالِبُ هُنَاكَ مُجْتَهِد ...... Boşluğa uygun kelime hangisidir?",
+  A: "A) هَذِهِ",
+  B: "B) هَؤُلَاءِ",
+  C: "C) ذَلِكَ",
+  D: "D) تِلْكَ",
+  richtig: "C"
+},
+{
+  frage: "30. ...... الطَّعَامُ سَاخِنًا. Boşluğa uygun olumsuzluk edatı hangisidir?",
+  A: "A) لَ",
+  B: "B) مَا",
+  C: "C) لَمْ",
+  D: "D) لَنْ",
+  richtig: "B"
+},
+{
+  frage: "31. إِلَى أَيْنَ ذَهَبَ أَحْمَدُ؟",
+  A: "A) إِلَى البَيْتِ",
+  B: "B) إِلَى الصَّف",
+  C: "C) إِلَى المَدْرَسَةِ",
+  D: "D) إِلَى السُّوقِ",
+  richtig: "C"
+},
+{
+  frage: "32. مَتَى ذَهَبَ أَحْمَدُ إِلَى المَدْرَسَةِ؟",
+  A: "A) لَيْلًا",
+  B: "B) صَبَاحًا",
+  C: "C) مَسَاءً",
+  D: "D) بَعْدَ الدَّرْس",
+  richtig: "B"
+},
+{
+  frage: "33. أَيْنَ جَلَسَ أَحْمَدُ؟",
+  A: "A) عَلَى الطَّاوِلَةِ",
+  B: "B) فِي البَيْتِ",
+  C: "C) عَلَى الكُرْسِي",
+  D: "D) فِي السُّوقِ",
+  richtig: "C"
+},
+{
+  frage: "34. مَنْ كَانَ فِي الصَّف؟",
+  A: "A) الطَّالِبُ",
+  B: "B) المُعَلِّمُ",
+  C: "C) الوَلَدُ",
+  D: "D) الأَبُ",
+  richtig: "B"
+},
+{
+  frage: "35. ...... إِلَى دَخَلَ أَحْمَدُ. Boşluğa metne göre uygun kelime hangisidir?",
+  A: "A) البَيْتِ",
+  B: "B) الصَّف",
+  C: "C) المَسْجِدِ",
+  D: "D) السُّوقِ",
+  richtig: "B"
+},
+{
+  frage: "36. ...... جَلَسَ أَحْمَدُ عَلَى. Boşluğa uygun kelime hangisidir?",
+  A: "A) الطَّاوِلَةِ",
+  B: "B) الأَرْض",
+  C: "C) الكُرْسِي",
+  D: "D) الشَّجَر",
+  richtig: "C"
+},
+{
+  frage: "37. مَاذَا فَعَلَ أَحْمَدُ بَعْدَ الدَّرْس؟",
+  A: "A) جَلَسَ فِي الصَّف",
+  B: "B) ذَهَبَ إِلَى السُّوقِ",
+  C: "C) رَجَعَ إِلَى البَيْتِ",
+  D: "D) قَرَأَ الدَّرْسَ",
+  richtig: "C"
+},
+{
+  frage: "38. مَاذَا كَلِمَةُ «جَلَسَ» فِي النَّص؟",
+  A: "A) اِسْم",
+  B: "B) حَرْف",
+  C: "C) فِعْل مَاضِي",
+  D: "D) فِعْل مُضَارِع",
+  richtig: "C"
+},
+{
+  frage: "39. مَاذَا كَلِمَةُ «إِلَى» فِي النَّص؟",
+  A: "A) اِسْمُ إِشَارَة",
+  B: "B) حَرْفُ جَر",
+  C: "C) فِعْل",
+  D: "D) صِفَة",
+  richtig: "B"
+},
+{
+  frage: "40. أَيُّ جُمْلَة صَحِيحَة حَسَبَ النَّص؟",
+  A: "A) جَلَسَ أَحْمَدُ عَلَى الطَّاوِلَةِ",
+  B: "B) كَانَ المُعَلِّمُ فِي البَيْتِ",
+  C: "C) قَرَأَ أَحْمَدُ الدَّرْسَ",
+  D: "D) ذَهَبَ أَحْمَدُ لَيْلًا",
+  richtig: "C"
+},
+{
+  frage: "41. بَابُ الْفَصْلِ مَفْتُوحٌ.\nCümlesinde muzâf hangisidir?",
+  A: "A) بَابُ",
+  B: "B) الْفَصْلِ",
+  C: "C) مَفْتُوحٌ",
+  D: "D) بَابُ الْفَصْلِ",
+  richtig: "A"
+},
+{
+  frage: "42. المُعَلِّمَةُ هُنَاكَ نَشِيطَةٌ.\nBoşluğa uygun kelime hangisidir?",
+  A: "A) هَذَا",
+  B: "B) هَؤُلَاءِ",
+  C: "C) تِلْكَ",
+  D: "D) ذَلِكَ",
+  richtig: "C"
+},
+{
+  frage: "43. ...... Boşluğa uygun mâzi fiili hangisidir?",
+  A: "A) يَشْرَبُ",
+  B: "B) شَرَبَ",
+  C: "C) اِشْرَبْ",
+  D: "D) يَشْرَبْ",
+  richtig: "B"
+},
+{
+  frage: "44. تَكْتُبُ فَاطِمَةُ الدَّرْسَ. Bu cümlede mef‘ûl bih hangisidir?",
+  A: "A) فَاطِمَةُ",
+  B: "B) تَكْتُبُ",
+  C: "C) الدَّرْسَ",
+  D: "D) ـَ",
+  richtig: "C"
+},
+{
+  frage: "45. القَلَمُ ...... المَكْتَبِ. Boşluğa uygun harf-i cer hangisidir?",
+  A: "A) إِلَى",
+  B: "B) عَلَى",
+  C: "C) فِي",
+  D: "D) مِنْ",
+  richtig: "B"
+},
+{
+  frage: "46. Aşağıdaki cümlelerden hangisi isim cümlesidir?",
+  A: "A) ذَهَبَ أَحْمَدُ إِلَى البَيْتِ",
+  B: "B) يَقْرَأُ الطَّالِبُ الكِتَابَ",
+  C: "C) الطَّقْسُ جَمِيل",
+  D: "D) الوَلَدُ الصَّفَّ دَخَلَ",
+  richtig: "C"
+},
+{
+  frage: "47. نَحْنُ مُسْلِمُونَ. Cümlesinde bulunan zamir hangisidir?",
+  A: "A) مُسْلِمُونَ",
+  B: "B) نَحْنُ",
+  C: "C) ـُ",
+  D: "D) yoktur",
+  richtig: "B"
+},
+{
+  frage: "48. Aşağıdakilerden hangisi kırık çoğuldur?",
+  A: "A) طَالِبُونَ",
+  B: "B) طَالِبَات",
+  C: "C) كُتُب",
+  D: "D) مُعَلِّمَانِ",
+  richtig: "C"
+},
+{
+  frage: "49. اِفْتَحْ البَابَ يَا مُحَمَّدُ. Bu cümlede fiil hangi türdedir?",
+  A: "A) Mâzi",
+  B: "B) Muzâri",
+  C: "C) Emir",
+  D: "D) Meçhul",
+  richtig: "C"
+},
+{
+  frage: "50. مَا الوَلَدُ نَائِمًا. Yukarıdaki cümle hangi türdür?",
+  A: "A) Olumlu fiil cümlesi",
+  B: "B) Olumsuz fiil cümlesi",
+  C: "C) Olumlu isim cümlesi",
+  D: "D) Olumsuz isim cümlesi",
+  richtig: "D"
+},
+{
+  frage: "51. أَنْتُنَّ ...... فِي الصَّف. Boşluğa uygun fiil hangisidir?",
+  A: "A) تَجْلِسْنَ",
+  B: "B) تَجْلِسُونَ",
+  C: "C) يَجْلِسْنَ",
+  D: "D) تَجْلِسُ",
+  richtig: "A"
+},
+{
+  frage: "52. الطَّالِبُ النَّشِيطُ. Yukarıdaki ifade hangi yapıdadır?",
+  A: "A) İsim tamlaması",
+  B: "B) Fiil cümlesi",
+  C: "C) Sıfat tamlaması",
+  D: "D) Muzâf–muzâfun ileyh",
+  richtig: "C"
+},
+{
+  frage: "53. Aşağıdaki fiillerden hangisi muzâridir?",
+  A: "A) كَتَبَ",
+  B: "B) يَكْتُبُ",
+  C: "C) اُكْتُبْ",
+  D: "D) كُتِبَ",
+  richtig: "B"
+},
+{
+  frage: "54. كُتِبَ الدَّرْسُ. Bu cümlede fiil hangi türdür?",
+  A: "A) Etken",
+  B: "B) Emir",
+  C: "C) Meçhul",
+  D: "D) Muzâri",
+  richtig: "C"
+},
+{
+  frage: "55. الطَّعَامَ أَنْتُمْ ...... Boşluğa uygun fiil hangisidir?",
+  A: "A) تَأْكُلُ",
+  B: "B) تَأْكُلُونَ",
+  C: "C) يَأْكُلُونَ",
+  D: "D) نَأْكُلُ",
+  richtig: "B"
+},
+{
+  frage: "56. هَذَا كِتَابُ الطَّالِبِ. Cümlesinde muzâfun ileyh hangisidir?",
+  A: "A) هَذَا",
+  B: "B) كِتَابُ",
+  C: "C) الطَّالِبِ",
+  D: "D) كِتَابُ الطَّالِبِ",
+  richtig: "C"
+},
+{
+  frage: "57. Aşağıdakilerden hangisi harf-i cerdir?",
+  A: "A) فِي",
+  B: "B) هُوَ",
+  C: "C) كِتَاب",
+  D: "D) كَتَبَ",
+  richtig: "A"
+},
+{
+  frage: "58. يَذْهَبُ الأَوْلَادُ إِلَى المَدْرَسَةِ. Cümlesinin Türkçe tercümesi hangisidir?",
+  A: "A) Çocuklar okuldan geliyor.",
+  B: "B) Çocuklar okula gidiyor.",
+  C: "C) Çocuk okula gitti.",
+  D: "D) Okul çocuklara gitti.",
+  richtig: "B"
+},
+{
+  frage: "59. الطَّالِبُ فِي الصَّف ...... Boşluğa uygun kelime hangisidir?",
+  A: "A) كَانَ",
+  B: "B) كَتَبَ",
+  C: "C) يَكْتُبُ",
+  D: "D) اُكْتُبْ",
+  richtig: "A"
+},
+{
+  frage: "60. Aşağıdaki cümlelerden hangisi kurallı ve anlamlıdır?",
+  A: "A) فِي الصَّف الطَّالِبُ",
+  B: "B) الصَّف الطَّالِبُ فِي",
+  C: "C) الصَّف الطَّالِبُ فِي",
+  D: "D) فِي الطَّالِبُ الصَّف",
+  richtig: "B"
+},
+{
+  frage: "61. Aşağıdaki kelimelerden hangisi İsm-i Âlettir?",
+  A: "A) كَاتِب",
+  B: "B) مِفْتَاح",
+  C: "C) مَكْتَب",
+  D: "D) مَفْتُوح",
+  richtig: "B"
+},
+{
+  frage: "62. Aşağıdakilerden hangisi İsm-i Mekândır?",
+  A: "A) مَجْلِس",
+  B: "B) جَالِس",
+  C: "C) جَلَسَ",
+  D: "D) جُلُوس",
+  richtig: "A"
+},
+{
+  frage: "63. Cümlesindeki renk hangisidir?",
+  A: "A) القَلَمُ",
+  B: "B) أَحْمَرُ",
+  C: "C) ـُ",
+  D: "D) yoktur",
+  richtig: "B"
+},
+{
+  frage: "64. Aşağıdakilerden hangisi müennestir?",
+  A: "A) كِتَاب",
+  B: "B) قَلَم",
+  C: "C) مَدْرَسَة",
+  D: "D) بَاب",
+  richtig: "C"
+},
+{
+  frage: "65. Aşağıdaki kelimelerden hangisi hakiki müzekkerdir?",
+  A: "A) شَمْس",
+  B: "B) مَرْيَمُ",
+  C: "C) رَجُل",
+  D: "D) مَدْرَسَة",
+  richtig: "C"
+},
+{
+  frage: "66. إِنَّ الطَّالِبَ مُجْتَهِد. Bu cümlede إِنَّ’nin haberi hangisidir?",
+  A: "A) إِنَّ",
+  B: "B) الطَّالِبَ",
+  C: "C) مُجْتَهِد",
+  D: "D) ـ",
+  richtig: "C"
+},
+{
+  frage: "67. Aşağıdakilerden hangisi inne ve benzerlerindendir?",
+  A: "A) كَانَ",
+  B: "B) لَكِنَّ",
+  C: "C) لَمْ",
+  D: "D) سَوْفَ",
+  richtig: "B"
+},
+{
+  frage: "68. جَاءَ الطَّالِبُ الَّذِي نَجَحَ. Cümlesinde ilgi zamiri hangisidir?",
+  A: "A) جَاءَ",
+  B: "B) الطَّالِبُ",
+  C: "C) الَّذِي",
+  D: "D) نَجَحَ",
+  richtig: "C"
+},
+{
+  frage: "69. Aşağıdaki cümlelerden hangisinde hâl vardır?",
+  A: "A) دَخَلَ الطَّالِبُ الصَّفَّ",
+  B: "B) دَخَلَ الطَّالِبُ ضَاحِكًا",
+  C: "C) الطَّالِبُ فِي الصَّف",
+  D: "D) دَخَلَ الصَّفَّ",
+  richtig: "B"
+},
+{
+  frage: "70. ضَاحِكًا kelimesi aşağıdakilerden hangisidir?",
+  A: "A) مفعول به",
+  B: "B) حال",
+  C: "C) صفة",
+  D: "D) خبر",
+  richtig: "B"
+},
+{
+  frage: "71. Aşağıdakilerden hangisi abartma (صيغة المبالغة)dır?",
+  A: "A) كَاتِب",
+  B: "B) كَتَبَ",
+  C: "C) كَتَّاب",
+  D: "D) مَكْتَب",
+  richtig: "C"
+},
+{
+  frage: "72. اللّٰهُ غَفُور. Kelimede bulunan abartma kalıbı hangisidir?",
+  A: "A) فَعِيل",
+  B: "B) فَاعِل",
+  C: "C) مَفْعُول",
+  D: "D) مِفْعَال",
+  richtig: "A"
+},
+{
+  frage: "73. جَاءَ الطُّلَّابُ إِلَّا خَالِدًا. Cümledeki istisna edatı hangisidir?",
+  A: "A) جَاءَ",
+  B: "B) الطُّلَّابُ",
+  C: "C) إِلَّا",
+  D: "D) خَالِدًا",
+  richtig: "C"
+},
+{
+  frage: "74. Aşağıdakilerden hangisi istisna edatıdır?",
+  A: "A) لِـ",
+  B: "B) إِلَى",
+  C: "C) إِلَّا",
+  D: "D) فِي",
+  richtig: "C"
+},
+{
+  frage: "75. قَرَأْتُ ثَلَاثَةَ كُتُب. Bu cümlede sayı hangisidir?",
+  A: "A) قَرَأْتُ",
+  B: "B) ثَلَاثَةَ",
+  C: "C) كُتُب",
+  D: "D) ـ",
+  richtig: "B"
+},
+{
+  frage: "76. Aşağıdaki sayılardan hangisi müzekkerdir?",
+  A: "A) ثَلَاثَةُ",
+  B: "B) ثَلَاثُ",
+  C: "C) ثَلَاثًا",
+  D: "D) ثَلَاثَتَانِ",
+  richtig: "B"
+},
+{
+  frage: "77. مَا أَجْمَلَ السَّمَاءَ! Bu cümle hangi türdendir?",
+  A: "A) Emir",
+  B: "B) Haber",
+  C: "C) Taaccub",
+  D: "D) Soru",
+  richtig: "C"
+},
+{
+  frage: "78. Aşağıdakilerden hangisi taaccub kalıbıdır?",
+  A: "A) أَفْعَلَ",
+  B: "B) مَا أَفْعَلَ",
+  C: "C) فَاعِل",
+  D: "D) اِفْعَلْ",
+  richtig: "B"
+},
+{
+  frage: "79. يَكْتُبُ الطَّالِبُ الدَّرْسَ. Fiilin zamanı hangisidir?",
+  A: "A) Mazi",
+  B: "B) Emir",
+  C: "C) Muzari",
+  D: "D) Meçhul",
+  richtig: "C"
+},
+{
+  frage: "80. الدَّرْسَ كَتَبَ الطَّالِبُ. Fiilin faili hangisidir?",
+  A: "A) كَتَبَ",
+  B: "B) الطَّالِبُ",
+  C: "C) الدَّرْسَ",
+  D: "D) ـَ",
+  richtig: "B"
+},
+{
+  frage: "81. اُكْتُبْ الدَّرْسَ. Fiil hangi türdedir?",
+  A: "A) Mazi",
+  B: "B) Muzari",
+  C: "C) Emir",
+  D: "D) Meçhul",
+  richtig: "C"
+},
+{
+  frage: "82. Aşağıdakilerden hangisi meçhul fiildir?",
+  A: "A) كَتَبَ",
+  B: "B) يَكْتُبُ",
+  C: "C) كُتِبَ",
+  D: "D) اُكْتُبْ",
+  richtig: "C"
+},
+{
+  frage: "83. المَكْتَبُ كَبِير. Bu cümle hangi türdür?",
+  A: "A) Fiil cümlesi",
+  B: "B) Emir cümlesi",
+  C: "C) İsim cümlesi",
+  D: "D) Olumsuz cümle",
+  richtig: "C"
+},
+{
+  frage: "84. Aşağıdakilerden hangisi ilgi zamiri değildir?",
+  A: "A) هَذَا",
+  B: "B) الَّتِي",
+  C: "C) مَنْ",
+  D: "D) مَا",
+  richtig: "A"
+},
+{
+  frage: "85. المِسْطَرَةُ طَوِيلَة. Kelimedeki ism-i âlet hangisidir?",
+  A: "A) طَوِيلَة",
+  B: "B) المِسْطَرَةُ",
+  C: "C) ـة",
+  D: "D) yoktur",
+  richtig: "B"
+},
+{
+  frage: "86. دَخَلَ الرَّجُلُ المَسْجِدَ خَاشِعًا. Hâl hangisidir?",
+  A: "A) دَخَلَ",
+  B: "B) الرَّجُلُ",
+  C: "C) المَسْجِدَ",
+  D: "D) خَاشِعًا",
+  richtig: "D"
+},
+{
+  frage: "87. Aşağıdakilerden hangisi İsm-i Mekân kalıbıdır?",
+  A: "A) مَفْعَل",
+  B: "B) فَاعِل",
+  C: "C) مَفْعُول",
+  D: "D) فِعَال",
+  richtig: "A"
+},
+{
+  frage: "88. إِنَّ اللّٰهَ غَفُور. ?kelimesi hangi irabı gerektirir?",
+  A: "A) Merfu",
+  B: "B) Mansub",
+  C: "C) Mecrur",
+  D: "D) Meczûm",
+  richtig: "B"
+},
+{
+  frage: "89. Aşağıdaki kelimelerden hangisi müennes alameti taşır?",
+  A: "A) قَلَم",
+  B: "B) بَاب",
+  C: "C) طَالِبَة",
+  D: "D) وَلَد",
+  richtig: "C"
+},
+{
+  frage: "90. Aşağıdaki cümlelerden hangisi doğru bir istisna cümlesidir?",
+  A: "A) جَاءَ الطُّلَّابُ إِلَى خَالِد",
+  B: "B) جَاءَ الطُّلَّابُ إِلَّا خَالِدًا",
+  C: "C) جَاءَ الطُّلَّابُ فِي خَالِد",
+  D: "D) جَاءَ الطُّلَّابُ مَعَ خَالِد",
+  richtig: "B"
+},
+{
+  frage: "91. خَتَمَ اللّٰهُ عَلَىٰ قُلُوبِهِمْ. Yukarıdaki cümlenin doğru Türkçe tercümesi hangisidir?",
+  A: "A) Allah kalplerini temizledi",
+  B: "B) Allah kalplerini mühürledi",
+  C: "C) Allah kalplerini açtı",
+  D: "D) Allah kalplerini yumuşattı",
+  richtig: "B"
+},
+
+{
+  frage: "92. فِي قُلُوبِهِمْ مَرَض. Yukarıdaki cümlenin doğru Türkçe tercümesi hangisidir?",
+  A: "A) Kalplerinde iman vardır",
+  B: "B) Kalplerinde korku vardır",
+  C: "C) Kalplerinde hastalık vardır",
+  D: "D) Kalpleri temizdir",
+  richtig: "C"
+},
+{
+  frage: "93. قَالَ رَبَّنَا ظَلَمْنَا أَنفُسَنَا. Yukarıdaki cümlenin doğru Türkçe tercümesi hangisidir?",
+  A: "A) O ikisi: “Rabbimiz, bizi affet” dediler",
+  B: "B) O ikisi: “Rabbimiz, sana döndük” dediler",
+  C: "C) O ikisi: “Rabbimiz, kendimize zulmettik” dediler",
+  D: "D) Onlar: “Rabbimiz, bizi koru” dediler",
+  richtig: "C"
+},
+{
+  frage: "94. وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ. Yukarıdaki cümlenin doğru Türkçe tercümesi hangisidir?",
+  A: "A) Eğer bize rızık vermezsen kaybederiz",
+  B: "B) Eğer bizi affetmez ve bize merhamet etmezsen, ziyan edenlerden oluruz",
+  C: "C) Eğer bizi korumazsan korkarız",
+  D: "D) Eğer bizi sevmezsen üzülürüz",
+  richtig: "B"
+},
+{
+  frage: "95. إِنَّ رَحْمَتَ اللّٰهِ قَرِيبٌ مِنَ الْمُحْسِنِينَ. Yukarıdaki cümlenin doğru Türkçe tercümesi hangisidir?",
+  A: "A) Muhakkak ki, Allah’ın rahmeti günahkârlara yakındır",
+  B: "B) Muhakkak ki, Allah’ın rahmeti sabredenlere yakındır",
+  C: "C) Muhakkak ki, Allah’ın rahmeti iyilik yapanlara yakındır",
+  D: "D) Muhakkak ki, Allah’ın rahmeti herkese uzaktır",
+  richtig: "C"
+},
+{
+  frage: "96. رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِنْ ذُرِّيَّتِي. Yukarıdaki cümlenin doğru Türkçe tercümesi hangisidir?",
+  A: "A) Rabbim, beni sabredenlerden eyle",
+  B: "B) Rabbim, beni namaz kılanlardan eyle ve soyumdan da",
+  C: "C) Rabbim, beni bağışla ve soyumu da",
+  D: "D) Rabbim, beni zengin eyle",
+  richtig: "B"
+},
+{
+  frage: "97. فَسَبِّحْ بِحَمْدِ رَبِّكَ وَكُنْ مِنَ السَّاجِدِينَ. Yukarıdaki cümlenin doğru Türkçe tercümesi hangisidir?",
+  A: "A) Rabbini an ve sus",
+  B: "B) Rabbinin hamdiyle tesbih et ve secde edenlerden ol",
+  C: "C) Rabbine dua et ve bekle",
+  D: "D) Rabbine hamd et ve yürü",
+  richtig: "B"
+},
+{
+  frage: "98. ادْعُ إِلَىٰ سَبِيلِ رَبِّكَ بِالْحِكْمَةِ وَالْمَوْعِظَةِ الْحَسَنَةِ. Yukarıdaki cümlenin doğru Türkçe tercümesi hangisidir?",
+  A: "A) Rabbinin yoluna güzellikle çağır",
+  B: "B) Rabbinin yoluna hikmet ve güzel öğütle davet et",
+  C: "C) İnsanları hikmetle uyar",
+  D: "D) Rabbinin yolundan uzak dur",
+  richtig: "B"
+},
+{
+  frage: "99. هَلْ جَزَاءُ الْإِحْسَانِ إِلَّا الْإِحْسَانُ؟ Yukarıdaki cümlenin doğru Türkçe tercümesi hangisidir?",
+  A: "A) İyiliğin cezası iyiliktir",
+  B: "B) İyiliğin karşılığı ancak iyilik değil midir?",
+  C: "C) İyilik zor bir iştir",
+  D: "D) İyiliğin karşılığı kötülük müdür?",
+  richtig: "B"
+},
+{
+  frage: "100. İnsanların en hayırlısı, insanlara en faydalı olanınızdır. Yukarıdaki cümlenin Arapça karşılığı hangisidir?",
+  A: "A) خَيْرُ النَّاسِ أَكْيَسُهُمْ مَالًا",
+  B: "B) خَيْرُ النَّاسِ أَنْفَعُهُمْ لِلنَّاسِ",
+  C: "C) أَحَبُّ النَّاسِ إِلَى اللّٰهِ أَغْنَاهُمْ",
+  D: "D) خَيْرُ النَّاسِ أَجْمَلُهُمْ",
+  richtig: "B"
+},
+{
+  frage: "101. Ameller ancak niyetlere göredir. Yukarıdaki cümlenin Arapça karşılığı hangisidir?",
+  A: "A) إِنَّمَا الأَفْعَالُ بِالْقُصُودِ",
+  B: "B) إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ",
+  C: "C) إِنَّمَا الأَفْعَالُ مَعَ النِّيَّاتِ",
+  D: "D) إِنَّمَا الأَعْمَالُ لِلنِّيَّاتِ",
+  richtig: "B"
+},
+{
+  frage: "102. أَفْضَلُ الْمُؤْمِنِينَ أَحْسَنُهُمْ خُلُقًا. Yukarıdaki cümlenin doğru Türkçe tercümesi hangisidir?",
+  A: "A) Müminlerin en bilgini ahlâkı güzel olandır",
+  B: "B) Müminlerin en faziletlisi, ahlâkı en güzel olanıdır",
+  C: "C) Müminlerin en faziletlisi ahlâkı güçlü olandır",
+  D: "D) Müminlerin en faziletlisi imanı en güzel olandır",
+  richtig: "B"
+},
+{
+  frage: "103. Müslüman, Müslümanın kardeşidir. Yukarıdaki cümlenin Arapça karşılığı hangisidir?",
+  A: "A) الْمُسْلِمُ صَدِيقُ الْمُسْلِمِ",
+  B: "B) الْمُسْلِمُ أَخُو الْمُسْلِمِ",
+  C: "C) الْمُسْلِمُ جَارُ الْمُسْلِمِ",
+  D: "D) الْمُسْلِمُ وَلِيُّ الْمُسْلِمِ",
+  richtig: "B"
+},
+{
+  frage: "104. Kolaylaştırın, zorlaştırmayın. Müjdeleyin, nefret ettirmeyin. Yukarıdaki cümlenin Arapça karşılığı hangisidir?",
+  A: "A) شَدِّدُوا وَلَا تُيَسِّرُوا",
+  B: "B) يَسِّرُوا وَلَا تُعَسِّرُوا وَبَشِّرُوا وَلَا تُنَفِّرُوا",
+  C: "C) أْمِرُوا وَلَا تَنْهَوْا",
+  D: "D) قُولُوا وَلَا تَفْعَلُوا",
+  richtig: "B"
+},
+{
+  frage: "105. مَنْ لَا يَرْحَمِ النَّاسَ لَا يَرْحَمُهُ اللّٰهُ. Yukarıdaki cümlenin doğru Türkçe tercümesi hangisidir?",
+  A: "A) İnsanlara merhamet edenlere Allah merhamet eder",
+  B: "B) Allah insanlara her zaman merhamet eder",
+  C: "C) İnsanlara merhamet etmeyene Allah da merhamet etmez",
+  D: "D) Allah merhametlileri sever",
+  richtig: "C"
+},
+{
+  frage: "106. يَكْتُبُ الطَّالِبُ الدَّرْسَ. Yukarıdaki fiilin emri (müzekker) hangisidir?",
+  A: "A) اُكْتُبْ",
+  B: "B) اُكْتُبِي",
+  C: "C) اُكْتُبُوا",
+  D: "D) يَكْتُبْ",
+  richtig: "A"
+},
+{
+  frage: "107. تَذْهَبُ فَاطِمَةُ إِلَى المَدْرَسَةِ. Bu fiilin emri (müennes) hangisidir?",
+  A: "A) اِذْهَبْ",
+  B: "B) اِذْهَبُوا",
+  C: "C) اِذْهَبِي",
+  D: "D) تَذْهَبِي",
+  richtig: "C"
+},
+{
+  frage: "108. اِجْلِسْ فِي الصَّفِّ. Bu cümle hangi türdendir?",
+  A: "A) Haber",
+  B: "B) Soru",
+  C: "C) Emir",
+  D: "D) Nehiy",
+  richtig: "C"
+},
+{
+  frage: "109. Aşağıdaki cümlelerden hangisi nehiydir?",
+  A: "A) اُدْخُلِ الصَّفَّ",
+  B: "B) لَا تَتَكَلَّمْ فِي الصَّفِّ",
+  C: "C) يَدْخُلُ الطَّالِبُ الصَّفَّ",
+  D: "D) دَخَلَ الطَّالِبُ الصَّفَّ",
+  richtig: "B"
+},
+{
+  frage: "110. لَا تَكْتُبْ الدَّرْسَ الآنَ. Bu cümlede nehiy edatı hangisidir?",
+  A: "A) لا",
+  B: "B) تَكْتُبْ",
+  C: "C) الدَّرْسَ",
+  D: "D) الآنَ",
+  richtig: "A"
+},
+{
+  frage: "111. لَا تَجْلِسُوا هُنَا. Fiilin sonundaki ن neden düşmüştür?",
+  A: "A) Emir olduğu için",
+  B: "B) Muzari olduğu için",
+  C: "C) Nehiy olduğu için",
+  D: "D) Fail değiştiği için",
+  richtig: "C"
+},
+{
+  frage: "112. Aşağıdakilerden hangisi emir fiilidir?",
+  A: "A) يَذْهَبُ",
+  B: "B) ذَهَبَ",
+  C: "C) اِذْهَبْ",
+  D: "D) لَمْ يَذْهَبْ",
+  richtig: "C"
+},
+{
+  frage: "113. لَا تَلْعَبِي فِي الطَّرِيقِ. Bu cümlede hitap edilen kişi kimdir?",
+  A: "A) Müzekker tekil",
+  B: "B) Müennes tekil",
+  C: "C) Müzekker çoğul",
+  D: "D) Müennes çoğul",
+  richtig: "B"
+},
+{
+  frage: "114. اِفْتَحُوا الْبَابَ. Bu emir fiili kime yöneliktir?",
+  A: "A) Müzekker tekil",
+  B: "B) Müennes tekil",
+  C: "C) Müzekker çoğul",
+  D: "D) Müennes çoğul",
+  richtig: "C"
+},
+{
+  frage: "115. Aşağıdaki eşleştirmelerden hangisi doğrudur?",
+  A: "A) اُكْتُب → Nehiy",
+  B: "B) لا تَكْتُب → Emir",
+  C: "C) لا تَجْلِس → Nehiy",
+  D: "D) تَكْتُب → Emir",
+  richtig: "C"
+},
+{
+  frage: "116. هُوَ ...... إِلَى المَدْرَسَةِ. Boşluğa uygun fiil hangisidir?",
+  A: "A) تَذْهَبُ",
+  B: "B) يَذْهَبُ",
+  C: "C) يَذْهَبُونَ",
+  D: "D) تَذْهَبُونَ",
+  richtig: "B"
+},
+{
+  frage: "117. هِيَ ...... الدَّرْسَ. Boşluğa uygun fiil hangisidir?",
+  A: "A) يَقْرَأُ",
+  B: "B) تَقْرَأُ",
+  C: "C) يَقْرَأُونَ",
+  D: "D) تَقْرَأُونَ",
+  richtig: "B"
+},
+{
+  frage: "118. هُمَا ...... فِي الصَّفِّ. Boşluğa uygun fiil hangisidir?",
+  A: "A) يَجْلِسُ",
+  B: "B) تَجْلِسُ",
+  C: "C) يَجْلِسَانِ",
+  D: "D) يَجْلِسُونَ",
+  richtig: "C"
+},
+{
+  frage: "119. هُمْ ...... إِلَى المَسْجِدِ. Boşluğa uygun fiil hangisidir?",
+  A: "A) يَذْهَبُ",
+  B: "B) تَذْهَبُ",
+  C: "C) يَذْهَبُونَ",
+  D: "D) تَذْهَبُونَ",
+  richtig: "C"
+},
+{
+  frage: "120. هُنَّ ...... فِي البَيْتِ. Boşluğa uygun fiil hangisidir?",
+  A: "A) يَجْلِسْنَ",
+  B: "B) تَجْلِسُ",
+  C: "C) تَجْلِسْنَ",
+  D: "D) يَجْلِسُ",
+  richtig: "C"
+},
+{
+  frage: "121. نَحْنُ ...... الدَّرْسَ كُلَّ يَوْمٍ. Boşluğa uygun fiil hangisidir?",
+  A: "A) يَقْرَأُ",
+  B: "B) نَقْرَأُ",
+  C: "C) تَقْرَأُ",
+  D: "D) يَقْرَأُونَ",
+  richtig: "B"
+},
+{
+  frage: "122. أَنْتَ ...... فِي الصَّفِّ. Boşluğa uygun fiil hangisidir?",
+  A: "A) تَجْلِسُ",
+  B: "B) يَجْلِسُ",
+  C: "C) تَجْلِسُونَ",
+  D: "D) تَجْلِسِينَ",
+  richtig: "A"
+},
+{
+  frage: "123. أَنْتِ ...... إِلَى المَدْرَسَةِ. Boşluğa uygun fiil hangisidir?",
+  A: "A) تَذْهَبُ",
+  B: "B) تَذْهَبِينَ",
+  C: "C) يَذْهَبُ",
+  D: "D) تَذْهَبُونَ",
+  richtig: "B"
+}
+	];
+	
+	var nr = 0;
+	function anzeigen() {
+    document.getElementById("frageText").innerHTML = fragen[nr].frage;
+    document.getElementById("textA").innerHTML = fragen[nr].A;
+    document.getElementById("textB").innerHTML = fragen[nr].B;
+    document.getElementById("textC").innerHTML = fragen[nr].C;
+    document.getElementById("textD").innerHTML = fragen[nr].D;
+    document.getElementById("meldung").innerHTML = "";
+
+    var radios = document.querySelectorAll('input[name="ant"]');
+    for (var i = 0; i < radios.length; i++) {
+        radios[i].checked = false;
+    }
+    document.querySelector('form').style.display = "block";
+	}
+
+	function weiter() {
+		var auswahl = document.querySelector('input[name="ant"]:checked');
+		if(auswahl == null){
+			document.getElementById("meldung").innerHTML = "Lütfen bir cevap seçiniz!";
+			return;
+		}
+		if(auswahl.value == fragen[nr].richtig){
+			nr = nr + 1;
+
+			if(nr < fragen.length){
+				anzeigen();
+			} else {
+				document.getElementById("frageText").innerHTML = "Bölüm tamamlandı";
+				document.getElementById("meldung").innerHTML = "Tüm soruları doğru cevapladın! <br> Aferin...";
+				document.querySelector('form').style.display = "none";
+				}
+		} else {
+			document.getElementById("meldung").innerHTML = "Cevabın yanlış, tekrar dene";
+		}
+	}
+	
+	function springeZuFrage() {
+    var nummer = parseInt(document.getElementById("frageNummer").value);
+    if(isNaN(nummer) || nummer < 1){
+        document.getElementById("meldungSprung").innerHTML = "Lütfen geçerli bir sayı girin!";
+        return;
+    }
+    if(nummer > fragen.length){
+        document.getElementById("meldungSprung").innerHTML = 
+            "O kadar soru yok! <br> Arapça bölümünde en fazla " + fragen.length + " soru bulunmaktadır.";
+        return;
+    }
+    nr = nummer - 1;
+    anzeigen();
+    document.getElementById("meldungSprung").innerHTML = "";
+	}
+	
+	anzeigen();
+	</script>
+	</body>
+</html>

@@ -1,0 +1,1255 @@
+<html lang="de">
+	<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Bölüm 10 - Din Sosyolojisi</title>
+		<style>
+		body{
+			font-family: Arial;
+			background:#f2f2f2;
+			text-align:center;
+		}
+		.box{
+			background:white;
+			width:90%;
+			max-width:600px;
+			margin:20px auto;
+			padding:20px;
+			border-radius:10px;
+			box-shadow:0 0 10px #aaa;
+		}
+		button{
+			padding:10px 20px; 
+			background:#2c7be5; 
+			color:white; 
+			border:none; 
+			border-radius:5px; 
+			cursor:pointer;
+		}
+		button:hover{
+			background:#1a5fc2;
+		}
+		a{
+			display:inline-block;
+			margin-top:20px;
+			text-decoration:none;
+			color:#2c7be5;
+		}
+		@media (max-width: 400px) {
+			h1 {
+				font-size: 1.5rem;
+			}
+			h2 {
+				font-size: 1.2rem;
+			}
+			button {
+				padding: 10px 0;
+			}
+		}
+		</style>
+	</head>
+
+	<body>
+	<div class="box">
+		<h1>Bölüm 10 - Din Sosyolojisi</h1>
+		<h2 id="frageText"></h2>
+		<form>
+			<input type="radio" name="ant" value="A"> <span id="textA"></span><br><br>
+			<input type="radio" name="ant" value="B"> <span id="textB"></span><br><br>
+			<input type="radio" name="ant" value="C"> <span id="textC"></span><br><br>
+			<input type="radio" name="ant" value="D"> <span id="textD"></span><br><br>
+			<button type="button" onclick="weiter()">sonraki soru</button>
+		</form>
+		<p id="meldung"></p>
+		<a href="index.html"> Ana sayfaya dön </a>
+	</div>
+	
+	<div class="box">
+	  <h2> Hangi soruya atlamak istiyorsun? </h2>
+	  <input type="number" id="frageNummer" placeholder="Sayı girin" style="width: 80px;"><br><br>
+	  <button type="button" onclick="springeZuFrage()"> Soruya git </button>
+	  <p id="meldungSprung"></p>
+	</div>
+
+	
+	<script>
+	var fragen = [
+{
+  frage: "1. Din Sosyolojisinin Batı’da bağımsız bir disiplin olarak ortaya çıkışında aşağıdaki faktörlerden hangisi etkili olmuştur?",
+  A: "A) İslam dünyasında yapılan bilimsel çalışmalar",
+  B: "B) Fransız İhtilali sonrası yaşanan toplumsal sorunlar ve çözüm arayışları",
+  C: "C) Antik Yunan filozoflarının din üzerine düşünceleri",
+  D: "D) Kilisenin bilim üzerindeki etkisini artırması",
+  richtig: "B"
+},
+{
+  frage: "2. Aşağıdakilerden hangisi Din Sosyolojisinin temel ilgi alanları arasında yer almaz?",
+  A: "A) Din-toplum ilişkisi",
+  B: "B) Din-birey etkileşimi",
+  C: "C) Kur’an-ı Kerim’in tefsiri",
+  D: "D) Dini grupların sosyal yapısı",
+  richtig: "C"
+},
+{
+  frage: "3. August Comte’un Sosyoloji disiplinini kurarken önceki sosyal fizik ve sosyal statik yaklaşımlarını yetersiz bulmasının nedeni nedir?",
+  A: "A) Bu bilim dallarının sadece fiziksel çevreyi incelemesi",
+  B: "B) Toplumsal olayların sadece durağan yönlerine odaklanması",
+  C: "C) Sosyolojinin dini araştırmaları kapsamaması",
+  D: "D) Sosyolojinin birey psikolojisini analiz etmemesi",
+  richtig: "B"
+},
+{
+  frage: "4. Din Sosyolojisinin Osmanlı’ya “İlm-i İctima” kapsamında gelmesi hangi durumu ifade etmektedir?",
+  A: "A) Osmanlı’da sosyolojinin batılı anlamda bir disiplin olarak kabul edilmesi",
+  B: "B) Din Sosyolojisinin sadece ilahiyat fakültelerinde okutulması",
+  C: "C) Din Sosyolojisinin İslam bilimleriyle aynı çerçevede değerlendirilmesi",
+  D: "D) Osmanlı toplumunda sosyal sorunlara yönelik dini perspektiflerle çözüm arayışı",
+  richtig: "A"
+},
+{
+  frage: "5. Din Sosyolojisinin Kur’an-ı Kerim’i daha iyi anlamamıza nasıl katkı sunduğunu açıklayan en doğru ifade hangisidir?",
+  A: "A) Kur’an’daki emir ve nehiyleri toplumsal bağlamda yorumlamayı sağlar",
+  B: "B) Kur’an’ın tefsiri için gerekli olan tüm bilgileri içerir",
+  C: "C) Kur’an’ı bireysel anlamda yorumlamanın tek geçerli yoludur",
+  D: "D) Din Sosyolojisi, sadece modern toplumları incelemek için kullanılır",
+  richtig: "A"
+},
+{
+  frage: "6. Din Sosyolojisinin bireyin kendisini tanımasına yardımcı olmasının en önemli sebebi nedir?",
+  A: "A) Toplum ve birey arasındaki etkileşimi analiz ederek bireyin sosyal yapıda nasıl konumlandığını açıklaması",
+  B: "B) Kişinin dini inançlarını güçlendirmesi için yeni yöntemler öğretmesi",
+  C: "C) Bireyin kendi psikolojik problemlerine çözüm bulmasına doğrudan yardımcı olması",
+  D: "D) Kendi kültürüne dair tüm sosyal yapıları bireye zorunlu olarak kabul ettirmesi",
+  richtig: "A"
+},
+{
+  frage: "7. Aşağıdakilerden hangisi Din Sosyolojisinin bireye sağladığı katkılardan biri değildir?",
+  A: "A) Kendi eksiklerini ve kusurlarını fark etmesine yardımcı olmak",
+  B: "B) Toplumsal olaylara sıradan bir birey gibi bakmasını sağlamak",
+  C: "C) Dini değerlerin toplumsal yapı içerisindeki yerini anlamasını sağlamak",
+  D: "D) Sosyal çevresini daha iyi analiz ederek dini bilgileri daha etkili aktarmasını sağlamak",
+  richtig: "B"
+},
+{
+  frage: "8. Din Sosyolojisinin toplumsal yapı içindeki işlevlerinden biri aşağıdakilerden hangisidir?",
+  A: "A) Toplumların dini inanış ve uygulamalarının nasıl değiştiğini analiz etmek",
+  B: "B) Tek bir doğru dini inanışı belirleyip yaymak",
+  C: "C) Toplumu din dışı bir perspektifle ele almak",
+  D: "D) Dini eğitim yerine tamamen sosyolojik eğitimi teşvik etmek",
+  richtig: "A"
+},
+{
+  frage: "9. Din Sosyolojisi hangi açıdan Kur’an ve Sünnetin mesajını insanlara daha iyi anlatmamıza yardımcı olabilir?",
+  A: "A) Din-toplum ilişkisini inceleyerek dinin sosyal bağlamını anlamamızı sağlar",
+  B: "B) Kur’an’ı sadece kelime anlamı üzerinden değerlendirmemizi sağlar",
+  C: "C) Dini bilgileri bireysel ve içsel bir yol ile öğrenmemizi teşvik eder",
+  D: "D) Hadisleri yalnızca tarihsel açıdan ele alarak dini uygulamaları devre dışı bırakır",
+  richtig: "A"
+},
+{
+  frage: "10. Aşağıdaki durumlardan hangisi Din Sosyolojisi okumanın bireysel katkılarından biri değildir?",
+  A: "A) Kendi dini inançlarını sorgulayarak farklı inanç sistemlerini benimsemeye teşvik etmesi",
+  B: "B) Kendi davranışlarını ve topluma etkisini daha iyi anlamasına yardımcı olması",
+  C: "C) Kendi gelişimini ve dini düşüncelerini daha bilinçli hale getirmesi",
+  D: "D) Günlük olayları sosyolojik bir perspektiften değerlendirebilmesine olanak tanıması",
+  richtig: "A"
+},
+{
+  frage: "11. Din sosyolojisinin temel araştırma alanlarından biri aşağıdakilerden hangisidir?",
+  A: "A) Dini metinlerin tefsirini yapmak",
+  B: "B) Toplumun dine etkisi ve dinin topluma etkisini analiz etmek",
+  C: "C) Dini inançların dogmatik doğruluğunu belirlemek",
+  D: "D) Peygamberlerin teolojik öğretilerini değerlendirmek",
+  richtig: "B"
+},
+{
+  frage: "12. Din sosyolojisinin diğer ilahiyat disiplinlerinden en temel farkı aşağıdakilerden hangisidir?",
+  A: "A) Dini sadece Kur’an ve Sünnet çerçevesinde incelemesi",
+  B: "B) Dini, toplum ve birey perspektifinden, objektif bir bilimsel yöntemle ele alması",
+  C: "C) Dinî grupları doğru-yanlış ayrımına göre değerlendirmesi",
+  D: "D) Bireyin sadece kişisel inançlarıyla ilgilenmesi",
+  richtig: "B"
+},
+{
+  frage: "13. Din sosyolojisinin insan ve toplum ilişkisini inceleme yöntemiyle ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+  A: "A) İnsan davranışlarını sadece psikolojik etkenlere dayalı olarak inceler",
+  B: "B) Toplumun dinsel yapısının birey üzerindeki etkisini ve bireyin toplumsal dine katkısını analiz eder",
+  C: "C) Dini inanışları teolojik bağlamda ele alarak hakikati tespit etmeye çalışır",
+  D: "D) Sadece tarihsel olarak dinin toplum üzerindeki etkilerini inceler",
+  richtig: "B"
+},
+{
+  frage: "14. Aşağıdakilerden hangisi din sosyolojisinin araştırma konularından biri değildir?",
+  A: "A) Dinî grupların toplum içindeki işlevleri",
+  B: "B) Dinin kültürel yapılar üzerindeki etkisi",
+  C: "C) İslam hukukunun teolojik yorumu",
+  D: "D) Dinî kimliklerin birey üzerindeki etkileri",
+  richtig: "C"
+},
+{
+  frage: "15. Din sosyolojisi açısından yemek yeme alışkanlıkları nasıl değerlendirilir?",
+  A: "A) Sadece bireysel tercihler ve biyolojik ihtiyaçlar üzerinden analiz edilir",
+  B: "B) Kültürel, dini ve toplumsal normlarla şekillenen bir olgu olarak ele alınır",
+  C: "C) Tamamen ekonomik ve siyasal süreçlerin bir yansıması olarak değerlendirilir",
+  D: "D) Evrimsel süreçlerle şekillenmiş doğal bir dürtü olarak kabul edilir",
+  richtig: "B"
+},
+{
+  frage: "16. Bir bireyin dini inançlarının toplum tarafından nasıl şekillendiğini anlamaya çalışan bir araştırmacı, aşağıdaki hangi yöntemi kullanmalıdır?",
+  A: "A) Dini inançları tamamen kişisel iç görüyle analiz eden psikolojik yaklaşım",
+  B: "B) Dini metinleri temel alan teolojik inceleme yöntemi",
+  C: "C) Toplumsal normlar, gelenekler ve sosyalleşme süreçlerini ele alan sosyolojik yaklaşım",
+  D: "D) Dini hakikatleri kesin doğrulara bağlayan metafiziksel yorumlama",
+  richtig: "C"
+},
+{
+  frage: "17. Aşağıdakilerden hangisi din sosyolojisinin ilgi alanlarından biri değildir?",
+  A: "A) Toplumsal yapının dinsel inanışlar üzerindeki etkisi",
+  B: "B) Toplumun ekonomik sistemlerinin dinî uygulamalara etkisi",
+  C: "C) Dinî metinlerin doğru tefsiri ve anlamı",
+  D: "D) Dinî ritüellerin toplumsal işlevleri",
+  richtig: "C"
+},
+{
+  frage: "18. Din sosyolojisine göre bir bireyin dini inançlarının nesilden nesile aktarılması hangi süreçle gerçekleşir?",
+  A: "A) Doğrudan ilahi vahiy ile",
+  B: "B) Sosyalleşme ve kültürel öğrenme süreçleriyle",
+  C: "C) Sadece bireyin özgür iradesi ve rasyonel düşünce süreçleriyle",
+  D: "D) Teolojik eğitim ve dini öğretilerin bireysel olarak araştırılmasıyla",
+  richtig: "B"
+},
+{
+  frage: "19. Bir toplumun spor alışkanlıklarının dinle ilişkisini araştıran bir din sosyoloğu aşağıdaki hangi konulara odaklanabilir?",
+  A: "A) Futbol taraftarlarının dinî gruplarla benzer örgütlenme ve ritüellere sahip olup olmadığını incelemek",
+  B: "B) Futbol takımlarının finansal politikalarını analiz etmek",
+  C: "C) Sporcu performanslarının bilimsel metotlarla nasıl artırılacağını araştırmak",
+  D: "D) Sporun bireysel psikolojik etkilerini değerlendirmek",
+  richtig: "A"
+},
+{
+  frage: "20. Aşağıdakilerden hangisi din sosyolojisinin ilgi alanlarından biri olarak değerlendirilebilir?",
+  A: "A) Bir mezhebin doktrinlerini teolojik açıdan yorumlamak",
+  B: "B) Küreselleşmenin dinî kimlikler üzerindeki etkisini analiz etmek",
+  C: "C) Peygamberlerin vahiy almasını metafizik açıdan incelemek",
+  D: "D) Dini grupların mistik öğretilerini doğruluk açısından test etmek",
+  richtig: "B"
+},
+{
+  frage: "21. Farabi’ye göre fazıl toplumun kurulabilmesi için hangi unsurun temel alınması gerekir?",
+  A: "A) Ekonomik kalkınmanın sağlanması",
+  B: "B) Alimlerin yönettiği bir yönetim modelinin oluşturulması",
+  C: "C) Halkın devlet yönetiminde söz sahibi olması",
+  D: "D) Sınıfsal ayrımların devam ettirilmesi",
+  richtig: "B"
+},
+{
+  frage: "22. Farabi’nin fazıl olmayan toplum tiplerinden biri olan \"bozulmuş toplum\"un temel özelliği aşağıdakilerden hangisidir?",
+  A: "A) Kendi içinde iyilik ve kötülük arasında bir dengeyi barındıran toplumdur",
+  B: "B) Hiçbir hedefi olmayan, amaçsız ve düzensiz bir toplumdur",
+  C: "C) Sahabe toplumu gibi erdemli bir yapıya sahip olan toplumdur",
+  D: "D) Başlangıçta kötü olup sonradan iyiliğe yönelen toplumdur",
+  richtig: "B"
+},
+{
+  frage: "23. Gazali’ye göre insanın hakikate ulaşabilmesi hangi yolla mümkündür?",
+  A: "A) Felsefi düşünce ve akıl yürütme ile",
+  B: "B) İlahî nur ve ilham yoluyla",
+  C: "C) Bilimsel deney ve gözlem yoluyla",
+  D: "D) Kelam ve fıkıh ilimleriyle",
+  richtig: "B"
+},
+{
+  frage: "24. Farabi’nin toplum tasnifinde “orta toplum” kategorisi aşağıdakilerden hangisini ifade eder?",
+  A: "A) Bütün insanlığı içine alan evrensel bir toplum",
+  B: "B) Küçük toplulukları içeren köy ve kasaba toplumu",
+  C: "C) Milletler, kavimler ve ulusları kapsayan toplum",
+  D: "D) Bireysel yaşama dayalı yalnız toplum",
+  richtig: "C"
+},
+{
+  frage: "25. Gazali’nin bilgi sosyolojisi açısından din ve toplum ilişkisi hakkındaki görüşü aşağıdakilerden hangisidir?",
+  A: "A) Toplumun dini şekillendirdiği ve dinin de toplumu inşa ettiği karşılıklı bir etkileşim vardır",
+  B: "B) Birey, dini tamamen kendi iç dünyasında algılar ve toplumsal faktörlerden etkilenmez",
+  C: "C) Dini anlamak için sadece kelam ilmi yeterlidir",
+  D: "D) Devlet yönetimi, dinin toplum üzerindeki etkisini belirlemede hiçbir rol oynamaz",
+  richtig: "A"
+},
+{
+  frage: "26. Gazali, felsefecileri neden küfre düşmekle suçlamıştır?",
+  A: "A) Peygamberlerin vahiy getirdiğini kabul etmedikleri için",
+  B: "B) İnsan öldükten sonra bedenin dirilmeyeceğini iddia ettikleri için",
+  C: "C) Bilgiye sadece deney ve gözlem yoluyla ulaşılabileceğini savundukları için",
+  D: "D) Allah’ın tüm insanları eşit yarattığını reddettikleri için",
+  richtig: "B"
+},
+{
+  frage: "27. Farabi’ye göre devletin fazıl toplum oluşturabilmesi için hangi şart sağlanmalıdır?",
+  A: "A) Tüm insanların ekonomik eşitliği sağlanmalıdır",
+  B: "B) Yönetimde filozof-kralların bulunması gereklidir",
+  C: "C) Halkın mutlak itaati sağlanmalıdır",
+  D: "D) Devletin dinle bağı tamamen koparılmalıdır",
+  richtig: "B"
+},
+{
+  frage: "28. Gazali’nin toplumu iki sınıfa ayırdığı sistemde “Has” sınıfı kimleri ifade etmektedir?",
+  A: "A) Devlet yönetiminde bulunan üst düzey bürokratları",
+  B: "B) İlim ehli olan, dini bilgileri doğru bilen alimleri",
+  C: "C) Tüccar ve esnaf sınıfını",
+  D: "D) Toplumun fakir kesimini",
+  richtig: "B"
+},
+{
+  frage: "29. Gazali’ye göre halkın (avam) felsefe ve kelam okumaması gerektiğini savunmasının sebebi aşağıdakilerden hangisidir?",
+  A: "A) Halkın bilgiye ulaşmasını engellemek istemesi",
+  B: "B) Halkın yanlış anlama ihtimalinden dolayı küfre düşebileceğini düşünmesi",
+  C: "C) Felsefenin ve kelamın tamamen yanlış bilgiler içermesi",
+  D: "D) Sadece tasavvufun dini anlamada yeterli olması",
+  richtig: "B"
+},
+{
+  frage: "30. Gazali’ye göre devletin varlığı neden dinin korunması açısından zorunludur?",
+  A: "A) Devlet yıkıldığında dini otorite de zayıflar ve din yok olur",
+  B: "B) Devlet dini tamamen kontrol altına almalıdır",
+  C: "C) Din sadece siyasal bir araçtır ve devletle birlikte değişir",
+  D: "D) Devlet, bireyin dinî inançlarını şekillendirmede hiçbir rol oynamaz",
+  richtig: "A"
+},
+{
+  frage: "31. İbn Haldun’un Umran İlmi’ni kurma sebebi aşağıdakilerden hangisidir?",
+  A: "A) Tarihsel olayları sadece hikaye ve rivayetler üzerinden anlatmak istemesi",
+  B: "B) Toplumsal olayların arkasındaki dini, sosyal ve kültürel sebepleri açıklamak istemesi",
+  C: "C) Felsefi bir sistem kurarak sosyolojiyi felsefenin bir alt dalı haline getirmek istemesi",
+  D: "D) Devlet yönetimiyle ilgili kurallar oluşturmak istemesi",
+  richtig: "B"
+},
+{
+  frage: "32. İbn Haldun’un coğrafya kuramına göre en gelişmiş medeniyetler hangi bölgede ortaya çıkmıştır?",
+  A: "A) Güney Amerika",
+  B: "B) Orta Asya",
+  C: "C) Akdeniz iklim bölgesi",
+  D: "D) Afrika’nın iç bölgeleri",
+  richtig: "C"
+},
+{
+  frage: "33. İbn Haldun’a göre bedevi toplumlarla ilgili aşağıdakilerden hangisi yanlıştır?",
+  A: "A) Göçebe yaşam tarzına sahiptirler",
+  B: "B) Sosyal bağları çok güçlüdür",
+  C: "C) Lüks ve rahat yaşama önem verirler",
+  D: "D) Dini inanç ve ibadetlere daha bağlıdırlar",
+  richtig: "C"
+},
+{
+  frage: "34. İbn Haldun’un \"Asabiyet\" kavramı hangi anlama gelir?",
+  A: "A) Kabilecilik ve ırkçılık üzerine kurulu sosyal yapı",
+  B: "B) Toplumsal dayanışma ve sosyal bağları ifade eden bir kavram",
+  C: "C) Bir toplumun felsefi ve metafizik düşüncelerinin temelini oluşturan unsur",
+  D: "D) Sadece kan bağı yoluyla kurulan güçlü bir yönetim modeli",
+  richtig: "B"
+},
+{
+  frage: "35. Aşağıdakilerden hangisi İbn Haldun’un \"Sebep Asabiyeti\" tanımına uygun değildir?",
+  A: "A) Ticari ortaklıklar",
+  B: "B) Dini cemaatler",
+  C: "C) Kan bağına dayalı akrabalık ilişkileri",
+  D: "D) Siyasi ideolojilere dayalı birliktelikler",
+  richtig: "C"
+},
+{
+  frage: "36. İbn Haldun’un Tavırlar Kuramı’na göre bir devletin çöküş sürecine girmesini belirleyen aşama hangisidir?",
+  A: "A) Zafer Tavrı",
+  B: "B) İstibdat Tavrı",
+  C: "C) Ferağ Tavrı",
+  D: "D) İsraf Tavrı",
+  richtig: "D"
+},
+{
+  frage: "37. İbn Haldun’un \"Bedevilik ve Hazerilik\" kavramları hangi anlamda kullanılır?",
+  A: "A) İleri seviye ve geri kalmış toplumlar arasındaki farklılık",
+  B: "B) Yerleşik ve göçebe toplumlar arasındaki sosyolojik geçiş",
+  C: "C) İslam dünyasındaki mezhepsel ayrılıkları analiz etmek için",
+  D: "D) Ekonomik gelişme ile dinsel muhafazakârlık arasındaki ilişkiyi incelemek için",
+  richtig: "B"
+},
+{
+  frage: "38. İbn Haldun’un devletlerin yıkılmasının kaçınılmaz olduğunu savunmasının temel sebebi aşağıdakilerden hangisidir?",
+  A: "A) Toplumların biyolojik canlılar gibi doğup büyüyüp ölmesi gerektiğini savunması",
+  B: "B) Bütün devletlerin belirli bir noktadan sonra ekonomik çöküşe uğraması",
+  C: "C) Dinin toplumu şekillendirmede tek belirleyici unsur olması",
+  D: "D) Devletlerin yıkılmasını engellemenin mümkün olduğunu düşünmesi",
+  richtig: "A"
+},
+{
+  frage: "39. İbn Haldun’un devletlerin yükseliş ve çöküş süreçlerini açıklamak için kullandığı kuram aşağıdakilerden hangisidir?",
+  A: "A) Coğrafya Kuramı",
+  B: "B) Asabiyet Kuramı",
+  C: "C) Umran İlmi",
+  D: "D) Tavırlar Kuramı",
+  richtig: "D"
+},
+{
+  frage: "40. İbn Haldun’a göre güçlü bir devlet yapısını ayakta tutan en önemli unsur nedir?",
+  A: "A) Mutlak monarşi ve merkeziyetçi yönetim",
+  B: "B) Güçlü bir asabiyet bağına sahip olmak",
+  C: "C) Dini liderlerin yönetimde söz sahibi olması",
+  D: "D) Ekonomik refah ve güçlü ticaret ağları",
+  richtig: "B"
+},
+{
+  frage: "41. Auguste Comte’un Sosyal Statik ve Sosyal Dinamik ayrımı hangi temel farklılığa dayanmaktadır?",
+  A: "A) Sosyal Statik toplumun sabit ve değişmez yönlerini incelerken, Sosyal Dinamik toplumsal değişim ve ilerleme süreçlerini ele alır.",
+  B: "B) Sosyal Statik bireylerin psikolojik durumlarını incelerken, Sosyal Dinamik dinin etkilerini analiz eder.",
+  C: "C) Sosyal Statik sosyal sınıfların güç mücadelelerini incelerken, Sosyal Dinamik bireysel davranışların temel motivasyonlarına odaklanır.",
+  D: "D) Sosyal Statik, deney ve gözlem yöntemine dayalıyken, Sosyal Dinamik metafizik açıklamalara yer verir.",
+  richtig: "A"
+},
+{
+  frage: "42. Comte’un Pozitivist yaklaşımı ile ilgili aşağıdakilerden hangisi yanlıştır?",
+  A: "A) Bilim insanları, toplum adına en iyi kararları verebilir.",
+  B: "B) Toplumsal olaylar doğa bilimleri gibi gözlem ve deney yöntemleriyle incelenebilir.",
+  C: "C) Din ve metafizik açıklamalar yerine bilimsel yöntemler kullanılmalıdır.",
+  D: "D) Din, toplumsal düzen için gereksiz bir unsurdur ve tamamen ortadan kaldırılmalıdır.",
+  richtig: "D"
+},
+{
+  frage: "43. Auguste Comte’un ‘Üç Hal Kanunu’na göre insan düşüncesinin gelişim süreci hangi sırayla ilerler?",
+  A: "A) Metafizik → Pozitif → Teolojik",
+  B: "B) Teolojik → Metafizik → Pozitif",
+  C: "C) Pozitif → Teolojik → Metafizik",
+  D: "D) Metafizik → Teolojik → Pozitif",
+  richtig: "B"
+},
+{
+  frage: "44. Emile Durkheim’ın “Toplumsal Olgu” kavramı hangi iki temel özelliğe sahiptir?",
+  A: "A) Sadece bireyin psikolojisine bağlıdır ve dini inançlarla doğrudan ilişkilidir.",
+  B: "B) Bireyin tamamen içsel tercihleriyle şekillenir ve değişken bir yapıya sahiptir.",
+  C: "C) Bireyin dışında var olan ve zorlayıcı bir güce sahip olan kurallar ve normlar içerir.",
+  D: "D) Sadece ekonomik sistemlerle ilişkilidir ve bireyin özgür iradesine dayanır.",
+  richtig: "C"
+},
+{
+  frage: "45. Durkheim’ın “Kolektif Bilinç” kavramı ile ilgili aşağıdakilerden hangisi doğrudur?",
+  A: "A) Bireylerin tamamen özgür iradesiyle oluşturduğu bireysel değerleri ifade eder.",
+  B: "B) Toplum üyeleri tarafından paylaşılmayan, bireysel düzeyde kalmış inançları içerir.",
+  C: "C) Toplumun üyelerinin ortak inanç, değer ve normlarını temsil eder.",
+  D: "D) Sadece modern toplumlarda görülen bir kavramdır, geleneksel toplumlarda bulunmaz.",
+  richtig: "C"
+},
+{
+  frage: "46. Durkheim’ın geliştirdiği ‘Mekanik Dayanışma’ ve ‘Organik Dayanışma’ arasındaki temel fark nedir?",
+  A: "A) Mekanik dayanışma daha çok modern toplumlara özgüdür, organik dayanışma ise ilkel toplumlarda görülür.",
+  B: "B) Mekanik dayanışma bireyler arasındaki farklılaşmaya dayanırken, organik dayanışma benzeşmeye dayalıdır.",
+  C: "C) Mekanik dayanışma geleneksel toplumlarda, organik dayanışma ise iş bölümünün geliştiği toplumlarda görülür.",
+  D: "D) Mekanik dayanışma kapitalist toplumlarda, organik dayanışma ise sosyalist toplumlarda bulunur.",
+  richtig: "C"
+},
+{
+  frage: "47. Durkheim’a göre Anomi kavramı neyi ifade eder?",
+  A: "A) Toplumun birey üzerindeki baskısını artırarak düzeni sağlamasını.",
+  B: "B) Toplumsal kuralların etkisini kaybetmesiyle ortaya çıkan bunalım ve düzensizlik durumunu.",
+  C: "C) Dinlerin toplumsal yapıya yön veren en önemli güçler olduğunu.",
+  D: "D) Mekanik dayanışmanın bireyleri yabancılaştırarak toplumsal çöküşü hızlandırmasını.",
+  richtig: "B"
+},
+{
+  frage: "48. Durkheim’a göre dinin temel işlevi aşağıdakilerden hangisidir?",
+  A: "A) Toplumsal dayanışmayı ve kolektif bilinci sağlamaktır.",
+  B: "B) Bireylerin tamamen özgür iradesine dayalı ahlaki sistemler oluşturmaktır.",
+  C: "C) Sadece manevi tatmin sağlamak ve bireylerin kişisel gelişimine katkıda bulunmaktır.",
+  D: "D) Bilimle rekabet ederek metafizik düşünceleri yaygınlaştırmaktır.",
+  richtig: "A"
+},
+{
+  frage: "49. Durkheim’ın dinin kökeni ile ilgili geliştirdiği Totemizm kuramına göre, totem ne anlama gelir?",
+  A: "A) İnsanların soylarının bir hayvan ya da bitkiye dayandığına inandıkları kutsal bir varlık.",
+  B: "B) İnsanların ibadet ettikleri soyut bir güç.",
+  C: "C) Toplumların ortak bilinçle oluşturduğu mitolojik karakterler.",
+  D: "D) Bireysel olarak seçilmiş ve tapınılan kişisel objeler.",
+  richtig: "A"
+},
+{
+  frage: "50. Durkheim’a göre toplumun kutsallık atfettiği en temel unsur aşağıdakilerden hangisidir?",
+  A: "A) Bireylerin inanç sistemleri ve kişisel değerleri",
+  B: "B) Devletin hukuki düzeni",
+  C: "C) Toplumun kendisi",
+  D: "D) Bireylerin özgür iradesi ve bireysel ahlak anlayışı",
+  richtig: "C"
+},
+{
+  frage: "51. Karl Marx’a göre diyalektik nedir ve toplumların evriminde nasıl bir rol oynar?",
+  A: "A) İdealler dünyasındaki soyut düşüncelerin sentez edilmesiyle toplumların gelişimini açıklayan bir süreçtir.",
+  B: "B) Zıt sınıfların çatışması sonucu tarihsel ilerlemeyi sağlayan toplumsal bir süreçtir.",
+  C: "C) Toplumların doğal düzen içerisinde herhangi bir çatışma olmadan evrimleştiğini öne süren yaklaşımdır.",
+  D: "D) Sadece zihinsel düzeyde gerçekleşen ve topluma etkisi olmayan soyut bir düşünce modelidir.",
+  richtig: "B"
+},
+{
+  frage: "52. Tarihsel maddecilik kavramı, toplumsal gelişimin hangi temel faktöre dayandığını savunur?",
+  A: "A) Dini inançlar ve manevi değerler",
+  B: "B) Ekonomik altyapı ve üretim ilişkileri",
+  C: "C) Bireysel ahlak ve etik değerler",
+  D: "D) Kültürel normlar ve gelenekler",
+  richtig: "B"
+},
+{
+  frage: "53. Marx’a göre sınıf bilincine sahip bir topluluğun temel özellikleri arasında aşağıdakilerden hangisi bulunmaz?",
+  A: "A) Ortak ekonomik çıkarlar doğrultusunda hareket etmeleri",
+  B: "B) Bir sınıf ideolojisine sahip olmaları",
+  C: "C) Üretim sürecinde aynı rolü üstlenmeleri",
+  D: "D) Farklı kültürel kimliklerden oluşan heterojen bir yapı olmaları",
+  richtig: "D"
+},
+{
+  frage: "54. Karl Marx’ın toplumsal evrim modeline göre hangi aşama nihai olarak toplumun gelişiminin son evresini oluşturur?",
+  A: "A) Kapitalist toplum",
+  B: "B) Feodal toplum",
+  C: "C) Antik toplum",
+  D: "D) Sosyalist toplum",
+  richtig: "D"
+},
+{
+  frage: "55. Marx’ın kapitalizmin kendi içinde barındırdığı çelişkilerden biri olarak gördüğü ‘artık değer’ kavramı ne anlama gelir?",
+  A: "A) Üretim sürecinde işçilerin ürettikleri değerin tamamının kendilerine ücret olarak verilmesi",
+  B: "B) İşçilerin ürettikleri değerin bir kısmının sermaye sahipleri tarafından el konularak kâr olarak kullanılması",
+  C: "C) Toplumun her bireyinin eşit miktarda mal ve hizmet üretmesi gerektiği fikri",
+  D: "D) Ücretli emeğin her zaman adil ve eşit paylaşım sağladığını savunan ekonomik model",
+  richtig: "B"
+},
+{
+  frage: "56. Karl Marx’a göre, sosyalist toplumda hangi unsur ortadan kalkacaktır?",
+  A: "A) Bireysel özgürlükler",
+  B: "B) Ekonomik üretim süreçleri",
+  C: "C) Özel mülkiyet ve sınıfsal farklılıklar",
+  D: "D) Teknolojik ilerleme ve sanayileşme",
+  richtig: "C"
+},
+{
+  frage: "57. Asya tipi üretim tarzı kavramı Marx tarafından nasıl tanımlanmıştır?",
+  A: "A) Köleler, serfler ve ücretli işçilerin üretim araçlarının mülkiyetine sahip olduğu toplumsal model",
+  B: "B) Bütün üretim araçlarının devlete ait olduğu ve işçilerin tamamen devlete bağımlı olduğu üretim biçimi",
+  C: "C) Kapitalist devletlerin sanayileşme sürecinde uyguladığı ekonomik sistem",
+  D: "D) Sadece feodal toplumlarda görülen ve toprak ağalarına dayalı bir üretim modeli",
+  richtig: "B"
+},
+{
+  frage: "58. Karl Marx’a göre dinin temel işlevi aşağıdakilerden hangisidir?",
+  A: "A) Toplumsal barışı ve ahlaki düzeni sağlamak",
+  B: "B) Alt sınıfların ezilmişliğine karşı bir teselli ve avuntu aracı olarak kullanılması",
+  C: "C) İnsanlara sosyalist toplumda nasıl yaşayacaklarını öğretmek",
+  D: "D) Ekonomik üretim süreçlerine yön veren belirleyici bir faktör olmak",
+  richtig: "B"
+},
+{
+  frage: "59. Marx’ın ünlü “Din halkın afyonudur” ifadesi ne anlama gelir?",
+  A: "A) Din, insanların yaşamlarını anlamlandıran ve yönlendiren en önemli sistemdir.",
+  B: "B) Din, insanları uyuşturarak onların gerçek sorunları görmesini engelleyen bir araçtır.",
+  C: "C) Din, işçilerin kapitalist sisteme karşı devrim yapmasını teşvik eden bir ideolojidir.",
+  D: "D) Din, bilimsel ilerlemeye yön veren en önemli toplumsal kurumlardan biridir.",
+  richtig: "B"
+},
+{
+  frage: "60. Marx’a göre “Alt yapı ve üst yapı” kavramları arasındaki ilişki nasıl açıklanır?",
+  A: "A) Üst yapı ekonomik ilişkileri belirler ve alt yapı da dini ve hukuki normları oluşturur.",
+  B: "B) Alt yapı (ekonomik sistem), üst yapı (hukuk, siyaset, din) tarafından şekillendirilir.",
+  C: "C) Alt yapı (ekonomik sistem), üst yapı (hukuk, din, siyaset, kültür) tarafından belirlenmez, tam tersine üst yapı alt yapı tarafından şekillendirilir.",
+  D: "D) Üst yapı, toplumların üretim ilişkilerini oluşturan temel unsurdur ve alt yapı onun işleyişini takip eder.",
+  richtig: "C"
+},
+{
+  frage: "61. Max Weber’in din sosyolojisine getirdiği temel metodolojik yaklaşım aşağıdakilerden hangisidir?",
+  A: "A) Din olgusunun yalnızca ekonomik altyapı tarafından belirlendiğini savunmak",
+  B: "B) Din sosyolojisinin yalnızca bilimsel gözleme ve deneylere dayanması gerektiğini ileri sürmek",
+  C: "C) Toplumsal olayları anlama ve açıklama teknikleriyle analiz etmek",
+  D: "D) Dinlerin toplum üzerindeki etkisini tamamen işlevsellik açısından değerlendirmek",
+  richtig: "C"
+},
+{
+  frage: "62. Weber’e göre “anlama” kavramı neyi ifade eder?",
+  A: "A) Toplumun dini inançlarını ve değerlerini nesnel ölçütlerle değerlendirmek",
+  B: "B) Toplumsal olaylara yüklenen öznel anlamları aktörlerin perspektifinden analiz etmek",
+  C: "C) Sosyal olayları, ekonomik sistemlere bağlı olarak açıklamak",
+  D: "D) İnsanların dini inançlarını rasyonel ve bilimsel çerçevede ele almak",
+  richtig: "B"
+},
+{
+  frage: "63. Max Weber’in ideal tip kavramı nasıl tanımlanır?",
+  A: "A) Sosyal olayların tüm yönlerini kapsayan evrensel bir sosyolojik modeldir",
+  B: "B) Bir toplumda nadiren görülen, ancak soyut ve zihinsel bir yapı oluşturan analitik bir kavramdır",
+  C: "C) Gerçek dünyada birebir karşılığı bulunan toplumsal yapıları açıklayan bir teoridir",
+  D: "D) Ekonomik süreçlerin toplumun sosyal ve kültürel gelişimini belirlediğini öne süren bir yaklaşımdır",
+  richtig: "B"
+},
+{
+  frage: "64. Max Weber’in “Protestan Ahlakı ve Kapitalizm Ruhu” adlı çalışmasına göre, kapitalizmin ortaya çıkışında hangi faktör temel rol oynamıştır?",
+  A: "A) Üretim araçlarının özel mülkiyet altında toplanması",
+  B: "B) Ekonomik altyapı ile din arasındaki doğrudan ilişki",
+  C: "C) Protestan ahlakının rasyonel çalışma disiplini ve sermaye birikimini teşvik etmesi",
+  D: "D) Feodal toplum yapısının kapitalizme doğrudan evrilmesi",
+  richtig: "C"
+},
+{
+  frage: "65. Weber’e göre Protestan ahlakının kapitalist gelişime katkı sağlamasının temel nedeni aşağıdakilerden hangisidir?",
+  A: "A) Protestanlığın bireyleri ekonomik başarı ve zenginliğe teşvik etmesi",
+  B: "B) Protestan toplumların bilim ve teknolojiye yatırım yapması",
+  C: "C) Dini kuralların ekonomik sistemleri doğrudan belirlemesi",
+  D: "D) Kilisenin ekonomik hayata doğrudan müdahale etmesi",
+  richtig: "A"
+},
+{
+  frage: "66. Weber’e göre İslam dünyasında kapitalizmin gelişmesini engelleyen üç temel faktör hangileridir?",
+  A: "A) Tarikatlar, esnaflar ve tüccarların ekonomik sistemde etkili olmaması",
+  B: "B) Cihatçı tabaka, sufizm ve patrimonyalizm",
+  C: "C) Devletin ekonomik sistem üzerindeki denetimi, özel mülkiyetin sınırlanması ve feodal sistem",
+  D: "D) Feodalizmin yokluğu, devlet kontrolünün zayıflığı ve dini teşkilatların ekonomi üzerindeki etkisi",
+  richtig: "B"
+},
+{
+  frage: "67. Max Weber’e göre kapitalizmin doğuş sürecinde etkili olan dini öğreti aşağıdakilerden hangisidir?",
+  A: "A) Kalvinizm",
+  B: "B) Katoliklik",
+  C: "C) Budizm",
+  D: "D) Hinduizm",
+  richtig: "A"
+},
+{
+  frage: "68. Weber’e göre kapitalizmin zaman içinde dini bağlarından koparak dönüşmesi hangi kavramla ifade edilir?",
+  A: "A) Sekülerleşme",
+  B: "B) Bürokratikleşme",
+  C: "C) Demir Kafes",
+  D: "D) Dünyevileşme",
+  richtig: "D"
+},
+{
+  frage: "69. Max Weber’in İslam dünyasında kapitalizmin gelişmemesiyle ilgili tezine yönelik eleştirilerden biri aşağıdakilerden hangisidir?",
+  A: "A) İslam dünyasında sanayileşmenin hiçbir zaman gerçekleşmemiş olması",
+  B: "B) İslam’ın şehirleşmeyi ve ekonomik kalkınmayı teşvik eden bir din olduğu gerçeğinin göz ardı edilmesi",
+  C: "C) Cihat ve tasavvufun, İslam’ın ekonomik yapısını belirleyen tek faktör olması",
+  D: "D) İslam dünyasında ekonomik sistemin tamamen devlet kontrolünde olması",
+  richtig: "B"
+},
+{
+  frage: "70. Weber’in “Demir Kafes” kavramı hangi durumu açıklamak için kullanılır?",
+  A: "A) Kapitalizmin zaman içinde bireyleri makineleşmiş bir düzenin parçası haline getirmesi",
+  B: "B) Feodal toplumların zamanla kapitalist yapıya evrilmesi",
+  C: "C) Modern devletlerin din üzerindeki kontrolünü artırması",
+  D: "D) Dini inançların ekonomik süreçler üzerindeki etkisinin artması",
+  richtig: "A"
+},
+{
+  frage: "71. Din ve toplum ilişkileriyle ilgili olarak aşağıdaki ifadelerden hangisi doğru değildir?",
+  A: "A) Din, bireyin sosyal statüsünü ve rollerini belirleyen önemli bir etkendir.",
+  B: "B) Din, toplumsal kurumları etkileyebileceği gibi, toplumsal kurumlardan da etkilenir.",
+  C: "C) Dinin toplumu şekillendirme gücü, toplumun dini şekillendirme gücünden her zaman daha fazladır.",
+  D: "D) Toplumun sosyokültürel yapısı, dinin yorumlanış biçimini değiştirebilir.",
+  richtig: "C"
+},
+{
+  frage: "72. Aşağıdaki durumlardan hangisi, dinin toplum üzerindeki etkisine bir örnek olarak değerlendirilebilir?",
+  A: "A) Bir toplumun ekonomik sistemini belirleyen en önemli faktörün endüstriyel gelişim olması",
+  B: "B) Bir toplumsal hareketin dinî inançlara dayalı olarak şekillenmesi",
+  C: "C) Teknolojik gelişmelerin toplumun dini yapısını doğrudan dönüştürmesi",
+  D: "D) Siyasal otoritelerin ekonomik kararları belirlemesi",
+  richtig: "B"
+},
+{
+  frage: "73. Dinin toplumsal hayat üzerindeki etkileri arasında aşağıdakilerden hangisi gösterilemez?",
+  A: "A) Sosyal ilişkilerde belirli norm ve değerleri oluşturması",
+  B: "B) Ekonomik faaliyetleri yönlendirmesi",
+  C: "C) Toplumsal tabakalaşmayı belirleyen tek faktör olması",
+  D: "D) Sanat anlayışını ve estetik algıyı şekillendirmesi",
+  richtig: "C"
+},
+{
+  frage: "74. Toplumun din üzerindeki etkisine dair en iyi örnek aşağıdakilerden hangisidir?",
+  A: "A) Hıristiyanlık içindeki reform hareketlerinin ekonomik ve politik gelişmelerden etkilenmesi",
+  B: "B) Toplumda bireylerin dinî öğretileri doğrudan kabul etmesi ve değiştirmemesi",
+  C: "C) Dinî inançların tamamen değişmeden toplumda varlığını sürdürmesi",
+  D: "D) Bütün dinlerin toplumun etkisinden bağımsız olarak şekillenmesi",
+  richtig: "A"
+},
+{
+  frage: "75. Toplumsal değişimin dini uygulamalar üzerindeki etkisine en iyi örnek aşağıdakilerden hangisidir?",
+  A: "A) Dini ritüellerin binlerce yıl boyunca hiç değişmeden devam etmesi",
+  B: "B) Şiilik gibi mezheplerin ortaya çıkışı ve gelişimi",
+  C: "C) Dinin sadece bireysel bir olgu olarak görülmesi",
+  D: "D) Toplumun din karşısında tamamen pasif bir konumda olması",
+  richtig: "B"
+},
+{
+  frage: "76. Din ve toplum arasındaki ilişkiye dair aşağıdaki ifadelerden hangisi yanlıştır?",
+  A: "A) Din, toplumsal yapıyı belirler ve kültürel normlar oluşturur.",
+  B: "B) Toplumsal değişimler, dini kurumların ve inanç sistemlerinin değişimine neden olabilir.",
+  C: "C) Din her toplumda tamamen aynı etkiyi gösterir ve değişmez bir yapıya sahiptir.",
+  D: "D) Toplumun değişen yapıları, dini ritüellerin farklılaşmasına yol açabilir.",
+  richtig: "C"
+},
+{
+  frage: "77. ABD’de 1950’lerde gerçekleşen sivil haklar hareketi ile ilgili olarak aşağıdakilerden hangisi söylenemez?",
+  A: "A) Hareketin ideolojik temeli büyük ölçüde Hıristiyanlık inancına dayanıyordu.",
+  B: "B) Kiliseler, bu hareketin örgütlenme ve yayılma sürecinde merkezi bir rol oynadı.",
+  C: "C) Hareket, tamamen seküler ve dinî temellerden bağımsız bir sosyal oluşumdu.",
+  D: "D) İncil okumaları ve dualar, harekete katılanları motive eden unsurlar arasındaydı.",
+  richtig: "C"
+},
+{
+  frage: "78. Dinî inançların bireyler üzerindeki etkisine dair aşağıdaki ifadelerden hangisi doğrudur?",
+  A: "A) Dinî inançlar bireylerin davranışlarını, sosyal rollerini ve statülerini doğrudan etkileyebilir.",
+  B: "B) Dini inançlar yalnızca kişisel bir tercih olup toplumsal yapıya herhangi bir etki etmez.",
+  C: "C) Bireyler, doğdukları toplumun dinini her zaman sorgulamadan reddederler.",
+  D: "D) Sosyal ilişkiler hiçbir zaman dini inançlar tarafından belirlenmez.",
+  richtig: "A"
+},
+{
+  frage: "79. İslam dünyasında toplumsal değişimin din üzerindeki etkisini gösteren en belirgin örneklerden biri aşağıdakilerden hangisidir?",
+  A: "A) Kadınların camilerde ibadet etme biçiminde tarih boyunca hiçbir değişiklik olmaması",
+  B: "B) Kur’an’daki miras hukukunun zaman içinde farklı yorumlanması ve değişime uğraması",
+  C: "C) Toplumsal yapının din üzerindeki etkisinin olmadığı görüşünün kabul edilmesi",
+  D: "D) İslam toplumlarında tüm dini uygulamaların hiçbir değişime uğramadan günümüze kadar gelmesi",
+  richtig: "B"
+},
+{
+  frage: "80. Din ve toplum ilişkisini en iyi açıklayan yaklaşım aşağıdakilerden hangisidir?",
+  A: "A) Din, toplumu belirleyen tek ve değişmez bir yapıdır.",
+  B: "B) Toplum, dini tamamen şekillendiren ve değiştiren bir güçtür.",
+  C: "C) Din ve toplum arasında çift yönlü ve diyalektik bir ilişki vardır.",
+  D: "D) Dini inançlar toplumsal yapılar üzerinde hiçbir etkiye sahip değildir.",
+  richtig: "C"
+},
+{
+  frage: "81. Aşağıdakilerden hangisi ailenin işlevlerinden biri olarak kabul edilemez?",
+  A: "A) Bireylerin ekonomik statülerini belirleme ve kazançlarını düzenleme",
+  B: "B) Çocukları sosyalleştirme ve toplumsal normları aktarma",
+  C: "C) Dini inançları ve ibadetleri öğretme",
+  D: "D) Toplumsal tabakalaşmayı ve sınıfsal farklılıkları oluşturma",
+  richtig: "D"
+},
+{
+  frage: "82. Ailenin temel işlevlerinden biri olan ‘sosyalleştirme’ ile ilgili doğru ifade hangisidir?",
+  A: "A) Sosyalleştirme süreci yalnızca okulda gerçekleşir, aile bu sürecin dışında kalır.",
+  B: "B) Aile bireylerin toplumun normlarını, değerlerini ve inançlarını öğrenmesini sağlayan temel kurumdur.",
+  C: "C) Sanayileşme sonrası toplumlarda aile sosyalleştirme işlevini tamamen yitirmiştir.",
+  D: "D) Sosyalleşme süreci sadece çocukluk döneminde gerçekleşir.",
+  richtig: "B"
+},
+{
+  frage: "83. Aşağıdaki aile biçimleri ile ilgili hangisi yanlıştır?",
+  A: "A) Geniş aile, genellikle geleneksel toplumlarda daha yaygın bir yapıdır.",
+  B: "B) Çekirdek aile modern toplumlarda ortaya çıkmış ve geniş ailelerin yerini tamamen almıştır.",
+  C: "C) Anaerkil ailede otorite kadının elinde bulunur.",
+  D: "D) Ataerkil ailede baba, ailenin karar mekanizmasını belirleyen en önemli figürdür.",
+  richtig: "B"
+},
+{
+  frage: "84. Çekirdek ailenin yaygınlaşmasıyla ilgili doğru ifade hangisidir?",
+  A: "A) Çekirdek aile, sanayileşme ile birlikte ortaya çıkmış ve geleneksel geniş aile modelinin yerini büyük ölçüde almıştır.",
+  B: "B) Çekirdek aile sadece Batı toplumlarında görülmüş, Doğu toplumlarında asla varlık göstermemiştir.",
+  C: "C) Çekirdek ailenin yaygınlaşması, bireylerin akrabalık ilişkilerinin daha da güçlenmesini sağlamıştır.",
+  D: "D) Çekirdek ailenin ortaya çıkışı, kadınların toplumsal rollerinin değişmesiyle hiçbir bağlantıya sahip değildir.",
+  richtig: "A"
+},
+{
+  frage: "85. Aile-din ilişkisini açıklarken yanlış ifade hangisidir?",
+  A: "A) Aile, dini değerlerin ve ibadetlerin nesiller arası aktarıldığı en temel kurumdur.",
+  B: "B) Aile bireylerinin dini inançlarını belirlemede hiçbir etkisi olmayan bağımsız bir yapıdır.",
+  C: "C) Geleneksel geniş aileler, dini değerlerin daha sıkı korunduğu yapılar olma eğilimindedir.",
+  D: "D) Çekirdek aile modelinde dini eğitim ve ibadet pratikleri zayıflama eğilimindedir.",
+  richtig: "B"
+},
+{
+  frage: "86. Modern toplumlarda çekirdek ailenin dini işlevinin zayıflamasına neden olan faktör hangisidir?",
+  A: "A) Toplumsal dayanışmanın artması ve bireylerin birbirine daha bağlı hale gelmesi",
+  B: "B) Kadınların iş gücüne katılımının azalması ve geleneksel aile yapısının güçlenmesi",
+  C: "C) Bireyselleşmenin artması ve dinsel normların bireylerin özel alanına çekilmesi",
+  D: "D) Geleneksel inançların daha sıkı bir şekilde uygulanmaya başlanması",
+  richtig: "C"
+},
+{
+  frage: "87. Geleneksel aile yapılarında dinin etkisi ile ilgili doğru ifade hangisidir?",
+  A: "A) Geleneksel geniş ailede din, sosyal ilişkiler ve aile bireyleri arasındaki dayanışmayı güçlendiren bir rol oynar.",
+  B: "B) Geleneksel geniş ailelerde dinin etkisi, modern toplumlarda olduğu gibi bireysel tercihlere bağlıdır.",
+  C: "C) Geleneksel aile yapıları sanayileşme öncesi toplumlara özgü olup, günümüzde hiçbir toplumda varlığını sürdürmemektedir.",
+  D: "D) Geniş ailelerde din hiçbir zaman sosyal yapının temel belirleyicisi olmamıştır.",
+  richtig: "A"
+},
+{
+  frage: "88. Modern toplumlarda aile kurumunun karşı karşıya kaldığı en önemli sorun hangisidir?",
+  A: "A) Aile içindeki dini öğretilerin ve ibadetlerin artması",
+  B: "B) Aile içi bağların zayıflaması, boşanma oranlarının yükselmesi ve bireyselleşmenin artması",
+  C: "C) Aile yapılarının günümüzde tamamen değişmemiş olması",
+  D: "D) Çekirdek ailenin geniş aile modeline dönüşmesi",
+  richtig: "B"
+},
+{
+  frage: "89. Aile yapısı ve dinin etkisiyle ilgili yanlış ifade hangisidir?",
+  A: "A) Aile içindeki dini eğitim, bireylerin dini inançlarını ve pratiklerini belirleyebilir.",
+  B: "B) Sanayileşmiş toplumlarda dini geleneklerin etkisi geniş ailelere göre daha zayıftır.",
+  C: "C) Ailenin ekonomik yapısı, dini normların bireyler üzerindeki etkisini belirlemez.",
+  D: "D) Din, ailenin sosyal işlevlerinin şekillenmesinde önemli bir rol oynar.",
+  richtig: "C"
+},
+{
+  frage: "90. Modern toplumlarda çekirdek ailenin yaygınlaşmasıyla ortaya çıkan en büyük problem hangisidir?",
+  A: "A) Aile üyeleri arasında dayanışmanın artması ve dini değerlerin güçlenmesi",
+  B: "B) Yaşlı bireylerin bakımının zorlaşması ve akrabalık bağlarının zayıflaması",
+  C: "C) Aile içinde dini ritüellerin daha fazla uygulanması",
+  D: "D) Çocuk yetiştirmenin kolaylaşması ve bireyler arasında daha sıkı bağların oluşması",
+  richtig: "B"
+},
+{
+  frage: "91. Din ve siyaset ilişkisini açıklarken kullanılan temel kavramlardan biri değildir?",
+  A: "A) Otorite",
+  B: "B) Egemenlik",
+  C: "C) Laiklik",
+  D: "D) Ekonomi",
+  richtig: "D"
+},
+{
+  frage: "92. Tarih boyunca devlete karşı en ilgisiz kalan din hangisidir?",
+  A: "A) Yahudilik",
+  B: "B) Hristiyanlık",
+  C: "C) Budizm",
+  D: "D) İslam",
+  richtig: "C"
+},
+{
+  frage: "93. Hristiyanlıkta devlet otoritesine itaat anlayışı hangi İncil ifadesi ile temellendirilmiştir?",
+  A: "A) 'Tanrı Devleti, dünyaya hâkim olmalıdır.'",
+  B: "B) 'Sezar’ın hakkını Sezar'a, Tanrı'nın hakkını Tanrı'ya veriniz.'",
+  C: "C) 'Güçlü olan kazanır, zayıf olan kaybeder.'",
+  D: "D) 'Devlet, insanları özgürleştirmek için vardır.'",
+  richtig: "B"
+},
+{
+  frage: "94. İslam’da din ve devlet ilişkisi ile ilgili doğru ifade hangisidir?",
+  A: "A) İslam, kesin bir devlet modeli ortaya koymuş ve tüm Müslüman toplumlar bu modeli aynen uygulamıştır.",
+  B: "B) İslam’ın erken dönemlerinde devlet anlayışı yalnızca teokratik bir yönetimi öngörmüştür.",
+  C: "C) İslam’da devletin temel ilkeleri adalet, istişare ve liyakat gibi prensipler üzerine kurulmuştur.",
+  D: "D) İslam devlet yönetiminde yalnızca ruhban sınıfına yer vermiştir.",
+  richtig: "C"
+},
+{
+  frage: "95. Teokratik yönetim biçimini benimseyen devletlerde geçerli olmayan hangisidir?",
+  A: "A) Din adamları devlet yönetiminde söz sahibidir.",
+  B: "B) Devletin yasaları doğrudan dini kurallara dayanır.",
+  C: "C) Devletin yönetiminde yalnızca laik yöneticiler söz sahibi olur.",
+  D: "D) Egemenlik tanrısal bir kaynağa dayandırılır.",
+  richtig: "C"
+},
+{
+  frage: "96. Orta Çağ Avrupa’sında Katolik Kilisesi’nin siyasi otorite üzerindeki etkisini azaltan gelişmeler arasında yer almayan hangisidir?",
+  A: "A) Rönesans ve Reform hareketleri",
+  B: "B) Ulus-devletlerin ortaya çıkışı",
+  C: "C) Martin Luther'in Protestanlığı kurması",
+  D: "D) Haçlı Seferleri'nin başarısızlıkla sonuçlanması",
+  richtig: "D"
+},
+{
+  frage: "97. Osmanlı Devleti'nde hilafet kurumunun kaldırılması hangi yıl gerçekleşmiştir?",
+  A: "A) 1923",
+  B: "B) 1924",
+  C: "C) 1919",
+  D: "D) 1938",
+  richtig: "B"
+},
+{
+  frage: "98. Laiklik kavramının temel ilkelerinden biri olarak kabul edilmeyen hangisidir?",
+  A: "A) Devletin dini kurumları destekleyerek güçlendirmesi",
+  B: "B) Devletin resmi bir dini olmaması",
+  C: "C) Bireylerin dini inanç ve ibadetlerinde özgür olması",
+  D: "D) Din ile devlet işlerinin birbirinden ayrılması",
+  richtig: "A"
+},
+{
+  frage: "99. Din-devlet ilişkisi açısından İngiltere’de uygulanan sistem hangisidir?",
+  A: "A) Devletin dine tamamen karşı olduğu model",
+  B: "B) Devletin belirli bir dini destekleyip diğerlerine karşı olduğu model",
+  C: "C) Devletin din karşısında tarafsız olduğu model",
+  D: "D) Devletin dini tamamen yok etmeye çalıştığı model",
+  richtig: "B"
+},
+{
+  frage: "100. İslam tarihinde Hz. Peygamber’in Medine’de yaptığı en önemli siyasi düzenlemelerden biri hangisidir?",
+  A: "A) Halifelik sistemini kurması",
+  B: "B) Medine Vesikası’nı hazırlayarak farklı din ve grupları tek çatı altında toplaması",
+  C: "C) Mekke ve Medine arasında sürekli bir savaş başlatması",
+  D: "D) Medine'deki tüm Yahudileri sürgün etmesi",
+  richtig: "B"
+},
+{
+  frage: "101. Max Weber’in peygamberlik kavramı çerçevesinde ileri sürdüğü en temel unsur hangisidir?",
+  A: "A) Peygamberin sosyal statüsünü ailesinden devralması",
+  B: "B) Peygamberin karizmatik otoriteye sahip olması",
+  C: "C) Peygamberin dini liderliğini geleneksel kurallara göre kazanması",
+  D: "D) Peygamberin yalnızca bireysel mistik deneyimlerle hareket etmesi",
+  richtig: "B"
+},
+{
+  frage: "102. Weber’e göre peygamberlik iddiasının toplumsal olarak kabul görmesi için en belirleyici faktör hangisidir?",
+  A: "A) Peygamberin devlet tarafından desteklenmesi",
+  B: "B) Peygamberin güçlü bir ekonomik sisteme sahip olması",
+  C: "C) Peygamberin mesajının takipçiler tarafından onaylanması ve inanılması",
+  D: "D) Peygamberin askeri bir örgütlenme ile hareket etmesi",
+  richtig: "C"
+},
+{
+  frage: "103. Weber’in 'Karizmatik Otorite' anlayışına göre peygamberlerin toplum üzerindeki etkisi hangi temele dayanır?",
+  A: "A) Devletin onları desteklemesine",
+  B: "B) Geleneksel yönetim sistemleri ile uyum içinde olmalarına",
+  C: "C) Olağanüstü yetenekleri ve doğaüstü güçlere sahip olduklarına inanılmasına",
+  D: "D) Eğitimli bürokratlardan destek almalarına",
+  richtig: "C"
+},
+{
+  frage: "104. Peygamberlerin liderlikleri altında oluşan dini topluluklar hangi temel unsur üzerine inşa edilir?",
+  A: "A) Rasyonel-bürokratik yönetim",
+  B: "B) Geleneksel otorite sistemleri",
+  C: "C) İnanç ve karizmatik bağlılık",
+  D: "D) Askeri güce dayalı otorite",
+  richtig: "C"
+},
+{
+  frage: "105. Karizmatik otoritenin zamanla geleneksel ve bürokratik otoriteye dönüşme süreci Weber tarafından nasıl adlandırılır?",
+  A: "A) Sekülerleşme",
+  B: "B) Rutinleşme",
+  C: "C) Teokratikleşme",
+  D: "D) Merkantilizm",
+  richtig: "B"
+},
+{
+  frage: "106. Peygamberlerin vefatından sonra liderliğe dayalı sistemlerin uzun vadede sürdürülebilmesi için en önemli ihtiyaç hangisidir?",
+  A: "A) Karizmanın rutinleşmesi ve kurumsallaşması",
+  B: "B) Devlet yönetiminin doğrudan peygamberin ailesine devredilmesi",
+  C: "C) Peygamberin otoritesinin askeri güç ile sürdürülmesi",
+  D: "D) Peygamberin doğrudan tanrısal güçler tarafından korunmaya devam edilmesi",
+  richtig: "A"
+},
+{
+  frage: "107. Weber’e göre peygamberlerin geleneksel otorite sistemleri ile ilişkisi nasıldır?",
+  A: "A) Geleneksel sistemlerle tam uyum içindedirler",
+  B: "B) Geleneksel sistemlere doğrudan bağlıdırlar",
+  C: "C) Geleneksel sistemleri reddeder ve onlara karşı meydan okurlar",
+  D: "D) Geleneksel sistemleri tamamen yok etmeye çalışmazlar",
+  richtig: "C"
+},
+{
+  frage: "108. Peygamberlerin liderliğinde kurulan dini sistemler başlangıçta hangi temel ekonomik yaklaşıma sahiptir?",
+  A: "A) Kapitalist üretim ilişkilerini benimser",
+  B: "B) Maddi ve ekonomik kazançlardan uzak durma eğilimindedir",
+  C: "C) Ekonomik büyümeye öncülük eder",
+  D: "D) Ticaret ve sanayi faaliyetlerine öncelik verir",
+  richtig: "B"
+},
+{
+  frage: "109. Aşağıdakilerden hangisi peygamberlerin otoritesinin toplum içinde kabul edilmesini sağlayan unsurlardan biri değildir?",
+  A: "A) Peygamberin mucizelerle kendini kanıtlaması",
+  B: "B) Peygamberin güçlü bir bürokratik kadroya sahip olması",
+  C: "C) Takipçilerinin ona olağanüstü özellikler atfetmesi",
+  D: "D) Peygamberin inanç sistemini etkili bir şekilde topluma sunması",
+  richtig: "B"
+},
+{
+  frage: "110. Weber’in peygamberlik tanımına göre, bir kişinin peygamber olarak kabul edilmesi hangi faktöre en fazla bağlıdır?",
+  A: "A) Toplumun onu peygamber olarak kabul etmesi ve inanması",
+  B: "B) Kendi iradesiyle peygamber olmayı seçmesi",
+  C: "C) Geleneksel yöneticiler tarafından peygamber ilan edilmesi",
+  D: "D) Eğitim ve sosyal statü ile bu unvanı kazanması",
+  richtig: "A"
+},
+{
+  frage: "111. Doğal dini grupların oluşumunda belirleyici olmayan unsur hangisidir?",
+  A: "A) Aile, kabile ve millet gibi sosyal yapılar",
+  B: "B) Dinin bireylerin toplumsal rollerini belirlemesi",
+  C: "C) Üyelerin sadece dini bağlılık temelinde bir araya gelmesi",
+  D: "D) Toplumsal yapıların din aracılığıyla şekillenmesi",
+  richtig: "C"
+},
+{
+  frage: "112. Sırf dini grupların temel özelliği hangisidir?",
+  A: "A) Üyelerinin bir araya gelmesini sağlayan temel bağın din kardeşliği olması",
+  B: "B) Ailevi ve etnik bağların ön planda tutulması",
+  C: "C) Toplumun geleneksel yapıları ile tamamen uyum içinde olması",
+  D: "D) Dinin ibadet boyutunun ikinci planda tutulması",
+  richtig: "A"
+},
+{
+  frage: "113. Bir dinin peygamber döneminde oluşturduğu ilk topluluk hangi özelliklerle tanımlanır?",
+  A: "A) Merkeziyetçi bir devlet yapısı ile yönetilmesi",
+  B: "B) Peygamberin liderliği altında tek bir otoriteye bağlı olması",
+  C: "C) Farklı dini liderlerin rekabet ettiği bir yapı olması",
+  D: "D) Peygamberin karizmasına dayanmayan bir yönetim anlayışı ile hareket etmesi",
+  richtig: "B"
+},
+{
+  frage: "114. Peygamberin vefatından sonra dini grupların ortaya çıkmasının temel nedeni hangisidir?",
+  A: "A) Toplumun ekonomik yapısının değişmesi",
+  B: "B) Yeni inananların dine farklı yorumlar getirmesi ve mezhepleşme süreçlerinin başlaması",
+  C: "C) Devletin dini kontrol altına almak istemesi",
+  D: "D) Dini liderlerin tek bir merkezi otoriteyi sürdürememesi",
+  richtig: "B"
+},
+{
+  frage: "115. Dinin kurumsallaşması ve gelenekselleşmesinde en önemli faktör hangisidir?",
+  A: "A) İnançların sistemleştirilmesi ve itikadi mezheplerin doğması",
+  B: "B) Peygamberlerin devlet yönetiminde doğrudan rol alması",
+  C: "C) Dinin yalnızca ibadet boyutuyla ilgilenmesi",
+  D: "D) Peygamberlerin öğretisinin bireysel çerçevede kalması",
+  richtig: "A"
+},
+{
+  frage: "116. Dinlerin teşkilatlanmasına ve devlet biçimine dönüşmesine karşı en ciddi protesto hareketleri hangi faktöre dayanır?",
+  A: "A) Dinin toplumda ekonomik eşitsizlikleri gidermede başarısız olması",
+  B: "B) Din adamları sınıfının yozlaşması ve yönetimde söz sahibi olmaya başlaması",
+  C: "C) Dinin mistik öğretilerinin kaybolması",
+  D: "D) Toplumun dini liderlere olan ilgisini kaybetmesi",
+  richtig: "B"
+},
+{
+  frage: "117. Zühd ve Takva hareketlerinin temel özelliği hangisidir?",
+  A: "A) Teokratik bir devlet kurmayı amaçlaması",
+  B: "B) Dünya nimetlerinden uzaklaşarak Tanrı’nın rızasına yönelme anlayışı",
+  C: "C) Toplumu bütünüyle değiştirmeye yönelik bir hareket olması",
+  D: "D) Sadece din adamlarından oluşan bir grup olması",
+  richtig: "B"
+},
+{
+  frage: "118. Aşağıdakilerden hangisi tarikatların ortak özelliklerinden biri değildir?",
+  A: "A) Ruhani liderin etrafında toplanmaları",
+  B: "B) Sosyal ve ekonomik hayatın içinde olmaları",
+  C: "C) İnziva, fakirlik ve çilecilik gibi pratikleri benimsemeleri",
+  D: "D) Üyelerinin yalnızca aile bağları üzerinden seçilmesi",
+  richtig: "D"
+},
+{
+  frage: "119. Dini grupların meşruiyet kazanma süreci hangi unsura dayanır?",
+  A: "A) Tarihsel olarak kurucularına ve kutsal metinlere dayandırılması",
+  B: "B) Devlet tarafından tanınmasına bağlı olması",
+  C: "C) Toplumun ekonomik sistemine tam entegrasyon sağlaması",
+  D: "D) Üyelerinin ailevi ve etnik kökenleri ile şekillendirilmesi",
+  richtig: "A"
+},
+{
+  frage: "120. Dini grup üyeliğinin psikolojik ve sosyolojik açıklaması konusunda yanlış görüş hangisidir?",
+  A: "A) Üyelik rasyonel bir tercih sonucu gerçekleşir",
+  B: "B) Bireyler dini gruba genellikle gönüllü olarak katılır",
+  C: "C) Dini grup üyeliği genellikle zorlayıcı ve beyin yıkama yöntemleriyle gerçekleşir",
+  D: "D) Dini grup üyeleri inanç sistemlerini akılcı ve mantıklı buldukları için kabul ederler",
+  richtig: "C"
+},
+{
+  frage: "121. Toplumsal değişmenin temel karakteristik özelliği aşağıdakilerden hangisidir?",
+  A: "A) Toplumların her zaman ileriye doğru hareket etmesini zorunlu kılması",
+  B: "B) Geçici değişikliklerden ve modadan farklı olarak sürekli ve köklü olması",
+  C: "C) Bireysel farklılıkları esas alarak gerçekleşmesi",
+  D: "D) Toplumsal yapıyı her zaman koruyucu bir etki yapması",
+  richtig: "B"
+},
+{
+  frage: "122. Aşağıdaki faktörlerden hangisi toplumsal değişmenin temel şartları arasında yer almaz?",
+  A: "A) Yeni ihtiyaçların ortaya çıkması",
+  B: "B) Bilgi birikiminin ve teknik gelişimin yayılması",
+  C: "C) Toplumdaki herkesin değişimi desteklemesi",
+  D: "D) Toplumsal yapının karmaşıklık derecesi",
+  richtig: "C"
+},
+{
+  frage: "123. Dinlerin toplumsal değişmeye engel olabilecek bir faktör olarak görülmesinin temel nedeni hangisidir?",
+  A: "A) Dinlerin tamamen bireysel bir inanç sistemi olması",
+  B: "B) Dinlerin gelenekleri koruyarak toplumsal istikrarı sağlamaya yönelik işleve sahip olması",
+  C: "C) Peygamberlerin toplumları değişime zorlamaktan kaçınması",
+  D: "D) Dinlerin sürekli olarak seküler düşünceyle uyum içinde olması",
+  richtig: "B"
+},
+{
+  frage: "124. Aşağıdaki ifadelerden hangisi toplumsal değişmenin temel koşullarından biri değildir?",
+  A: "A) Değişim sürecinin uzun vadeli olması",
+  B: "B) Kolektif olarak gerçekleşmesi",
+  C: "C) Zorunlu olarak ilerleme yönünde olması",
+  D: "D) Belirli bir hız ve tempoya sahip olması",
+  richtig: "C"
+},
+{
+  frage: "125. Toplumsal değişmeye neden olan faktörlerden biri olan ‘nüfus artışı’ nasıl bir etki yaratır?",
+  A: "A) İş bölümü ve uzmanlaşmanın artmasına neden olur",
+  B: "B) Toplumda değişimi durdurur ve geleneksel yapıları güçlendirir",
+  C: "C) Değişimin yalnızca dini yapılar üzerinde etkili olmasını sağlar",
+  D: "D) Teknolojik gelişmeleri tamamen durdurur",
+  richtig: "A"
+},
+{
+  frage: "126. Aşağıdakilerden hangisi toplumsal değişmeye doğrudan etki eden faktörlerden biri değildir?",
+  A: "A) Ekonomik değişimler",
+  B: "B) Bilim ve teknolojideki ilerlemeler",
+  C: "C) Sanat ve estetik algılarındaki dönüşümler",
+  D: "D) Sadece bireysel yaşam tarzlarındaki değişiklikler",
+  richtig: "D"
+},
+{
+  frage: "127. Aşağıdaki yaklaşımlardan hangisi dinin toplumsal değişmeye neden olabileceğini savunur?",
+  A: "A) Dinler her zaman sosyal düzenin korunmasına hizmet eder",
+  B: "B) Peygamberler ve dini liderler mevcut toplumsal yapıyı değiştiren devrimci figürlerdir",
+  C: "C) Dini inançlar sadece bireysel ahlakı şekillendirir ve toplumda değişim yaratmaz",
+  D: "D) Din yalnızca mistik bir öğreti olup toplumları değiştirme potansiyeline sahip değildir",
+  richtig: "B"
+},
+{
+  frage: "128. Dinlerin toplumsal değişimi hızlandırıcı bir faktör olmasına rağmen bazen engelleyici bir rol üstlenmesinin temel sebebi nedir?",
+  A: "A) Dinin yalnızca bireysel bir fenomen olması",
+  B: "B) Dinin toplumsal düzenin korunması yönünde bir işlev görmesi ve gelenekçiliği desteklemesi",
+  C: "C) Dinlerin sadece ruhani boyutlarıyla ilgilenmesi ve sosyal yapıları etkilememesi",
+  D: "D) Toplumsal değişmenin sadece ekonomik süreçlerle açıklanabilir olması",
+  richtig: "B"
+},
+{
+  frage: "129. Aşağıdaki dinî hareketlerden hangisi, dinin toplumsal değişimi hızlandırıcı bir faktör olduğuna örnek gösterilebilir?",
+  A: "A) Orta Çağ Katolik Kilisesi’nin muhafazakâr politikaları",
+  B: "B) İslam’ın doğuşu ve Arap toplumu üzerindeki kültürel dönüşümü",
+  C: "C) Hindu kast sisteminin sürekliliği",
+  D: "D) Budizm’in devlet otoritesine karşı ilgisiz kalması",
+  richtig: "B"
+},
+{
+  frage: "130. Toplumsal değişmeyi yavaşlatan veya durduran bir dinî yapılanma aşağıdakilerden hangisidir?",
+  A: "A) Reformist Protestan hareketleri",
+  B: "B) Selefi köktendinci hareketler",
+  C: "C) Toplumsal yenilikleri destekleyen mistik akımlar",
+  D: "D) Modernleşmeyi teşvik eden dinî reform hareketleri",
+  richtig: "B"
+},
+{
+  frage: "131. Sosyal farklılaşmanın temel özelliği aşağıdakilerden hangisidir?",
+  A: "A) Bireylerin toplumda tek bir rol oynamasını sağlamak",
+  B: "B) Toplumsal düzenin değişmeden korunmasını zorunlu hale getirmek",
+  C: "C) Bireylerin farklı roller üstlenerek iş bölümü ve statü farklılaşmasına yol açması",
+  D: "D) Toplumdaki herkesin eşit statüye sahip olmasını garanti etmek",
+  richtig: "C"
+},
+{
+  frage: "132. İlkel toplumlarda sosyal farklılaşmanın en belirgin özelliği aşağıdakilerden hangisidir?",
+  A: "A) Karmaşık iş bölümünün yaygınlaşması",
+  B: "B) Bireylerin sosyal statüleri ve dini rollerinin birbirinden tamamen bağımsız olması",
+  C: "C) Dini liderlerin aynı zamanda siyasi ve ekonomik liderler olarak da görev yapması",
+  D: "D) Mesleklerin büyük ölçüde bireylerin tercihlerine göre belirlenmesi",
+  richtig: "C"
+},
+{
+  frage: "133. Karmaşık toplumlarda sosyal farklılaşma nasıl bir etki yaratır?",
+  A: "A) İş bölümünün artmasına ve uzmanlaşmanın yaygınlaşmasına neden olur",
+  B: "B) Toplumdaki bütün bireylerin aynı görevleri üstlenmesini sağlar",
+  C: "C) Dinin toplum üzerindeki etkisini tamamen ortadan kaldırır",
+  D: "D) Toplumda statü farklarını ve meslek ayrımlarını azaltır",
+  richtig: "A"
+},
+{
+  frage: "134. Sosyal farklılaşmanın din üzerinde yarattığı etki aşağıdakilerden hangisidir?",
+  A: "A) Dinin toplumu bütünleştirici rolünü tamamen ortadan kaldırması",
+  B: "B) Dinlerin toplumdaki farklı meslek gruplarına göre farklı şekillerde yorumlanmasına neden olması",
+  C: "C) Dinin zamanla bireysel bir inanış haline dönüşmesi ve toplumsal etkisini yitirmesi",
+  D: "D) Dinin sosyal roller ve statüler üzerinde hiçbir etkisinin olmaması",
+  richtig: "B"
+},
+{
+  frage: "135. İlkel ve karmaşık toplumlar arasındaki sosyal farklılaşma farkı aşağıdaki seçeneklerden hangisiyle en iyi açıklanır?",
+  A: "A) İlkel toplumlarda sosyal roller büyük ölçüde doğuştan belirlenirken, karmaşık toplumlarda iş bölümü ve uzmanlaşma artmıştır",
+  B: "B) Karmaşık toplumlarda statü farklılıkları ortadan kalkmış, herkes eşit roller üstlenmiştir",
+  C: "C) İlkel toplumlarda meslekler ve statüler birbirinden tamamen bağımsızdır",
+  D: "D) Karmaşık toplumlarda din, toplum üzerindeki etkisini tamamen yitirmiştir",
+  richtig: "A"
+},
+{
+  frage: "136. Din ile sosyal farklılaşma arasındaki ilişkiyle ilgili aşağıdakilerden hangisi doğrudur?",
+  A: "A) Din, sosyal farklılaşmayı engeller ve bireylerin tek bir statüye sahip olmasını sağlar",
+  B: "B) Sosyal farklılaşma arttıkça, dinin toplum üzerindeki etkisi tamamen kaybolur",
+  C: "C) Din, toplumun farklılaşmasına katkıda bulunarak mezhep, tarikat gibi dini yapılar oluşturur",
+  D: "D) Din ve sosyal farklılaşma arasında hiçbir doğrudan ilişki yoktur",
+  richtig: "C"
+},
+{
+  frage: "137. Dinlerin toplumsal bütünleşme üzerindeki etkisini en iyi açıklayan ifade aşağıdakilerden hangisidir?",
+  A: "A) Din, toplumda gruplaşmalara neden olarak sosyal bütünleşmeyi engeller",
+  B: "B) Din, bireyleri ortak değerler etrafında birleştirerek sosyal dayanışmayı güçlendirir",
+  C: "C) Din, toplumda farklı grupların birbirinden ayrışmasına ve çatışmasına neden olur",
+  D: "D) Din, sadece bireysel inançları ilgilendirdiği için toplumsal bütünleşme üzerinde etkisi yoktur",
+  richtig: "B"
+},
+{
+  frage: "138. İlkel toplumlarda kadınların dini roller açısından karşılaştığı durum aşağıdakilerden hangisidir?",
+  A: "A) Kadınlar, erkeklerle eşit dini liderlik rollerine sahip olmuşlardır",
+  B: "B) Kadınlar, dini törenlerin yönetiminde erkeklerden daha fazla söz sahibi olmuştur",
+  C: "C) Kadınlar, dini törenlerden dışlanmış veya erkeklerden ayrı bir ibadet düzenine tabi tutulmuştur",
+  D: "D) Kadınlar, dini ritüellerde tamamen özgür bırakılmış ve herhangi bir kısıtlama ile karşılaşmamıştır",
+  richtig: "C"
+},
+{
+  frage: "139. Modern toplumlarda dinin toplumsal farklılaşma ile ilişkisi nasıl değişmiştir?",
+  A: "A) Dini inançlar ve pratikler toplumun farklı statü ve meslek gruplarına göre farklılık göstermeye başlamıştır",
+  B: "B) Modern toplumlarda din, tamamen bireysel bir inanç haline gelmiş ve toplumsal farklılaşma ile ilgisi kalmamıştır",
+  C: "C) Dini liderler, toplumun her kesiminde eşit oranda etkili olmaya devam etmiştir",
+  D: "D) Sosyal farklılaşmanın artmasıyla birlikte, dinin toplum üzerindeki etkisi her alanda tamamen ortadan kalkmıştır",
+  richtig: "A"
+},
+{
+  frage: "140. Toplumsal bütünleşme açısından dinin en önemli işlevi aşağıdakilerden hangisidir?",
+  A: "A) Toplumu ortak değerler etrafında bir araya getirerek dayanışmayı ve düzeni sağlamak",
+  B: "B) Bireylerin birbirinden bağımsız yaşamasını teşvik etmek",
+  C: "C) Dinî farklılaşmaların artmasını sağlayarak toplumda kutuplaşmalara neden olmak",
+  D: "D) Geleneksel yapıları tamamen ortadan kaldırarak bireyleri özgür bırakmak",
+  richtig: "A"
+}
+	];
+	
+	var nr = 0;
+	function anzeigen() {
+    document.getElementById("frageText").innerHTML = fragen[nr].frage;
+    document.getElementById("textA").innerHTML = fragen[nr].A;
+    document.getElementById("textB").innerHTML = fragen[nr].B;
+    document.getElementById("textC").innerHTML = fragen[nr].C;
+    document.getElementById("textD").innerHTML = fragen[nr].D;
+    document.getElementById("meldung").innerHTML = "";
+
+    var radios = document.querySelectorAll('input[name="ant"]');
+    for (var i = 0; i < radios.length; i++) {
+        radios[i].checked = false;
+    }
+    document.querySelector('form').style.display = "block";
+	}
+
+	function weiter() {
+		var auswahl = document.querySelector('input[name="ant"]:checked');
+		if(auswahl == null){
+			document.getElementById("meldung").innerHTML = "Lütfen bir cevap seçiniz!";
+			return;
+		}
+		if(auswahl.value == fragen[nr].richtig){
+			nr = nr + 1;
+
+			if(nr < fragen.length){
+				anzeigen();
+			} else {
+				document.getElementById("frageText").innerHTML = "Bölüm tamamlandı";
+				document.getElementById("meldung").innerHTML = "Tüm soruları doğru cevapladın! <br> Aferin...";
+				document.querySelector('form').style.display = "none";
+				}
+		} else {
+			document.getElementById("meldung").innerHTML = "Cevabın yanlış, tekrar dene";
+		}
+	}
+	
+	function springeZuFrage() {
+    var nummer = parseInt(document.getElementById("frageNummer").value);
+    if(isNaN(nummer) || nummer < 1){
+        document.getElementById("meldungSprung").innerHTML = "Lütfen geçerli bir sayı girin!";
+        return;
+    }
+    if(nummer > fragen.length){
+        document.getElementById("meldungSprung").innerHTML = 
+            "O kadar soru yok! <br> Din Sosyolojisi bölümünde en fazla " + fragen.length + " soru bulunmaktadır.";
+        return;
+    }
+    nr = nummer - 1;
+    anzeigen();
+    document.getElementById("meldungSprung").innerHTML = "";
+	}
+	
+	anzeigen();
+	</script>
+	</body>
+</html>

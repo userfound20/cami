@@ -1,0 +1,1047 @@
+<html lang="de">
+	<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Bölüm 2 - Akaid</title>
+		<style>
+		body{
+			font-family: Arial;
+			background:#f2f2f2;
+			text-align:center;
+		}
+		.box{
+			background:white;
+			width:90%;
+			max-width:600px;
+			margin:20px auto;
+			padding:20px;
+			border-radius:10px;
+			box-shadow:0 0 10px #aaa;
+		}
+		button{
+			padding:10px 20px; 
+			background:#2c7be5; 
+			color:white; 
+			border:none; 
+			border-radius:5px; 
+			cursor:pointer;
+		}
+		button:hover{
+			background:#1a5fc2;
+		}
+		a{
+			display:inline-block;
+			margin-top:20px;
+			text-decoration:none;
+			color:#2c7be5;
+		}
+		@media (max-width: 400px) {
+			h1 {
+				font-size: 1.5rem;
+			}
+			h2 {
+				font-size: 1.2rem;
+			}
+			button {
+				padding: 10px 0;
+			}
+		}
+		</style>
+	</head>
+
+	<body>
+	<div class="box">
+		<h1>Bölüm 2 - Akaid</h1>
+		<h2 id="frageText"></h2>
+		<form>
+			<input type="radio" name="ant" value="A"> <span id="textA"></span><br><br>
+			<input type="radio" name="ant" value="B"> <span id="textB"></span><br><br>
+			<input type="radio" name="ant" value="C"> <span id="textC"></span><br><br>
+			<input type="radio" name="ant" value="D"> <span id="textD"></span><br><br>
+			<button type="button" onclick="weiter()">sonraki soru</button>
+		</form>
+		<p id="meldung"></p>
+		<a href="index.html"> Ana sayfaya dön </a>
+	</div>
+	
+	<div class="box">
+	  <h2> Hangi soruya atlamak istiyorsun? </h2>
+	  <input type="number" id="frageNummer" placeholder="Sayı girin" style="width: 80px;"><br><br>
+	  <button type="button" onclick="springeZuFrage()"> Soruya git </button>
+	  <p id="meldungSprung"></p>
+	</div>
+
+	
+	<script>
+	var fragen = [
+	{
+    frage: "1. Wilhelm Schmidt’in ortaya koyduğu ‘İlkel Monoteizm’ teorisine göre, dinin başlangıcı hangi inanca dayanmaktadır?",
+    A: "A) Şamanizme",
+    B: "B) Çok tanrılı inançlara",
+    C: "C) Tek tanrı inancına",
+    D: "D) Doğa tapınmasına",
+    richtig: "C"
+	},
+	{
+		frage: "2. İslam’a göre dinin temel niteliği aşağıdakilerden hangisidir?",
+		A: "A) Zamanla değişim ve evrim geçirmesi",
+		B: "B) İnsan kültürüyle birlikte gelişmesi",
+		C: "C) İnanç ve ibadet açısından değişmez olması",
+		D: "D) Tarihsel süreçte farklılık göstermesi",
+		richtig: "C"
+	},
+	{
+		frage: "3. Pozitivist sosyal bilimcilere göre dinin kaynağı aşağıdakilerden hangisidir?",
+		A: "A) İnsanların içsel sezgileri",
+		B: "B) Büyü ve korku",
+		C: "C) Vahiy yoluyla Allah’tan gelen bir sistem",
+		D: "D) Toplumsal gelenekler",
+		richtig: "B"
+	},
+	{
+		frage: "4. Dinin anlam çerçevesinde, İslam’a göre dinin gerçek hükmedeni kimdir?",
+		A: "A) Peygamberler",
+		B: "B) Alimler",
+		C: "C) İnsan aklı",
+		D: "D) Allah",
+		richtig: "D"
+	},
+	{
+		frage: "5. ‘Tevfik’ kavramı aşağıdakilerden hangisini ifade eder?",
+		A: "A) Allah’ın kuluna destek vermesi ve başarılı kılması",
+		B: "B) Kişinin kendi başına bırakılması",
+		C: "C) Günahlarından dolayı cezalandırılması",
+		D: "D) İlahi yasaların değişime uğraması",
+		richtig: "A"
+	},
+	{
+		frage: "6. İman ve ibadetin birbirinden ayrılması hangi kavramla ilişkilendirilebilir?",
+		A: "A) Tevhid",
+		B: "B) Ateizm ve deizm",
+		C: "C) Mürcie",
+		D: "D) Kadıyanilik",
+		richtig: "C"
+	},
+	{
+		frage: "7. İslam kelimesinin kökü olan ‘selm’ ve ‘silm’ kelimeleri aşağıdakilerden hangisini ifade eder?",
+		A: "A) Teslimiyet ve barış",
+		B: "B) Günah ve arınma",
+		C: "C) Hakikat ve iman",
+		D: "D) Bağlılık ve ibadet",
+		richtig: "A"
+	},
+	{
+		frage: "8. İslam’a göre, dinin ilerlemesi ve gelişmesi ne anlama gelmektedir?",
+		A: "A) İnanç esaslarının değişmesi",
+		B: "B) Peygamberlerin yeni hükümler getirmesi",
+		C: "C) Yeni ibadet şekillerinin ortaya çıkması",
+		D: "D) Kültürel ve sosyal şartlara göre düzenlenmesi",
+		richtig: "D"
+	},
+	{
+		frage: "9. Akaid kavramı hangi kökten türemiştir ve ne anlama gelir?",
+		A: "A) \"İtikad\" kökünden gelir ve inanç sistemlerini ifade eder",
+		B: "B) \"Akd\" kökünden gelir ve bağlama, düğümleme anlamına gelir",
+		C: "C) \"İman\" kökünden gelir ve ibadetleri kapsar",
+		D: "D) \"Takva\" kökünden gelir ve günahlardan kaçınmayı ifade eder",
+		richtig: "B"
+	},
+	{
+		frage: "10. Müminin sahip olması gereken temel özelliklerden biri aşağıdakilerden hangisidir?",
+		A: "A) Peygamberleri kabul etmese bile Allah’a inanmak",
+		B: "B) Dinin yalnızca ibadet boyutuna önem vermek",
+		C: "C) İnanç esaslarının tamamına şüphesiz inanmak",
+		D: "D) Sadece Kur’an’a inanmak, hadisleri reddetmek",
+		richtig: "C"
+	},
+	{
+		frage: "11. “Dinde zorlama yoktur.” ayetinden çıkarılabilecek en doğru anlam aşağıdakilerden hangisidir?",
+		A: "A) Herkesin kendi dinini seçme özgürlüğü vardır",
+		B: "B) Zorla Müslüman yapılan kişi de Müslümandır",
+		C: "C) Din, insanlara zorla öğretilmelidir",
+		D: "D) İnsanlar, inanç konusunda baskı altında bırakılmalıdır",
+		richtig: "A"
+	},
+	{
+		frage: "12. Kur’an’a göre inkârın (küfrün) temel sebeplerinden biri nedir?",
+		A: "A) İnsanların doğuştan inançsız olması",
+		B: "B) Hırs, kibir ve inat gibi duygular",
+		C: "C) Toplumun baskıları nedeniyle inanmayı reddetmek",
+		D: "D) Bilginin olmaması ve insanın zayıf yaratılması",
+		richtig: "B"
+	},
+	{
+		frage: "13. Münafıklık kavramı aşağıdakilerden hangisiyle en iyi tanımlanabilir?",
+		A: "A) İçi ve dışı farklı olup, inanmadığı hâlde inanmış gibi görünmek",
+		B: "B) Bir dine inanıp, başka bir dine geçmek",
+		C: "C) İslam’ı kabul etmeyip ateizmi benimsemek",
+		D: "D) Kendi dini inancını sorgulamak",
+		richtig: "A"
+	},
+	{
+		frage: "14. Fâsık bir kişi aşağıdaki hangi davranışı sergileyen kişidir?",
+		A: "A) İbadetlerini tam olarak yerine getiren kişi",
+		B: "B) Allah’ın birliğini kabul etmeyen kişi",
+		C: "C) Sadece Allah’a ibadet edip, peygamberleri kabul etmeyen kişi",
+		D: "D) Büyük günah işleyip, günah işlemekte ısrar eden kişi",
+		richtig: "D"
+	},
+	{
+		frage: "15. Allah’a inanmanın temel ilkesi aşağıdakilerden hangisidir?",
+		A: "A) Allah’ı görmek ve sonra inanmak",
+		B: "B) Onun tüm sıfatlarının bilinmesi ve isimlerinin ezberlenmesi",
+		C: "C) Allah’ın varlığı hakkında şüpheye düşmek ve araştırma yapmak",
+		D: "D) O’nun var ve bir olduğuna inanmak, ortaklıkları reddetmek",
+		richtig: "D"
+	},
+	{
+		frage: "16. Allah’ın isimlerinin ve sıfatlarının sayısız olması ne anlama gelmektedir?",
+		A: "A) Allah’ın isimlerinin ve sıfatlarının insanlar tarafından sınırlandırılamayacağı",
+		B: "B) Allah’ın yalnızca Kur’an’da geçen isimlerle tanınması gerektiği",
+		C: "C) 99 ismin dışında başka isim ve sıfatın bulunmadığı",
+		D: "D) Hadislerde ve Kur’an’da geçen isimlerin değiştirilebileceği",
+		richtig: "A"
+	},
+	{
+		frage: "17. “Allah’ın sıfatları insanların isimlerinden farklıdır.” ifadesinin anlamı aşağıdakilerden hangisidir?",
+		A: "A) İnsanlar, Allah’ın sıfatlarına benzer sıfatlar taşımazlar",
+		B: "B) İnsanların isimleri onların karakterlerini belirler",
+		C: "C) Allah’ın isimleri, yalnızca bir lafızdan ibaret olmayıp anlamı ifade eder",
+		D: "D) Allah’ın isimleri sadece Kur’an’da geçen kelimelerden ibarettir",
+		richtig: "C"
+	},
+	{
+		frage: "18. Allah’ın subûtî sıfatlarından biri olan ‘Hayat’ neyi ifade eder?",
+		A: "A) Allah’ın zaman ve mekân içerisinde yaşamasını",
+		B: "B) Allah’ın canlılara can vermesini",
+		C: "C) Allah’ın her an diri ve canlı olmasını",
+		D: "D) Allah’ın yaratılmışlarla birlikte var olmasını",
+		richtig: "C"
+	},
+	{
+		frage: "19. “Allah’ın ezelî ve ebedî kelamı” ifadesi hangi sıfatına işaret eder?",
+		A: "A) Kudret",
+		B: "B) Kelam",
+		C: "C) Tekvin",
+		D: "D) İrade",
+		richtig: "B"
+	},
+	{
+		frage: "20. Allah’ın yaratılmışlara benzemediğini ifade eden sıfatı aşağıdakilerden hangisidir?",
+		A: "A) Vahdaniyet",
+		B: "B) Bekâ",
+		C: "C) Muhâlefetün li’l-havâdis",
+		D: "D) Kıyam bi-nefsihî",
+		richtig: "C"
+	},
+	{
+		frage: "21. Allah’ın kendi kendine var olması anlamına gelen sıfatı hangisidir?",
+		A: "A) Kıyam bi-nefsihî",
+		B: "B) Hayat",
+		C: "C) İlim",
+		D: "D) Tekvin",
+		richtig: "A"
+	},
+	{
+		frage: "22. “Allah’ın hiçbir şeye muhtaç olmaması” hangi sıfatıyla doğrudan ilişkilidir?",
+		A: "A) Vahdaniyet",
+		B: "B) Kudret",
+		C: "C) İrade",
+		D: "D) Samed",
+		richtig: "D"
+	},
+	{
+		frage: "23. Allah’ın yaratma sıfatı (Tekvin) hangi mezhep tarafından ayrıca bir sıfat olarak ele alınmıştır?",
+		A: "A) Eş’arîlik",
+		B: "B) Hanefîlik",
+		C: "C) Mâturîdîlik",
+		D: "D) Şâfiîlik",
+		richtig: "C"
+	},
+	{
+		frage: "24. Allah’ın subûtî sıfatlarıyla ilgili aşağıdaki ifadelerden hangisi yanlıştır?",
+		A: "A) Allah’ın ilmi her şeyi kuşatır",
+		B: "B) Allah’ın iradesi sınırlıdır",
+		C: "C) Allah’ın kudreti tüm mümkün olanlara yeter",
+		D: "D) Allah’ın kelam sıfatı ezelîdir",
+		richtig: "B"
+	},
+	{
+		frage: "25. Allah’ın işitme ve görme sıfatları ile ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+		A: "A) Allah’ın işitmesi ve görmesi insanlar gibi organlarla gerçekleşir",
+		B: "B) Allah’ın işitmesi ve görmesi sınırlıdır",
+		C: "C) Allah sadece peygamberlerin söylediklerini işitir",
+		D: "D) Allah, hem görünen hem de görünmeyen her şeyi işitir ve görür",
+		richtig: "D"
+	},
+	{
+		frage: "26. “Allah’ın dilediğini yapabilmesi” hangi sıfatının fonksiyonunu ifade eder?",
+		A: "A) İrade",
+		B: "B) Tekvin",
+		C: "C) Kudret",
+		D: "D) Kelam",
+		richtig: "A"
+	},
+	{
+		frage: "27. Aşağıdaki hangi ayet, Allah’ın bir ve yegâne olduğunu açıkça ifade etmektedir?",
+		A: "A) “Allah’ın zatı dışında her şey yok olacaktır.”",
+		B: "B) “De ki: Allah birdir, hiçbir eksiği olmayan, hiçbir şeye muhtaç olmayandır.”",
+		C: "C) O, dilediğini yapandır.”",
+		D: "D) O, kullarına karşı merhametlidir.”",
+		richtig: "B"
+	},
+	{
+		frage: "28. “O’nun işi, bir şeyi irade ettiğinde ona ‘Ol’ demektir ve o da hemen oluverir.” ayeti hangi sıfatını ifade eder?",
+		A: "A) Kelam",
+		B: "B) Kudret",
+		C: "C) Hayat",
+		D: "D) Bekâ",
+		richtig: "B"
+	},
+	{
+		frage: "29. Allah’ın insanlara hitap etmesi ve vahiy yoluyla emirlerini bildirmesi hangi sıfatıyla ilgilidir?",
+		A: "A) Tekvin",
+		B: "B) İrade",
+		C: "C) Kudret",
+		D: "D) Kelam",
+		richtig: "D"
+	},
+	{
+		frage: "30. Kaderin temel tanımı aşağıdakilerden hangisidir?",
+		A: "A) İnsanların fiillerini tamamen önceden belirleyen bir sistemdir.",
+		B: "B) İnsan iradesini tamamen devre dışı bırakan bir kavramdır.",
+		C: "C) Allah’ın sınırsız ilmi ile her şeyi bilmesi ve takdir etmesidir.",
+		D: "D) Allah’ın olayları yalnızca olacakları an bilmesidir.",
+		richtig: "C"
+	},
+	{
+		frage: "31. Allah’ın ilminin sınırsız olması ne anlama gelir?",
+		A: "A) Allah için zaman ve mekân farkı yoktur, her şeyi en ince ayrıntısına kadar bilir.",
+		B: "B) Allah geleceği bilemez, sadece şimdiki zamanı bilir.",
+		C: "C) Allah’ın bilgisi, yalnızca geçmişle sınırlıdır.",
+		D: "D) Allah, sadece büyük olayları bilir, küçük detayları bilmez.",
+		richtig: "A"
+	},
+	{
+		frage: "32. “Allah göklerde ve yerde olanları bilir.” ayetinin ifade ettiği temel kavram aşağıdakilerden hangisidir?",
+		A: "A) Allah’ın iradesi",
+		B: "B) Allah’ın kelamı",
+		C: "C) Allah’ın kudreti",
+		D: "D) Allah’ın ilmi",
+		richtig: "D"
+	},
+	{
+		frage: "33. Allah’ın insanlara müdahale etmemesinin sebebi nedir?",
+		A: "A) İnsanların kendi başlarına doğru yolu bulmalarını istemesi",
+		B: "B) İnsan iradesinin tamamen bağımsız olması",
+		C: "C) İnsanlara adaletli bir şekilde mühlet tanıması",
+		D: "D) Allah’ın insanlara karşı ilgisiz olması",
+		richtig: "C"
+	},
+	{
+		frage: "34. Kaderin en önemli fonksiyonu nedir?",
+		A: "A) İnsanları zorla yönlendirmek",
+		B: "B) Olayların sebeplerini ve düzenini anlamamızı sağlamak",
+		C: "C) İnsanların geçmişte yaptıkları hataları değiştirmelerini sağlamak",
+		D: "D) İnsanları tamamen özgür bırakmaktır",
+		richtig: "B"
+	},
+	{
+		frage: "35. Kader ve kaza arasındaki temel fark aşağıdakilerden hangisidir?",
+		A: "A) Kader, Allah’ın olacak şeyleri bilmesi ve takdir etmesi; kaza ise bu bilgilerin yaratılmasıdır.",
+		B: "B) Kader ve kaza tamamen aynı anlama gelir.",
+		C: "C) Kader, insanların fiillerini belirlerken, kaza onların sonucudur.",
+		D: "D) Kader sadece iyi olaylarla ilgilidir, kaza ise kötü olaylarla ilgilidir.",
+		richtig: "A"
+	},
+	{
+		frage: "36. “Kader sırdır, kaza o sırrın açığa çıkmasıdır.” sözü ne anlama gelir?",
+		A: "A) Kaderin bilinemez, kazanın ise bilinir olduğu anlamına gelir.",
+		B: "B) Kader ve kaza aynı şeydir.",
+		C: "C) İnsanlar hem kaderi hem de kazayı bilebilirler.",
+		D: "D) Kader insanların kontrolündedir, kaza ise Allah’ın iradesindedir.",
+		richtig: "A"
+	},
+	{
+		frage: "37. İnsanların yaptığı fiillerin iki türü vardır. Bunlardan ‘ızdırarî fiiller’ hangi durumu ifade eder?",
+		A: "A) Kendi iradesiyle gerçekleştirdiği fiiller",
+		B: "B) Doğal olarak gerçekleşen, insanın kontrolü dışındaki fiiller",
+		C: "C) İnsanın karar vererek gerçekleştirdiği tüm eylemler",
+		D: "D) İrade gerektiren ve insanın sorumlu olduğu fiiller",
+		richtig: "B"
+	},
+	{
+		frage: "38. Aşağıdakilerden hangisi insanın sorumluluğunda olan fiillerdendir?",
+		A: "A) Kalbin çalışması",
+		B: "B) Kan dolaşımı",
+		C: "C) Göz kırpmak",
+		D: "D) Konuşmak ve yürümek",
+		richtig: "D"
+	},
+	{
+		frage: "39. İnsanın yaptığı ihtiyarî fiillerde üç unsur bulunur. Aşağıdakilerden hangisi bunlardan biri değildir?",
+		A: "A) İnsanın istemesi (irade)",
+		B: "B) İnsanın gücünün yeterli olması (istitaat)",
+		C: "C) Allah’ın yaratması",
+		D: "D) Başka bir insanın yönlendirmesi",
+		richtig: "D"
+	},
+	{
+		frage: "40. “Biz insana doğru yolu gösterdik, dilerse şükredenlerden, dilerse nankörlük edenlerden olur.” ayeti hangi ilkeyi ifade eder?",
+		A: "A) İnsanların kendi tercihlerinin sorumluluğunu taşıdığını",
+		B: "B) İnsanların tamamen özgür olduğunu",
+		C: "C) İnsan iradesinin olmadığını",
+		D: "D) İnsanların zorunlu olarak kaderlerini yaşadığını",
+		richtig: "A"
+	},
+	{
+		frage: "41. Kaderin gerçekleşmesiyle ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+		A: "A) İnsan kaderini değiştirebilir, kaza ise değiştirilemez.",
+		B: "B) İnsan yaptığı her fiili kendi başına gerçekleştirir, Allah fiile karışmaz.",
+		C: "C) İnsan iradesi ve Allah’ın yaratması birlikte çalışır.",
+		D: "D) İnsan hiçbir fiilden sorumlu değildir çünkü hepsi Allah tarafından yaratılmıştır.",
+		richtig: "C"
+	},
+	{
+		frage: "42. Allah’ın insanlara peygamberler ve kitaplar göndermesinin temel sebebi nedir?",
+		A: "A) Onları doğru yolda yönlendirmek ve desteklemek",
+		B: "B) Onların özgürlüğünü sınırlamak",
+		C: "C) İnsanların iradesini elinden almak",
+		D: "D) İnsanları zorla inandırmak",
+		richtig: "A"
+	},
+	{
+		frage: "43. “Dinde zorlama yoktur, çünkü doğru ile yanlış açıklanmıştır.” ayetinin anlamı nedir?",
+		A: "A) İnsanlar diledikleri gibi inançlarını değiştirebilirler.",
+		B: "B) Allah insanları iman etmeye zorlamaz, doğru yolu gösterir.",
+		C: "C) İnsanlara dini konularda hiçbir emir verilmemiştir.",
+		D: "D) İnsanların kaderi zaten belirli olduğu için seçim yapmalarına gerek yoktur.",
+		richtig: "B"
+	},
+	{
+		frage: "44. Ahirette insanların alacağı karşılık hangi faktöre bağlıdır?",
+		A: "A) İnsanların doğuştan sahip olduğu kaderlerine",
+		B: "B) Allah’ın doğrudan seçtiği kişilere",
+		C: "C) İnsanların dünya hayatında yaptığı tercihlere ve amellere",
+		D: "D) Sadece insanın niyetine, hiçbir fiiline bağlı değildir",
+		richtig: "C"
+	},
+	{
+		frage: "45. Kur’an’da geçen 'nebi' ve 'resul' kelimeleri arasındaki fark aşağıdakilerden hangisidir?",
+		A: "A) Resul kendisine kitap verilen peygamberdir, nebi ise önceki bir peygamberin şeriatini ihya etmekle yükümlüdür.",
+		B: "B) Nebi ve resul tamamen aynı anlamlara gelir, aralarında hiçbir fark yoktur.",
+		C: "C) Nebiler sadece manevi öğüt verirken, resuller devlet yönetimiyle ilgilenir.",
+		D: "D) Resuller Allah’ın doğrudan hitap ettiği peygamberlerdir, nebiler ise meleklere ihtiyaç duyar.",
+		richtig: "A"
+	},
+	{
+		frage: "46. Peygamberliğin semavi dinler için temel ayırt edici özelliği nedir?",
+		A: "A) Dinî inançların yalnızca peygamber aracılığıyla insanlara ulaşması",
+		B: "B) Peygamberlerin kendi bilgileriyle hareket ederek insanları yönlendirmesi",
+		C: "C) İnsanların kendi başlarına peygamberlik misyonu üstlenebilmeleri",
+		D: "D) Her insanın doğrudan Allah’tan vahiy alabilmesi",
+		richtig: "A"
+	},
+	{
+		frage: "47. Aşağıdakilerden hangisi, peygamberlerin gönderilme sebeplerinden biri değildir?",
+		A: "A) İnsanlara ilahî mesajı ulaştırmak",
+		B: "B) Toplumsal düzeni sağlamak için insanlara kendi yasalarını sunmak",
+		C: "C) İnsanların yanlış inanç ve alışkanlıklarını düzeltmek",
+		D: "D) İnsanların Allah’a doğrudan ulaşmasını engellemek",
+		richtig: "D"
+	},
+	{
+		frage: "48. Hz. Peygamber’in, peygamberlikten önce 'emin' lakabıyla anılmasının önemi nedir?",
+		A: "A) Peygamberlik görevi sırasında güvenilir olması şart değildir, önemli olan yalnızca vahyi aktarmasıdır.",
+		B: "B) İnsanlar, Hz. Peygamber’in önceden sihirbazlık ve kâhinlik yaptığını düşündükleri için ona inanmışlardır.",
+		C: "C) Peygamberlik makamının güvenilirlik temeli üzerine kurulmuş olduğunu gösterir.",
+		D: "D) Peygamberlerin toplumdan tamamen soyutlanmış kişiler olduğu kanıtlanmıştır.",
+		richtig: "C"
+	},
+	{
+		frage: "49. 'Bir dinin sağlamlığı ve sahihliği, onu getiren elçinin güvenilir ve her türlü şaibeden uzak olmasına bağlıdır.' ifadesi neyi anlatır?",
+		A: "A) Peygamberler insanlardan seçildiği için hata yapabilirler.",
+		B: "B) Peygamberlerin güvenilir olması dinin de güvenilir olmasını sağlar.",
+		C: "C) Peygamberlerin insani zaafları olabilir, ancak vahiy aldığı sürece bu önemli değildir.",
+		D: "D) Dinin esasları peygamberin şahsiyetinden bağımsızdır.",
+		richtig: "B"
+	},
+	{
+		frage: "50. Peygamberliğin gerekliliği ile ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+		A: "A) İnsanlar kendi başlarına ilahi hakikate ulaşabilir, peygamberlere ihtiyaçları yoktur.",
+		B: "B) Peygamberler, insanlara ahiret hakkında bilgi vermez, sadece dünya düzenini öğretir.",
+		C: "C) İnsanlar, iç sıkıntılarını çözmek için yalnızca medyumlara veya kâhinlere başvurmalıdır.",
+		D: "D) Peygamberler, insanlara maddi ve manevi olarak rehberlik etmek için gönderilmiştir.",
+		richtig: "D"
+	},
+	{
+		frage: "51. İsmet sıfatı peygamberler için neden önemlidir?",
+		A: "A) Peygamberlerin günahsız doğmasını ve yaşam boyu hata yapmamalarını sağlar.",
+		B: "B) Peygamberlerin ilahî mesajı eksiksiz ve güvenilir şekilde iletebilmeleri için verilmiştir.",
+		C: "C) Peygamberlerin tamamen melek gibi varlıklar olduğunu gösterir.",
+		D: "D) İsmet sıfatı, sadece Hz. Muhammed’e ait olup diğer peygamberlerde bulunmaz.",
+		richtig: "B"
+	},
+	{
+		frage: "52. Aşağıdakilerden hangisi peygamberlerin sıfatlarından biri değildir?",
+		A: "A) İsmet (korunmuşluk)",
+		B: "B) Emanet (güvenilirlik)",
+		C: "C) Kudret (her şeye güç yetirme)",
+		D: "D) Sıdk (doğruluk)",
+		richtig: "C"
+	},
+	{
+		frage: "53. Sıdk (doğruluk) sıfatı, peygamberlerin hangi özelliğini ifade eder?",
+		A: "A) Doğru sözlü ve güvenilir olmaları",
+		B: "B) Tüm insanlardan üstün bir zekâya sahip olmaları",
+		C: "C) İnsanüstü varlıklar olmaları",
+		D: "D) Sadece ibadetle meşgul olup dünya işlerinden uzak durmaları",
+		richtig: "A"
+	},
+	{
+		frage: "54. Aşağıdakilerden hangisi peygamberlerin 'emanet' sıfatını en iyi açıklar?",
+		A: "A) Onların bütün sırları saklamaları ve verdikleri sözleri mutlaka yerine getirmeleri",
+		B: "B) İnsanlara istedikleri gibi vahiy aktarmaları ve kendi yorumlarını eklemeleri",
+		C: "C) Kendi menfaatleri için vahyi kullanmaları",
+		D: "D) Kendilerine verilen vahyi, gerektiğinde değiştirebilmeleri",
+		richtig: "A"
+	},
+	{
+		frage: "55. Tebliğ sıfatı ile ilgili aşağıdaki ifadelerden hangisi yanlıştır?",
+		A: "A) Peygamberler, kendilerine gelen vahyi olduğu gibi insanlara aktarmakla yükümlüdür.",
+		B: "B) Tebliğ sırasında vahyin içeriğine peygamberler tarafından yorum eklenebilir.",
+		C: "C) Peygamberler, vahyi eksiksiz ve bozulmadan iletmek için Allah tarafından korunur.",
+		D: "D) Peygamberler yalnızca vahyi aktarmakla kalmaz, onu açıklamak ve öğretmekle de görevlidir.",
+		richtig: "B"
+	},
+	{
+		frage: "56. Peygamberlerin 'fetânet' sıfatı ne anlama gelir?",
+		A: "A) Onların olağanüstü fiziksel güce sahip olmaları",
+		B: "B) Her peygamberin insanüstü varlıklar olması",
+		C: "C) Peygamberlerin halk arasında herkesin dikkatini çekecek şekilde davranmaları",
+		D: "D) Peygamberlerin görevlerini hakkıyla yerine getirecek üstün bir zekâya sahip olmaları",
+		richtig: "D"
+	},
+	{
+		frage: "57. Vahyin peygamberlere ulaşma yolları ile ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+		A: "A) Vahiy, peygamberlerin rüyaları yoluyla onlara iletilmez.",
+		B: "B) Vahiy, Cebrail (a.s.) aracılığıyla veya doğrudan Allah tarafından iletilebilir.",
+		C: "C) Peygamberler vahyi aldıktan sonra kendi görüşleriyle değiştirebilirler.",
+		D: "D) Vahiy, yalnızca peygamberler değil, sıradan insanlar tarafından da alınabilir.",
+		richtig: "B"
+	},
+	{
+		frage: "58. Mucize, peygamberlerin peygamberliklerini ispat etmek için gösterdikleri olağanüstü olaylardır. Aşağıdakilerden hangisi bir mucize değildir?",
+		A: "A) Hz. Musa’nın asasının yılana dönüşmesi",
+		B: "B) Hz. İsa’nın babasız dünyaya gelmesi",
+		C: "C) Hz. Muhammed’in Kur’an’ı insanlara ulaştırması",
+		D: "D) Bir kâhinin geleceğe dair tahminlerinin gerçekleşmesi",
+		richtig: "D"
+	},
+	{
+		frage: "59. İstidrâc ile ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+		A: "A) Allah’ın, günahkâr ve inkârcı insanlara imtihan için olağanüstü imkânlar vermesidir.",
+		B: "B) Peygamberlere verilen mucizelerden biri olarak kabul edilir.",
+		C: "C) Sadece velilere ve peygamberlere bahşedilen bir ilahi hediyedir.",
+		D: "D) İnanan insanlara yardım etmek için Allah tarafından verilen bir lütuftur.",
+		richtig: "A"
+	},
+	{
+		frage: "60. Allah Teâlâ insanın iradesini nasıl yönlendirmektedir?",
+		A: "A) İradesini tamamen ortadan kaldırarak",
+		B: "B) İnsanlara zorla emirler vererek",
+		C: "C) İlahi telkin ile destekleyerek",
+		D: "D) Onları serbest bırakarak hiçbir şekilde müdahale etmeden",
+		richtig: "C"
+	},
+	{
+		frage: "61. İlahi telkinin en açık ve bağlayıcı olan şekli nedir?",
+		A: "A) İnsanların kendi vicdanlarının sesi",
+		B: "B) Meleklerin doğrudan insanlara yönlendirme yapması",
+		C: "C) Peygamberler aracılığıyla gönderilen vahiy",
+		D: "D) Kendi akıl ve mantığı ile doğruyu bulması",
+		richtig: "C"
+	},
+	{
+		frage: "62. İlahi kitapların temel amacı nedir?",
+		A: "A) İnsanlara bilimsel keşifler hakkında bilgi vermek",
+		B: "B) Sadece geçmiş kavimlerin tarihini anlatmak",
+		C: "C) İnsanları doğru yola iletmek ve rehberlik yapmak",
+		D: "D) İnsanların hayatlarını daha eğlenceli hâle getirmek",
+		richtig: "C"
+	},
+	{
+		frage: "63. Aşağıdakilerden hangisi ilahi kitaplar hakkında doğrudur?",
+		A: "A) Her ilahi kitap öncekinin tamamen yerine geçer ve onu geçersiz kılar.",
+		B: "B) İlahi kitaplar birbirini doğrulayıcı ve tamamlayıcı niteliktedir.",
+		C: "C) İlahi kitaplar sadece belli bir millete hitap eder.",
+		D: "D) İlahi kitaplar zamanla anlamlarını yitirir ve etkisiz hâle gelir.",
+		richtig: "B"
+	},
+	{
+		frage: "64. Kur’an’ın önceki kutsal kitaplarla ilişkisi nasıl açıklanmıştır?",
+		A: "A) Önceki kitapları tamamen iptal eden bir belge olarak",
+		B: "B) Önceki kitapları doğrulayıcı ve onları tamamlayıcı olarak",
+		C: "C) Önceki kitaplardan bağımsız, tamamen yeni bir kitap olarak",
+		D: "D) Sadece Arap toplumuna hitap eden bir öğreti olarak",
+		richtig: "B"
+	},
+	{
+		frage: "65. Tevrat’ın içeriği hakkında aşağıdakilerden hangisi doğrudur?",
+		A: "A) Tamamen peygamber hikâyelerinden oluşur.",
+		B: "B) İlk başta yazılı değil, sözlü bir metin olarak kalmıştır.",
+		C: "C) İçinde sadece İsrailoğullarının tarihi anlatılır.",
+		D: "D) Beş bölümden oluşur ve zamanla tahrife uğramıştır.",
+		richtig: "D"
+	},
+	{
+		frage: "66. Zebur’un temel özelliği nedir?",
+		A: "A) Yeni bir şeriat ve dinî kurallar getirmiştir.",
+		B: "B) Hz. Musa tarafından kaleme alınmıştır.",
+		C: "C) Günümüzde hâlâ eksiksiz şekilde korunmuştur.",
+		D: "D) Sadece Hz. Davud’a öğütler içeren edebi bir metindir.",
+		richtig: "D"
+	},
+	{
+		frage: "67. Aşağıdakilerden hangisi İncil’in günümüzdeki durumu ile ilgilidir?",
+		A: "A) Tek bir İncil vardır ve hiç değiştirilmemiştir.",
+		B: "B) Dört farklı İncil metni kanonik (geçerli) sayılmıştır.",
+		C: "C) İncil yalnızca Latince olarak yazılmıştır.",
+		D: "D) Kur’an’da İncil hakkında herhangi bir bilgi verilmemektedir.",
+		richtig: "B"
+	},
+	{
+		frage: "68. Kur’an’ın nazil olma süresi kaç yıl sürmüştür?",
+		A: "A) 10 yıl",
+		B: "B) 15 yıl",
+		C: "C) 20 yıl",
+		D: "D) 23 yıl",
+		richtig: "D"
+	},
+	{
+		frage: "69. Kur’an’ın kitap hâline getirilmesi hangi halife döneminde gerçekleştirilmiştir?",
+		A: "A) Hz. Osman",
+		B: "B) Hz. Ali",
+		C: "C) Hz. Ebû Bekir",
+		D: "D) Hz. Ömer",
+		richtig: "C"
+	},
+	{
+		frage: "70. Kur’an’ın yedi veya dokuz nüsha olarak çoğaltılıp farklı beldelere gönderilmesi hangi halife döneminde olmuştur?",
+		A: "A) Hz. Ebû Bekir",
+		B: "B) Hz. Ömer",
+		C: "C) Hz. Osman",
+		D: "D) Hz. Ali",
+		richtig: "C"
+	},
+	{
+		frage: "71. Kur’an’ın mucizeliği hangi özelliğinden kaynaklanmaktadır?",
+		A: "A) Zaman içinde içeriğinin değişime uğramaması",
+		B: "B) Sadece Arap toplumuna hitap etmesi",
+		C: "C) Dünyadaki tüm kitaplardan daha kalın olması",
+		D: "D) Sadece bir dilde yazılmış olması",
+		richtig: "A"
+	},
+	{
+		frage: "72. Kur’an’ın korunmuş olmasının en büyük delillerinden biri nedir?",
+		A: "A) Farklı dönemlerde birçok kez yeniden yazılması",
+		B: "B) Hafızlar tarafından ezberlenerek nesilden nesile aktarılması",
+		C: "C) Sadece Arap toplumuna özgü kalması",
+		D: "D) Modern dillerde tercüme edilmemesi",
+		richtig: "B"
+	},
+	{
+		frage: "73. Peygamberlere gelen vahyin peygamberlerin konuştuğu dilde gelmesi neyi gösterir?",
+		A: "A) Vahyin, peygamberler tarafından oluşturulmuş olabileceğini",
+		B: "B) Vahyin, muhatap kitlenin anlayacağı şekilde geldiğini",
+		C: "C) Peygamberlerin, vahyin içeriğine müdahale edebildiğini",
+		D: "D) Bütün kutsal kitapların aynı dilde olduğunu",
+		richtig: "B"
+	},
+	{
+		frage: "74. Meleklerin varlığına iman neden iman esaslarının ikinci maddesi olarak kabul edilmiştir?",
+		A: "A) Melekler, peygamberlere vahiy getirdiği için",
+		B: "B) Görünmeyen varlıkların varlığına inanmak zor olduğu için",
+		C: "C) Melek inancı, Allah’a iman ile doğrudan bağlantılı olduğu için",
+		D: "D) Melekler, insanların ibadetlerini kaydeden varlıklar oldukları için",
+		richtig: "C"
+	},
+	{
+		frage: "75. Meleklerin yaratılış maddesi nedir?",
+		A: "A) Toprak",
+		B: "B) Ateş",
+		C: "C) Nur",
+		D: "D) Su",
+		richtig: "C"
+	},
+	{
+		frage: "76. Melekler neden asla isyan etmezler?",
+		A: "A) Özgür iradeleri olmadığı için",
+		B: "B) Allah’ın onlara bunu yasakladığı için",
+		C: "C) Günah işlememeleri için yaratıldıkları için",
+		D: "D) Kendilerine verilen emirleri eksiksiz yerine getirmekle yükümlü oldukları için",
+		richtig: "D"
+	},
+	{
+		frage: "77. Meleklerin kanatlara sahip oldukları hangi ayette belirtilmiştir?",
+		A: "A) Bakara 2:30",
+		B: "B) Zümer 39:67",
+		C: "C) Fatır 35:1",
+		D: "D) Enfal 8:50",
+		richtig: "C"
+	},
+	{
+		frage: "78. Melekler ile cinler arasındaki temel fark nedir?",
+		A: "A) Melekler görünmez, cinler görülebilir",
+		B: "B) Melekler asla isyan etmez, cinler isyan edebilir",
+		C: "C) Melekler ateşten, cinler nurdan yaratılmıştır",
+		D: "D) Cinler insanlara iyilik yapar, melekler ise yapmaz",
+		richtig: "B"
+	},
+	{
+		frage: "79. Aşağıdakilerden hangisi dört büyük melekten biri değildir?",
+		A: "A) Mikail",
+		B: "B) Azrail",
+		C: "C) İsrafil",
+		D: "D) Münker ve Nekir",
+		richtig: "D"
+	},
+	{
+		frage: "80. Meleklerin insanların iyilik ve kötülüklerini kaydetmekle görevli olanları kimlerdir?",
+		A: "A) Kiramen Katibin",
+		B: "B) Hamele-i Arş",
+		C: "C) Münker ve Nekir",
+		D: "D) Hazen-i Cennet",
+		richtig: "A"
+	},
+	{
+		frage: "81. Meleklerin insanlara desteği hangi şekilde gerçekleşmez?",
+		A: "A) İnsanları zorla ibadete yönlendirmek",
+		B: "B) Allah’a dua ederek müminler için bağışlanma dilemek",
+		C: "C) Şeytanın vesveselerine karşı ilham vererek",
+		D: "D) Peygamberleri vahiy ile bilgilendirmek",
+		richtig: "A"
+	},
+	{
+		frage: "82. Cinler ile insanlar arasındaki en temel ortak nokta nedir?",
+		A: "A) İkisi de ateşten yaratılmıştır",
+		B: "B) İkisi de mükellef varlıklardır",
+		C: "C) İkisi de gaybı bilebilir",
+		D: "D) İkisi de ölümsüzdür",
+		richtig: "B"
+	},
+	{
+		frage: "83. Cinler ve insanlar arasında geçen kıyamet günü ile ilgili hangi doğru bilgidir?",
+		A: "A) Cinler de insanlar gibi hesap vereceklerdir",
+		B: "B) Sadece insanlar hesap verecektir",
+		C: "C) Cinler hesap vermeyecek, doğrudan cezalandırılacaktır",
+		D: "D) İnsanlar cinlerin şahitliğine başvuracaktır",
+		richtig: "A"
+	},
+	{
+		frage: "84. İblis’in insana düşman olmasının temel sebebi nedir?",
+		A: "A) Melek olduğu hâlde insanlara secde etmeyi reddetmesi",
+		B: "B) İnsanlardan intikam almak istemesi",
+		C: "C) İnsanlara zarar vermeyi sevmesi",
+		D: "D) Allah tarafından lanetlenmesi ve kovulması",
+		richtig: "D"
+	},
+	{
+		frage: "85. Aşağıdakilerden hangisi şeytanın insana etkisi açısından doğrudur?",
+		A: "A) İnsanları zorla günaha sürükleyebilir",
+		B: "B) İnsanların iradesine tamamen hükmedebilir",
+		C: "C) İstediği kişiyi cehenneme gönderebilir",
+		D: "D) İnsanlara vesvese vererek onları etkileyebilir",
+		richtig: "D"
+	},
+	{
+		frage: "86. Yeniden dirilişte ruh ve beden arasındaki ilişki nasıl olacaktır?",
+		A: "A) Her ruh, daha önce bulunduğu bedene iade edilecektir",
+		B: "B) Bütün ruhlar tek bir bedene girecektir",
+		C: "C) İnsanlar sadece ruh olarak diriltilecektir",
+		D: "D) İnsanlar yeni ve farklı bedenlerde var olacaklardır",
+		richtig: "A"
+	},
+	{
+		frage: "87. Ahiret hayatının gerekliliği en temelde hangi kavrama dayanır?",
+		A: "A) İnsanların eğlenceli bir hayat sürmesi",
+		B: "B) İlahî adaletin tecelli etmesi",
+		C: "C) İnsanların ebedî hayat beklentisi",
+		D: "D) Peygamberlerin öğütlerinin gerçekleşmesi",
+		richtig: "B"
+	},
+	{
+		frage: "88. \"Ben insanları ve cinleri ancak bana kulluk etsinler diye yarattım.\" ayeti ahiret inancıyla nasıl ilişkilidir?",
+		A: "A) İnsanların yaratılış amacının kulluk olduğunu gösterir",
+		B: "B) İnsanların ibadetlerinin zorunlu olmadığını anlatır",
+		C: "C) Ahiret inancı olmadan da kulluğun gerçekleşebileceğini ifade eder",
+		D: "D) Sadece cinler için geçerli bir hüküm içerir",
+		richtig: "A"
+	},
+	{
+		frage: "89. Ecel kavramı İslam’a göre nasıl tanımlanır?",
+		A: "A) Ölüme sebep olan olayların bütünü",
+		B: "B) Kişinin doğumdan itibaren hesaplanan yaşam süresi",
+		C: "C) Allah’ın belirlediği ve değişmeyen ölüm vakti",
+		D: "D) İnsanların iradesine bağlı olarak değişebilen süre",
+		richtig: "C"
+	},
+	{
+		frage: "90. Mu’tezile ekolü, ecel hakkında neyi savunmaktadır?",
+		A: "A) Ecelin değiştirilemez olduğunu",
+		B: "B) Ölümün tamamen insanın tercihiyle gerçekleştiğini",
+		C: "C) Her insanın sonsuz yaşaması gerektiğini",
+		D: "D) Kişinin öldürülmesiyle ecelinin öne çekilebileceğini",
+		richtig: "D"
+	},
+	{
+		frage: "91. \"Kabir ya cennet bahçelerinden bir bahçe ya da cehennem çukurlarından bir çukurdur.\" hadisi neyi ifade eder?",
+		A: "A) Kabir hayatının insanın amellerine göre şekilleneceğini",
+		B: "B) Kabir hayatının tamamen metaforik olduğunu",
+		C: "C) Ahirette sadece cennet olacağını",
+		D: "D) Cehennemin kabirde başlamadığını",
+		richtig: "A"
+	},
+	{
+		frage: "92. Berzah âlemi neyi ifade eder?",
+		A: "A) Ölüm ile yeniden diriliş arasındaki dönem",
+		B: "B) Dünyada sıkıntı çekenlerin kurtuluş anı",
+		C: "C) Peygamberlerin özel olarak yaşadığı bir mekân",
+		D: "D) Sadece inananlar için var olan bir süreç",
+		richtig: "A"
+	},
+	{
+		frage: "93. Kabir hayatı ile dünya hayatı arasında nasıl bir süre algısı vardır?",
+		A: "A) Kabirde zaman, dünya hayatına göre daha uzun hissedilir",
+		B: "B) İnsanlar kabir hayatını çok kısa algılayacaklardır",
+		C: "C) Kabir hayatında hiç zaman kavramı yoktur",
+		D: "D) Kabirde zaman dünya hayatındaki gibi işler",
+		richtig: "B"
+	},
+	{
+		frage: "94. Küçük kıyamet alametlerinden biri aşağıdakilerden hangisidir?",
+		A: "A) Dâbbetü’l-Arz’ın çıkması",
+		B: "B) Güneşin batıdan doğması",
+		C: "C) Zinaya açıkça izin verilmesi",
+		D: "D) Yecüc ve Mecüc’ün ortaya çıkması",
+		richtig: "C"
+	},
+	{
+		frage: "95. Büyük kıyamet alametleri arasında aşağıdakilerden hangisi yer almaz?",
+		A: "A) Deccal’in çıkması",
+		B: "B) İsa (a.s.)’ın tekrar yeryüzüne inmesi",
+		C: "C) İnsanların yaşlanmaması",
+		D: "D) Dünyayı saracak büyük bir duman",
+		richtig: "C"
+	},
+	{
+		frage: "96. Kıyametin ne zaman kopacağı ile ilgili aşağıdakilerden hangisi doğrudur?",
+		A: "A) Kıyamet belirli bir dönemde gerçekleşecektir",
+		B: "B) Kıyametin vakti hesaplanabilir",
+		C: "C) Peygamberler kıyametin tam zamanını bilmişlerdir",
+		D: "D) Kıyametin vakti sadece Allah’ın ilmindedir",
+		richtig: "D"
+	},
+	{
+		frage: "97. İsrafil (a.s.)’ın sûra iki kez üflemesi neyi ifade eder?",
+		A: "A) Dünyanın yaratılışı ve sonunu",
+		B: "B) Kıyametin başlaması ve yeniden dirilişi",
+		C: "C) İnsanların tövbe etmesini ve affedilmesini",
+		D: "D) Cennetin ve cehennemin kapılarının açılmasını",
+		richtig: "B"
+	},
+	{
+		frage: "98. Amel defterlerinin insanlara verilmesiyle ilgili aşağıdakilerden hangisi yanlıştır?",
+		A: "A) Kitabı sağ eline verilenler mutlu olacaktır",
+		B: "B) Kitabı sol eline verilenler üzülecektir",
+		C: "C) Kitapta küçük ve büyük her amel kaydedilmiştir",
+		D: "D) İnsanlar amel defterlerini okumadan ceza alacaktır",
+		richtig: "D"
+	},
+	{
+		frage: "99. Şefaat kavramı neyi ifade eder?",
+		A: "A) Peygamberlerin Allah’ın izniyle bazı müminlere aracılık etmesi",
+		B: "B) Günahkârların doğrudan cennete gitmesi",
+		C: "C) Kâfirlerin affedilmesini sağlaması",
+		D: "D) İnsanların kendi amelleriyle cennete girmesi",
+		richtig: "A"
+	},
+	{
+		frage: "100. Sırat köprüsü hangi amaçla geçilir?",
+		A: "A) Müminlerin günahlarını affettirmek için",
+		B: "B) Cennete ve cehenneme geçişi belirlemek için",
+		C: "C) Peygamberlerin özel olarak cennete girmesi için",
+		D: "D) Sadece cehennemliklerin cezalandırılması için",
+		richtig: "B"
+	},
+	{
+		frage: "101. Günlük hayatta inanç kavramı en çok hangi unsurla ilişkilendirilir?",
+		A: "A) Toplumsal adalet",
+		B: "B) Güven ve samimiyet",
+		C: "C) Maddi kazanç",
+		D: "D) Eğitim seviyesi",
+		richtig: "B"
+	},
+	{
+		frage: "102. Dinî anlamda inanç hangi iki temel boyuttan oluşur?",
+		A: "A) Bilgi ve ibadet",
+		B: "B) Güven ve samimiyet",
+		C: "C) Akıl ve duygu",
+		D: "D) Sevgi ve korku",
+		richtig: "B"
+	},
+	{
+		frage: "103. “Allah’ın dışındaki güvenilecek şeyleri (tağût) inkâr eden ve sadece Allah’a inanan, asla kopmayacak olan sağlam bir kulpa yapışmış olur.” ayeti inancın hangi boyutunu vurgular?",
+		A: "A) Allah’a güvenmeyi",
+		B: "B) Dünyadan el etek çekmeyi",
+		C: "C) İnsanlardan tamamen uzaklaşmayı",
+		D: "D) İnsanlara kayıtsız şartsız güvenmeyi",
+		richtig: "A"
+	},
+	{
+		frage: "104. Allah’a karşı samimiyetin en temel göstergesi aşağıdakilerden hangisidir?",
+		A: "A) İnsanlara iyi davranmak",
+		B: "B) Dini bir zorunluluk olarak değil, bilinçli bir şekilde yaşamak",
+		C: "C) Toplumda saygın bir konumda bulunmak",
+		D: "D) Çevresindeki insanları dine zorlamak",
+		richtig: "B"
+	},
+	{
+		frage: "105. Allah’ın insanları çeşitli ibadetlerle sınamasının temel sebebi aşağıdakilerden hangisidir?",
+		A: "A) İnsanların fiziksel dayanıklılığını artırmak",
+		B: "B) İnsanların sosyalleşmesini sağlamak",
+		C: "C) İnsanların ibadetlerle ne kadar samimi olduklarını görmek",
+		D: "D) İnsanları dünyadan tamamen uzaklaştırmak",
+		richtig: "C"
+	},
+	{
+		frage: "106. “İnandığı hâlde inancının gereğini yerine getirmeme” durumu aşağıdakilerden hangisiyle açıklanabilir?",
+		A: "A) İnançsızlık",
+		B: "B) Teorik ateizm",
+		C: "C) İhmal ve boş verme",
+		D: "D) İnançsızlığın bir sonucu",
+		richtig: "C"
+	},
+	{
+		frage: "107. Kur’an’da iman ve amel arasındaki ilişki hangi şekilde tasvir edilir?",
+		A: "A) Amel olmadan iman geçersiz sayılır",
+		B: "B) İman ve amel birbirinden tamamen bağımsızdır",
+		C: "C) İman ve amel bir bütünlük oluşturur",
+		D: "D) Amel yalnızca peygamberler için gereklidir",
+		richtig: "C"
+	},
+	{
+		frage: "108. Deizm anlayışına göre Tanrı’nın dünya ile ilişkisi nasıldır?",
+		A: "A) Sürekli müdahalede bulunur",
+		B: "B) Peygamberler aracılığıyla insanları yönlendirir",
+		C: "C) Melekler vasıtasıyla insanları kontrol eder",
+		D: "D) Kâinata müdahale etmez, sadece yaratır",
+		richtig: "D"
+	},
+	{
+		frage: "109. Günümüz dünyasında ibadetlerin modern hayatı zorlaştırdığına dair düşünce hangi anlayışın temelini oluşturur?",
+		A: "A) Ateizm",
+		B: "B) Deizm",
+		C: "C) Tevhit inancı",
+		D: "D) İslam mistisizmi",
+		richtig: "B"
+	},
+	{
+		frage: "110. Deizmin temel düşüncesi aşağıdakilerden hangisidir?",
+		A: "A) Tanrı’nın dünya ile ilgilenmeye devam ettiği",
+		B: "B) Tanrı’nın insanlara peygamberler aracılığıyla mesaj gönderdiği",
+		C: "C) Tanrı’nın var olmadığını savunduğu",
+		D: "D) Tanrı’nın dünyayı yarattığı ama insanlara karışmadığı",
+		richtig: "D"
+	},
+	{
+		frage: "111. Ateizm hangi temel ilkeye dayanır?",
+		A: "A) Peygamberlerin gerçek olduğu",
+		B: "B) Allah’ın sadece belirli insanlara göründüğü",
+		C: "C) Tanrı’nın olmadığını kabul etmek",
+		D: "D) Tanrı’ya inanmak ama ibadet etmemek",
+		richtig: "C"
+	},
+	{
+		frage: "112. Teorik ateizm nasıl bir yaklaşımı temsil eder?",
+		A: "A) Tanrının olmadığını bilimsel yöntemlerle ispatlamaya çalışan düşünce",
+		B: "B) Tanrının var olduğunu ama insanlara karışmadığını savunan görüş",
+		C: "C) Tüm dinleri kabul eden felsefi anlayış",
+		D: "D) Tanrıya inanıp ibadet etmeyenlerin görüşü",
+		richtig: "A"
+	},
+	{
+		frage: "113. Pratik ateizm, teorik ateizmden nasıl ayrılır?",
+		A: "A) Tanrı’nın varlığı konusunda bilimsel kanıtlar sunar",
+		B: "B) Tanrı’nın varlığını inkâr etmez, ancak dine göre yaşamaz",
+		C: "C) Sadece ahlak kurallarını reddeder",
+		D: "D) Teorik ateizmi tamamen destekleyen bir anlayıştır",
+		richtig: "B"
+	},
+	{
+		frage: "114. “İnandığı hâlde inançsız gibi yaşamak” durumu hangi kavramla açıklanabilir?",
+		A: "A) Teorik ateizm",
+		B: "B) Deizm",
+		C: "C) Pratik ateizm",
+		D: "D) Mutlak materyalizm",
+		richtig: "C"
+	}
+	];
+	
+	var nr = 0;
+	function anzeigen() {
+    document.getElementById("frageText").innerHTML = fragen[nr].frage;
+    document.getElementById("textA").innerHTML = fragen[nr].A;
+    document.getElementById("textB").innerHTML = fragen[nr].B;
+    document.getElementById("textC").innerHTML = fragen[nr].C;
+    document.getElementById("textD").innerHTML = fragen[nr].D;
+    document.getElementById("meldung").innerHTML = "";
+
+    var radios = document.querySelectorAll('input[name="ant"]');
+    for (var i = 0; i < radios.length; i++) {
+        radios[i].checked = false;
+    }
+    document.querySelector('form').style.display = "block";
+	}
+
+	function weiter() {
+		var auswahl = document.querySelector('input[name="ant"]:checked');
+		if(auswahl == null){
+			document.getElementById("meldung").innerHTML = "Lütfen bir cevap seçiniz!";
+			return;
+		}
+		if(auswahl.value == fragen[nr].richtig){
+			nr = nr + 1;
+
+			if(nr < fragen.length){
+				anzeigen();
+			} else {
+				document.getElementById("frageText").innerHTML = "Bölüm tamamlandı";
+				document.getElementById("meldung").innerHTML = "Tüm soruları doğru cevapladın! <br> Aferin...";
+				document.querySelector('form').style.display = "none";
+				}
+		} else {
+			document.getElementById("meldung").innerHTML = "Cevabın yanlış, tekrar dene";
+		}
+	}
+	
+	function springeZuFrage() {
+    var nummer = parseInt(document.getElementById("frageNummer").value);
+    if(isNaN(nummer) || nummer < 1){
+        document.getElementById("meldungSprung").innerHTML = "Lütfen geçerli bir sayı girin!";
+        return;
+    }
+    if(nummer > fragen.length){
+        document.getElementById("meldungSprung").innerHTML = 
+            "O kadar soru yok! <br> Akaid bölümünde en fazla " + fragen.length + " soru bulunmaktadır.";
+        return;
+    }
+    nr = nummer - 1;
+    anzeigen();
+    document.getElementById("meldungSprung").innerHTML = "";
+	}
+	
+	anzeigen();
+	</script>
+	</body>
+</html>

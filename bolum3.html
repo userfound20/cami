@@ -1,0 +1,1031 @@
+<html lang="de">
+	<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Bölüm 3 - Kelam</title>
+		<style>
+		body{
+			font-family: Arial;
+			background:#f2f2f2;
+			text-align:center;
+		}
+		.box{
+			background:white;
+			width:90%;
+			max-width:600px;
+			margin:20px auto;
+			padding:20px;
+			border-radius:10px;
+			box-shadow:0 0 10px #aaa;
+		}
+		button{
+			padding:10px 20px; 
+			background:#2c7be5; 
+			color:white; 
+			border:none; 
+			border-radius:5px; 
+			cursor:pointer;
+		}
+		button:hover{
+			background:#1a5fc2;
+		}
+		a{
+			display:inline-block;
+			margin-top:20px;
+			text-decoration:none;
+			color:#2c7be5;
+		}
+		@media (max-width: 400px) {
+			h1 {
+				font-size: 1.5rem;
+			}
+			h2 {
+				font-size: 1.2rem;
+			}
+			button {
+				padding: 10px 0;
+			}
+		}
+		</style>
+	</head>
+
+	<body>
+	<div class="box">
+		<h1>Bölüm 3 - Kelam</h1>
+		<h2 id="frageText"></h2>
+		<form>
+			<input type="radio" name="ant" value="A"> <span id="textA"></span><br><br>
+			<input type="radio" name="ant" value="B"> <span id="textB"></span><br><br>
+			<input type="radio" name="ant" value="C"> <span id="textC"></span><br><br>
+			<input type="radio" name="ant" value="D"> <span id="textD"></span><br><br>
+			<button type="button" onclick="weiter()">sonraki soru</button>
+		</form>
+		<p id="meldung"></p>
+		<a href="index.html"> Ana sayfaya dön </a>
+	</div>
+	
+	<div class="box">
+	  <h2> Hangi soruya atlamak istiyorsun? </h2>
+	  <input type="number" id="frageNummer" placeholder="Sayı girin" style="width: 80px;"><br><br>
+	  <button type="button" onclick="springeZuFrage()"> Soruya git </button>
+	  <p id="meldungSprung"></p>
+	</div>
+
+	
+	<script>
+	var fragen = [
+  {
+    frage: "1. Kelam ilminin doğuşuna neden olan temel etken aşağıdakilerden hangisidir?",
+    A: "A) Kur’an’ın farklı yorumlara açık olması",
+    B: "B) Hz. Peygamber’in vefatından sonra ortaya çıkan ihtilaflar",
+    C: "C) Müslümanların diğer dinlerle etkileşim kurması",
+    D: "D) İslam coğrafyasının genişlemesiyle yeni kültürlerin etkisinin artması",
+    richtig: "B"
+  },
+  {
+    frage: "2. Hz. Osman’ın şehit edilmesi, İslam toplumunda hangi sonucu doğurmuştur?",
+    A: "A) Mezheplerin kesin çizgilerle oluşmasını sağlamıştır",
+    B: "B) İslam dünyasında fetihlerin durmasına sebep olmuştur",
+    C: "C) Müslüman toplum içinde ihtilafların artmasına yol açmıştır",
+    D: "D) İslam’ın siyasi olarak güçlenmesini sağlamıştır",
+    richtig: "C"
+  },
+  {
+    frage: "3. Hz. Ali’nin şehadeti, Müslüman toplumda hangi sorunu derinleştirmiştir?",
+    A: "A) Siyasi otorite boşluğu",
+    B: "B) Ehl-i hadis ve Ehl-i re’y ayrımını",
+    C: "C) İslam düşüncesinin durağan hale gelmesini",
+    D: "D) Kur’an’ın yazılı hale getirilmesini",
+    richtig: "A"
+  },
+  {
+    frage: "4. Ehl-i hadis anlayışı, İslam düşüncesinde hangi eğilimi temsil eder?",
+    A: "A) Tüm nasları yoruma açık hale getirmek",
+    B: "B) Akıl yürütmeyi esas almak",
+    C: "C) Felsefi ve mantıksal analizleri ön plana çıkarmak",
+    D: "D) Geçmişin hükümlerinin mutlak geçerliliğini savunmak",
+    richtig: "D"
+  },
+  {
+    frage: "5. Ehl-i re’y anlayışının temel özelliği aşağıdakilerden hangisidir?",
+    A: "A) Sadece sahabe görüşlerine bağlı kalmak",
+    B: "B) Nasları akıl çerçevesinde yorumlayarak yeni çözümler üretmek",
+    C: "C) Hadis rivayetlerini doğrudan kabul etmek",
+    D: "D) Fıkıh hükümlerine bağlı kalmayı reddetmek",
+    richtig: "B"
+  },
+  {
+    frage: "6. Kelam ilmi hangi anlayışın ürünü olarak ortaya çıkmıştır?",
+    A: "A) Ehl-i hadis",
+    B: "B) Tasavvuf",
+    C: "C) Ehl-i re’y",
+    D: "D) Felsefi teoloji",
+    richtig: "C"
+  },
+  {
+    frage: "7. Kelam ilminin temel amacı aşağıdakilerden hangisidir?",
+    A: "A) İnanç esaslarını akli temellere oturtmak ve savunmak",
+    B: "B) Fıkhi meseleleri açıklığa kavuşturmak",
+    C: "C) Siyaset felsefesini oluşturmak",
+    D: "D) Hadisleri sahihlik açısından değerlendirmek",
+    richtig: "A"
+  },
+  {
+    frage: "8. İlk dönemlerde kelam ilminin ana konuları aşağıdakilerden hangisi değildir?",
+    A: "A) Allah’ın zatı ve sıfatları",
+    B: "B) Nübüvvet",
+    C: "C) Ahiret hayatı",
+    D: "D) Tasavvuf",
+    richtig: "D"
+  },
+  {
+    frage: "9. Kelam ilminin konusu zamanla hangi faktörün etkisiyle genişlemiştir?",
+    A: "A) Hadis çalışmalarının artması",
+    B: "B) Felsefe ile temas kurulması",
+    C: "C) Fıkhi ihtilafların çözülmesi",
+    D: "D) Tasavvufun kelam üzerindeki etkisi",
+    richtig: "B"
+  },
+  {
+    frage: "10. Kelam ilminin en üst amacı aşağıdakilerden hangisidir?",
+    A: "A) Sadece teorik bilgiler üretmek",
+    B: "B) Dini eleştiren düşüncelere cevap vermek",
+    C: "C) İki dünya saadetini sağlamak",
+    D: "D) İslam hukuku konusunda kararlar almak",
+    richtig: "C"
+  },
+  {
+    frage: "11. Gazzâlî’nin kelam ilmine bakışı hangi eseriyle en açık şekilde görülmektedir?",
+    A: "A) el-İktisâd fi’l-İ’tikâd",
+    B: "B) el-Munkız mine’d-Dalâl",
+    C: "C) Tahâfütü’l-Felâsife",
+    D: "D) İhyâ-u Ulûmi’d-Dîn",
+    richtig: "A"
+  },
+  {
+    frage: "12. Gazzâlî’ye göre kelam ilminin temel işlevi nedir?",
+    A: "A) Felsefi düşünceleri açıklamak",
+    B: "B) Dini inancı sağlam bir zemine oturtmak ve şüpheleri gidermek",
+    C: "C) Mezhepler arasında uzlaşı sağlamak",
+    D: "D) Tüm Müslümanları kelam ilmine yönlendirmek",
+    richtig: "B"
+  },
+  {
+    frage: "13. Kelam ilmiyle uğraşmanın farz-ı kifaye olması ne anlama gelir?",
+    A: "A) Tüm Müslümanların bu ilmi öğrenmek zorunda olması",
+    B: "B) Herkesin kelam konusunda uzmanlaşmasının gerekliliği",
+    C: "C) Kelam ilminin dinî açıdan bir zorunluluk olmaması",
+    D: "D) Sadece seçilmiş kişilerin bu ilimle ilgilenmesi gerektiği",
+    richtig: "D"
+  },
+  {
+    frage: "14. Kelam ilmi hangi noktada diğer İslami ilimlerden ayrılır?",
+    A: "A) Tamamen teorik bir ilim olması",
+    B: "B) Sadece Kur’an’ı esas alması",
+    C: "C) İnanç esaslarını akıl ve delil yoluyla temellendirmesi",
+    D: "D) Fıkıh ile doğrudan ilgilenmemesi",
+    richtig: "C"
+  },
+  {
+    frage: "15. Gazzâlî’ye göre kelam ilmi hangi özelliği ile diğer ilimlerden ayrılır?",
+    A: "A) Diğer ilimlerin tamamına temel teşkil etmesi",
+    B: "B) Fıkıh ile doğrudan ilgilenmesi",
+    C: "C) Sadece teorik konular içermesi",
+    D: "D) Dini hükümlerle ilgilenmemesi",
+    richtig: "A"
+  },
+  {
+    frage: "16. Kelam ilmi hangi dönemde daha geniş bir bilgi alanına yayılmıştır?",
+    A: "A) Hz. Peygamber dönemi",
+    B: "B) Emevîler dönemi",
+    C: "C) Osmanlılar dönemi",
+    D: "D) Abbâsîler dönemi",
+    richtig: "D"
+  },
+  {
+    frage: "17. “Kelam ilmi, diğer şer’i ilimlerin temelidir.” görüşü aşağıdaki âlimlerden hangisine aittir?",
+    A: "A) İmam Maturidî",
+    B: "B) Gazzâlî",
+    C: "C) İbn Sina",
+    D: "D) Fahreddin Razi",
+    richtig: "B"
+  },
+  {
+    frage: "18. Kelam ilminin temel hedeflerinden biri aşağıdakilerden hangisidir?",
+    A: "A) İbadetlerin detaylarını belirlemek",
+    B: "B) Sadece geçmiş alimlerin görüşlerini aktarmak",
+    C: "C) İnanç esaslarını mantıksal bir çerçeveye oturtmak",
+    D: "D) İslam hukukunu oluşturmak",
+    richtig: "C"
+  },
+  {
+    frage: "19. Kelam ilminin zaman içinde evrim geçirmesinin temel nedeni aşağıdakilerden hangisidir?",
+    A: "A) Felsefi akımların etkisi ve yeni sorunların ortaya çıkması",
+    B: "B) Hadis çalışmalarındaki artış",
+    C: "C) Tasavvufun yaygınlaşması",
+    D: "D) Siyasal otoritenin kelam ilmini desteklemesi",
+    richtig: "A"
+  },
+  {
+    frage: "20. Dinin dört temel unsurundan biri olan “yakîn bilgi”nin, Hz. Peygamber’den sonra ortadan kalkmasının temel nedeni aşağıdakilerden hangisidir?",
+    A: "A) Vahyin sona ermesi",
+    B: "B) Sahabenin farklı bölgelere dağılması",
+    C: "C) Mezheplerin ortaya çıkması",
+    D: "D) Dini hükümlerin yazılı hale getirilmemesi",
+    richtig: "A"
+  },
+  {
+    frage: "21. Dinin dördüncü nesle intikal ettiğinde otoritenin azalmasıyla ortaya çıkan en büyük sorun aşağıdakilerden hangisidir?",
+    A: "A) Sünnetin yazılı hale gelmemesi",
+    B: "B) Sahabe ile nesiller arasındaki bağın tamamen kopması",
+    C: "C) Mezheplerin doğrudan vahye dayanması",
+    D: "D) Sadece sözün geriye kalması ve ilmin zayıflaması",
+    richtig: "D"
+  },
+  {
+    frage: "22. Hz. Peygamber’in vefatından sonra sahabenin farklı bölgelere dağılması aşağıdaki sonuçlardan hangisini doğurmuştur?",
+    A: "A) Hadislerin tek bir kaynakta toplanmasını sağlamıştır",
+    B: "B) Farklı ilim merkezlerinin ve medreselerin oluşmasına yol açmıştır",
+    C: "C) Mezheplerin doğuşunu engellemiştir",
+    D: "D) Bütün sahabelerin ortak bir görüşe sahip olmasını sağlamıştır",
+    richtig: "B"
+  },
+  {
+    frage: "23. Emevî Halifesi Ömer b. Abdulaziz’in, hadislerin yazılı hale getirilmesini emretmesinin temel nedeni aşağıdakilerden hangisidir?",
+    A: "A) İlmin kaybolması ve alimlerin vefat etmesi endişesi",
+    B: "B) Mezheplerin güçlenmesini sağlamak",
+    C: "C) Sahabenin rivayetleri değiştirmesi",
+    D: "D) Kur’an’a alternatif bir kaynak oluşturmak",
+    richtig: "A"
+  },
+  {
+    frage: "24. Kırtas Olayı, Şia’nın yorumuna göre hangi iddiaya dayanak olarak gösterilmektedir?",
+    A: "A) Hz. Peygamber’in vefatından önce bir halife atamak istemesi",
+    B: "B) Sahabenin vahiyle ilgili farklı yorumlara sahip olması",
+    C: "C) Hz. Ali’nin halifelik hakkının bizzat Hz. Peygamber tarafından yazılı hale getirileceği",
+    D: "D) İslam devletinin Ehl-i Beyt tarafından yönetilmesi gerektiği",
+    richtig: "C"
+  },
+  {
+    frage: "25. Hz. Osman’ın şehadeti sonucunda İslam dünyasında meydana gelen en önemli gelişme aşağıdakilerden hangisidir?",
+    A: "A) Hz. Muaviye’nin Şam’da bağımsız bir halifelik ilan etmesi",
+    B: "B) Hz. Ali’nin halifeliğinin tartışmalı hâle gelmesi ve fitne ortamının oluşması",
+    C: "C) Hz. Peygamber’in ailesinin siyasi otoriteyi ele geçirmesi",
+    D: "D) Emevîler ve Abbasîler arasında mezhep çatışmalarının başlaması",
+    richtig: "B"
+  },
+  {
+    frage: "26. Hâricîler’in İslam tarihindeki en önemli etkisi aşağıdakilerden hangisidir?",
+    A: "A) İslam dünyasında ilk mezhepsel ayrılıkları başlatmaları",
+    B: "B) İslam ordularının Bizans’a karşı zayıflamasına neden olmaları",
+    C: "C) Şia’nın doğuşuna sebep olmaları",
+    D: "D) Hz. Osman’ın şehadetine yol açmaları",
+    richtig: "A"
+  },
+  {
+    frage: "27. Kader inancını inkâr eden ilk kişiler arasında gösterilen Ma’bed el-Cühenî hangi bölgede kader tartışmalarını başlatmıştır?",
+    A: "A) Kûfe",
+    B: "B) Şam",
+    C: "C) Basra",
+    D: "D) Mekke",
+    richtig: "C"
+  },
+  {
+    frage: "28. Büyük günah işleyen kişinin iman durumuna ilişkin aşağıdaki görüşlerden hangisi Mu’tezile’ye aittir?",
+    A: "A) Büyük günah işleyen kişi tamamen iman dairesinden çıkar ve kâfir olur",
+    B: "B) Büyük günah işleyen kişi fâsık sayılır ama imanını tamamen kaybetmez",
+    C: "C) Büyük günah işleyen kişi ne mümin ne de kâfirdir, iki konum arasında kalır",
+    D: "D) Büyük günah işleyen kişi eğer tevbe etmezse Allah’ın takdirine bırakılır",
+    richtig: "C"
+  },
+  {
+    frage: "29. Mezheplerin ortaya çıkmasının temel nedenleri arasında aşağıdakilerden hangisi yer almaz?",
+    A: "A) Farklı kültürlerle etkileşim sonucu dini anlama biçimlerinin çeşitlenmesi",
+    B: "B) İslam dışı inançlara karşı İslam’ı koruma ve yeniden yorumlama çabası",
+    C: "C) Dilin geniş kitleler tarafından kullanılmasıyla yorum farklılıklarının doğması",
+    D: "D) Farklı halifeler döneminde İslam’ın temel esaslarının değişime uğraması",
+    richtig: "D"
+  },
+  {
+    frage: "30. Mu’tezile’nin ilahî sıfatlar konusundaki temel yaklaşımı aşağıdakilerden hangisidir?",
+    A: "A) Allah’ın sıfatlarının zatından ayrı olmadığını, ancak mecazî anlamlar taşıdığını ileri sürmek",
+    B: "B) Allah’ın sıfatlarının zatının aynısı olduğunu ancak akıl yoluyla açıklanabileceğini savunmak",
+    C: "C) Allah’ın sıfatlarının zatından bağımsız gerçeklikler olarak var olduğunu kabul etmek",
+    D: "D) Allah’ın sıfatlarını tamamen reddederek yalnızca O’nun zati varlığını kabul etmek",
+    richtig: "A"
+  },
+  {
+    frage: "31. İslam dünyasında mezheplerin oluşum sürecinde en önemli etkenlerden biri olan “teslim ve tevil” gerilimi hangi iki grup arasında yaşanmıştır?",
+    A: "A) Şia ve Ehl-i Sünnet",
+    B: "B) Mu’tezile ve Ehl-i Hadis",
+    C: "C) Mâturîdîlik ve Küllâbiye",
+    D: "D) Hâricîler ve Şia",
+    richtig: "B"
+  },
+  {
+    frage: "32. Aşağıdakilerden hangisi Mu’tezile mezhebinin savunduğu temel ilkelerden biri değildir?",
+    A: "A) İnsanın özgür iradesiyle fiillerini gerçekleştirdiği ve kaderin olmadığı",
+    B: "B) Allah’ın sıfatlarının zatından bağımsız olmadığını, sıfatları mecazi anlamda yorumlamak gerektiği",
+    C: "C) Peygamberlerin masum olduğu ve yanılmaz oldukları",
+    D: "D) İnsan aklının, vahyin yanında bağımsız olarak dinî hükümleri belirleyebileceği",
+    richtig: "C"
+  },
+  {
+    frage: "33. İslam tarihindeki ilk kelam ekolü olan Küllâbiye mezhebinin en önemli özelliği aşağıdakilerden hangisidir?",
+    A: "A) Mu’tezile ve Ehl-i Hadis arasındaki görüş ayrılıklarını uzlaştırma çabası",
+    B: "B) Hâricîler ile Şia arasındaki teolojik çatışmaları çözümleme girişimi",
+    C: "C) Sadece Kur’an ve hadis kaynaklarına bağlı kalarak akli yorumları reddetme",
+    D: "D) Sünni düşüncenin tamamını şekillendiren tek kelam ekolü olma",
+    richtig: "A"
+  },
+  {
+    frage: "34. Aşağıdakilerden hangisi, Makdisî el-Beşşârî’ye göre bir mezhebin oluşumu için gerekli dört temel unsurdan biri değildir?",
+    A: "A) Seçkinler (havas)",
+    B: "B) Halk tabanı (avam)",
+    C: "C) Devlet desteği",
+    D: "D) Davetçiler",
+    richtig: "C"
+  },
+  {
+    frage: "35. Şehristânî’ye göre, bir düşüncenin bağımsız bir mezhep olarak kabul edilmesi için aşağıdakilerden hangisi gerekli değildir?",
+    A: "A) Tevhit ve sıfatlar konusunda özgün bir görüşe sahip olmak",
+    B: "B) Kader, adalet ve insan iradesi gibi konularda ayrışmak",
+    C: "C) Risalet ve imamet konularında farklı bir bakış açısı geliştirmek",
+    D: "D) Bağımsız bir siyasi otorite tarafından desteklenmek",
+    richtig: "D"
+  },
+  {
+    frage: "36. Mezheplerin ortaya çıkışında etkili olan en önemli faktörlerden biri aşağıdakilerden hangisidir?",
+    A: "A) İlk halifelerin mezhep sistemini resmî olarak belirlemesi",
+    B: "B) Müslümanların fetihler sonrası farklı kültürlerle etkileşime girmesi",
+    C: "C) Tek bir İslam anlayışının yüzyıllarca değişmeden kalması",
+    D: "D) Mezheplerin yalnızca fıkhi farklılıklarla oluşması",
+    richtig: "B"
+  },
+  {
+    frage: "37. İlk kelam ekollerinden biri olan Küllâbiye mezhebinin temel yaklaşımı aşağıdakilerden hangisidir?",
+    A: "A) İnsan fiillerinin tamamen Allah tarafından yaratıldığını kabul etmek",
+    B: "B) Allah’ın sıfatlarının zatından tamamen bağımsız olduğunu iddia etmek",
+    C: "C) Tevhit ilkesine zarar vermemek adına Allah’ın sıfatlarını tamamen reddetmek",
+    D: "D) Allah’ın sıfatlarının zatından ayrı olmadığını ancak aynı zamanda onunla özdeş de olmadığını savunmak",
+    richtig: "D"
+  },
+  {
+    frage: "38. Mütekaddimûn ve Müteahhirûn dönemlerinin ayrımı hangi faktöre bağlı olarak yapılmıştır?",
+    A: "A) Mezhep çatışmalarının artması",
+    B: "B) Abbâsîler ve Selçukluların siyasi politikaları",
+    C: "C) Kelamın ele aldığı meselelerin değişmesi ve felsefenin etkisi",
+    D: "D) Gazâlî'nin Eş’arîliğe yaptığı katkılar",
+    richtig: "C"
+  },
+  {
+    frage: "39. Mütekaddimûn dönemde Eş’arî âlimlerinin \"mevcûd\" kavramını tercih etmelerinin sebebi aşağıdakilerden hangisidir?",
+    A: "A) Varoluşun gerçekliğini zihinsel spekülasyondan uzak bir şekilde tanımlamak",
+    B: "B) İslam felsefecileriyle ortak bir terminoloji kullanmak",
+    C: "C) Allah’ın sıfatlarını daha anlaşılır hâle getirmek",
+    D: "D) Kelamın siyasi gücünü artırmak",
+    richtig: "A"
+  },
+  {
+    frage: "40. Müteahhirûn dönem kelamcıları neden felsefi kavramlara daha fazla yer vermeye başlamışlardır?",
+    A: "A) Felsefenin mantıksal yöntemlerinin kelamın gelişimini etkilemesi",
+    B: "B) Dinî ilimlerin devlet tarafından yasaklanması",
+    C: "C) Mu’tezile'nin kelam üzerindeki etkisini azaltmak için",
+    D: "D) Fıkıh âlimlerinin kelam ile ilgilenmeyi bırakması",
+    richtig: "A"
+  },
+  {
+    frage: "41. Aşağıdakilerden hangisi Mütekaddimûn dönemi kelam sisteminin temel özelliklerinden biri değildir?",
+    A: "A) Gaibi şahide kıyas yönteminin kullanılması",
+    B: "B) Allah’ın sıfatlarını açıklamak için kelamî delillerin tercih edilmesi",
+    C: "C) Mantık kurallarının kelam metodolojisinin merkezine yerleştirilmesi",
+    D: "D) Mütevatir nassların kesin delil kabul edilmesi",
+    richtig: "C"
+  },
+  {
+    frage: "42. Fahreddîn er-Râzî’nin kelam üzerindeki etkisinin temel nedeni aşağıdakilerden hangisidir?",
+    A: "A) Gazâlî'nin fikirlerini harfiyen takip etmesi",
+    B: "B) Eş’arîliğin siyasi gücünü artırması",
+    C: "C) Mu’tezile'nin görüşlerini reddederek Sünniliği savunması",
+    D: "D) Kelamı felsefi yöntemlerle yeniden yorumlaması",
+    richtig: "D"
+  },
+  {
+    frage: "43. Mâturîdîlik ile ilgili aşağıdakilerden hangisi yanlıştır?",
+    A: "A) Hanefî mezhebi içerisinde gelişmiş ve onunla bütünleşmiş bir kelam ekolüdür.",
+    B: "B) Eş’arîlik ile benzerlik gösterse de, kelamî gelişim süreci Eş’arîlikten daha sonra başlamıştır.",
+    C: "C) Temel fikirleri büyük ölçüde Ebû Hanîfe’nin düşüncelerine dayanır.",
+    D: "D) Maveraünnehir ve Horasan bölgelerinde yayılmış, özellikle Semerkand merkezli bir ekol hâline gelmiştir.",
+    richtig: "B"
+  },
+  {
+    frage: "44. Semerkand Kelam Ekolü’nün oluşmasında aşağıdaki faktörlerden hangisinin etkisi en azdır ?",
+    A: "A) Bölgedeki Hanefî fakihlerinin etkisi ve öğretim faaliyetleri",
+    B: "B) Mu’tezile ve Küllâbiye gibi mezheplerle yaşanan tartışmalar",
+    C: "C) Felsefi akımların doğrudan tesiri",
+    D: "D) Sâmânîler gibi siyasi otoritelerin destekleri",
+    richtig: "C"
+  },
+  {
+    frage: "45. Semerkand bölgesinde Mâturîdî kelam ekolünün güçlenmesini sağlayan ana neden aşağıdakilerden hangisidir?",
+    A: "A) Ebû Mansur el-Mâturîdî’nin Mu’tezile’ye karşı güçlü eleştiriler getirmesi ve Ehl-i sünnet görüşlerini temellendirmesi",
+    B: "B) Eş’arî kelamcılarının bölgedeki hâkimiyeti",
+    C: "C) Şiî-Bâtınî hareketlerin bölgedeki yayılma çabaları",
+    D: "D) Hanbelî ulemasının Semerkand’da güçlü bir şekilde örgütlenmesi",
+    richtig: "A"
+  },
+  {
+    frage: "46. Aşağıdakilerden hangisi Semerkand kelam ekolünün oluşmasına katkı sağlayan unsurlardan biri değildir?",
+    A: "A) İbn Küllâb’ın görüşlerinin bölgedeki bazı âlimler arasında yayılması",
+    B: "B) Hanefî fakihlerinin sistematik ilmî çalışmalar yürütmesi",
+    C: "C) Mu’tezile mezhebine karşı verilen kelamî mücadeleler",
+    D: "D) Abbâsîlerin doğrudan destek vererek bölgedeki Sünni düşünceyi teşvik etmesi",
+    richtig: "D"
+  },
+  {
+    frage: "47. Ebü’l-Muîn en-Nesefî’nin, Eş’arîlerin Mâturîdîliğe yönelttiği eleştirilere verdiği temel yanıt aşağıdakilerden hangisidir?",
+    A: "A) Eş’arî kelamcılarının tüm görüşlerini benimsemek",
+    B: "B) Mâturîdîliğin Eş’arîlikten önce oluştuğunu ve bağımsız bir kelam ekolü olduğunu vurgulamak",
+    C: "C) Hanefî fakihlerinin tamamen fıkıh konularıyla ilgilendiğini iddia etmek",
+    D: "D) Mâturîdî düşüncenin sadece felsefi argümanlara dayandığını savunmak",
+    richtig: "B"
+  },
+  {
+    frage: "48. Aşağıdakilerden hangisi, İmam Mâturîdî’nin İslam dünyasında tanınırlığının gecikmesinin sebeplerinden biri olarak gösterilemez?",
+    A: "A) Hilafet merkezine ve ilmi merkezlere olan coğrafi uzaklığı",
+    B: "B) Eş’arî mezhebine mensup âlimlerin onun görüşlerini yeterince yaymaması",
+    C: "C) Mâturîdî’nin itikadi konularda Mu’tezile’ye yakın görüşler savunması",
+    D: "D) Arap olmayan unsurlara yönelik mezhep taassubu",
+    richtig: "C"
+  },
+  {
+    frage: "49. Mâturîdîler ile Eş’arîler arasındaki temel itikadi farklardan biri aşağıdakilerden hangisidir?",
+    A: "A) Mâturîdîler tekvin (yaratma) sıfatını Allah’ın ezelî sıfatlarından biri olarak kabul ederken, Eş’arîler tekvini hâdis sayarlar.",
+    B: "B) Mâturîdîler insan fiillerinin tamamıyla cebrî olduğunu savunurken, Eş’arîler insanın özgür iradesiyle hareket ettiğini kabul eder.",
+    C: "C) Eş’arîler, Allah’ın küfür ve isyana rızası olmadığını savunurken, Mâturîdîler aksini iddia eder.",
+    D: "D) Eş’arîler, imanı sadece kalp ile tasdik olarak görürken, Mâturîdîler amel ve tasdiki birlikte değerlendirir.",
+    richtig: "A"
+  },
+  {
+    frage: "50. Aşağıdaki ifadelerden hangisi yanlıştır?",
+    A: "A) Mâturîdîler insanın fiillerini seçerken yaratılmamış bir iradesi olduğunu savunurken, Eş’arîler insanın iradesinin dahi Allah tarafından yaratıldığını kabul eder.",
+    B: "B) Eş’arîler ve Mâturîdîler arasında tekvin sıfatının ezelî olup olmadığı konusunda ihtilaf bulunmaktadır.",
+    C: "C) Eş’arîler, imanda istisnayı kabul ederken, Mâturîdîler kişinin imanından şüphe duymasını doğru bulmamaktadır.",
+    D: "D) Mâturîdîlik, İslam dünyasında Eş’arîlik kadar tanınmış ve erken dönemlerden itibaren yaygınlık kazanmıştır.",
+    richtig: "D"
+  },
+  {
+    frage: "51. Mâturîdî ekolünün bağımsız bir kelam mezhebi olarak kabul edilmesi hangi dönemde belirginleşmiştir?",
+    A: "A) 4./10. yüzyılda, Mâturîdî’nin bizzat yaşadığı dönemde",
+    B: "B) 5./11. ve 6./12. yüzyıllarda, bölgedeki Hanefî âlimlerinin onu mezhep imamı olarak kabul etmeye başlamasıyla",
+    C: "C) 7./13. yüzyılda Osmanlı medreselerinde resmi olarak okutulmaya başlanmasıyla",
+    D: "D) 9./15. yüzyılda, Eş’arîler tarafından mezhep olarak tanınmasıyla",
+    richtig: "B"
+  },
+  {
+    frage: "52. Aşağıdakilerden hangisi Mâturîdîliğin İslam dünyasında yaygın bir mezhep olarak tanınmasını sağlayan etkenlerden biri değildir?",
+    A: "A) Osmanlı medreselerinde Mâturîdî eserlerinin ders kitabı olarak okutulması",
+    B: "B) Hanefî fıkhını benimseyen toplumların çoğunlukla Mâturîdîliği benimsemesi",
+    C: "C) Mâturîdî âlimlerinin yoğun fırak edebiyatı (mezhepler tarihi) çalışmaları yapmaları",
+    D: "D) Hint alt kıtasında Mâturîdîliğin güçlü bir etki alanına sahip olması",
+    richtig: "C"
+  },
+  {
+    frage: "53. Osmanlı döneminde Batı Hristiyanlığı ile temasın dinî ve kültürel boyutta önemli sonuçlar doğurduğunu gösteren gelişmelerden biri aşağıdakilerden hangisidir?",
+    A: "A) İngiliz Anglikan Kilisesi’nin Osmanlı Şeyhülislamlığına yönelttiği sorular",
+    B: "B) Osmanlı medreselerinde Hristiyan felsefesinin okutulmaya başlanması",
+    C: "C) Osmanlı’daki din adamlarının Avrupa’daki kiliselere davet edilmesi",
+    D: "D) Osmanlı ulemasının Vatikan tarafından resmî olarak tanınması",
+    richtig: "A"
+  },
+  {
+    frage: "54. Aşağıdakilerden hangisi Hint alt kıtasında yürütülen misyonerlik faaliyetlerinin sonuçlarından biri değildir?",
+    A: "A) Müslüman âlimlerin Hristiyan misyonerlere karşı yazılı ve sözlü mücadele vermesi",
+    B: "B) Hristiyan misyonerlerin sömürge yönetimleriyle iş birliği yapması",
+    C: "C) Rahmetullah el-Hindî’nin Izhâru’l-Hak adlı eserini yazması",
+    D: "D) Osmanlı Şeyhülislamlığının bölgedeki misyonerlik faaliyetlerine resmî olarak müdahale etmesi",
+    richtig: "D"
+  },
+  {
+    frage: "55. Batı’da din karşıtı hareketlerin güçlenmesine yol açan temel etkenlerden biri aşağıdakilerden hangisidir?",
+    A: "A) Batı’da Skolastik felsefenin güçlenmesi",
+    B: "B) Aydınlanma sonrası akılcı ve deneysel düşüncenin öne çıkması",
+    C: "C) Kilisenin reformlar yaparak dinî otoritesini pekiştirmesi",
+    D: "D) Müslüman âlimlerin Batı’da artan etkisi",
+    richtig: "B"
+  },
+  {
+    frage: "56. Aşağıdakilerden hangisi Yeni İlm-i Kelam hareketinin ortaya çıkış nedenlerinden biri değildir?",
+    A: "A) Batı’daki ateist ve deist akımlara karşı İslam düşüncesinin yeniden yorumlanma ihtiyacı",
+    B: "B) Osmanlı’nın Batı’nın teknolojik ve bilimsel ilerlemeleri karşısında geri kalması",
+    C: "C) Müslüman toplumlarda dinî inançların tamamen terk edilmesi",
+    D: "D) Pozitivizm ve materyalizmin İslam dünyasında etkisini artırması",
+    richtig: "C"
+  },
+  {
+    frage: "57. Yeni İlm-i Kelam hareketi içinde yer alan âlimlerin genel özellikleri arasında aşağıdakilerden hangisi yer almaz?",
+    A: "A) Geçmiş İslam düşüncesini tamamen reddederek tamamen Batı kaynaklarına yönelmeleri",
+    B: "B) Modern dönemin sorunlarını klasik İslamî birikim çerçevesinde ele almaları",
+    C: "C) İslam inancını korumak ve modern dönemin meydan okumalarına cevap vermeyi amaçlamaları",
+    D: "D) Din karşıtı akımlara karşı yeni bir savunma dili geliştirmeye çalışmaları",
+    richtig: "A"
+  },
+  {
+    frage: "58. Yeni İlm-i Kelam anlayışının temsilcileri arasında yer alan İzmirli İsmail Hakkı’nın eserleri hakkında aşağıdakilerden hangisi doğrudur?",
+    A: "A) Eserlerinde klasik kelam metodunu tamamen terk edip modern felsefi yaklaşımlar benimsemiştir.",
+    B: "B) Felsefi düşünceye karşı olduğu için hiçbir eserinde felsefi yaklaşımlara yer vermemiştir.",
+    C: "C) Batı’daki gelişmelere hiçbir şekilde atıfta bulunmadan tamamen geleneksel kelam çizgisinde kalmıştır.",
+    D: "D) Yeni İlm-i Kelam adlı eseri, İslam ilimleri tasnifi ve Batı düşüncesi ile mukayeseler içeren geniş çaplı bir çalışmadır.",
+    richtig: "D"
+  },
+  {
+    frage: "59. Mustafa Sabri’nin Yeni İlm-i Kelam hareketi içerisindeki yeri ve yaklaşımıyla ilgili aşağıdakilerden hangisi doğrudur?",
+    A: "A) İslam düşüncesinde tamamen modernist bir anlayışı benimseyerek geleneksel yaklaşımları reddetmiştir.",
+    B: "B) Çağdaş fikir akımlarına karşı muhafazakâr bir duruş sergileyerek Eş’arîliği savunmuştur.",
+    C: "C) Materyalizmi ve pozitivizmi destekleyerek yeni bir İslam yorumu ortaya koymuştur.",
+    D: "D) Mâturîdî kelam anlayışını güçlendirmek için çalışmalar yapmıştır.",
+    richtig: "B"
+  },
+  {
+    frage: "60. Aşağıdaki şahıslardan hangisi Yeni İlm-i Kelam hareketinin önde gelen isimlerinden biri değildir?",
+    A: "A) Abdullatif Harpûtî",
+    B: "B) Manastırlı İsmail Hakkı",
+    C: "C) Şehbenderzâde Ahmet Hilmi",
+    D: "D) İbn Teymiyye",
+    richtig: "D"
+  },
+  {
+    frage: "61. Osmanlı’dan Cumhuriyet’e geçiş sürecinde kelam ilminin dönüşümüne neden olan gelişmeler arasında aşağıdakilerden hangisi yer almaz?",
+    A: "A) Batı’nın bilimsel ve felsefi alanlarda öne geçmesi",
+    B: "B) İslam dünyasında geleneksel kelam anlayışının modern sorunlara cevap verememesi",
+    C: "C) Osmanlı Devleti’nin resmî mezhebi olarak Mâturîdîliği benimsemesi",
+    D: "D) Pozitivizm ve materyalizmin İslam toplumlarında yayılması",
+    richtig: "C"
+  },
+  {
+    frage: "62. Yeni İlm-i Kelam hareketi hangi temel amacı taşımaktadır?",
+    A: "A) Modern bilimsel ve felsefi gelişmelere karşı İslam’ı savunacak yeni bir söylem oluşturmak",
+    B: "B) Klasik kelam yöntemlerini terk ederek tamamen yeni bir İslamî düşünce geliştirmek",
+    C: "C) Batı felsefesini İslam inancına tamamen entegre etmek",
+    D: "D) Sadece tasavvufî düşünceyi merkeze alarak İslam’ı yorumlamak",
+    richtig: "A"
+  },
+  {
+    frage: "63. Türkiye Cumhuriyeti’nin ilk yıllarında Daru’l-Fünûn İlahiyat Fakültesi’nin kapatılmasının yenilikçi-muhafazakâr ayrımına etkisi aşağıdakilerden hangisidir?",
+    A: "A) Yenilikçilerin akademik faaliyetlerini artırarak din alanında üstünlük kurmasını sağlamıştır.",
+    B: "B) Muhafazakârların tamamen ortadan kalkmasına neden olmuştur.",
+    C: "C) Yenilikçilerin etkisini kaybetmesine ve dinî alanın muhafazakârlara bırakılmasına yol açmıştır.",
+    D: "D) Yenilikçilerin gizli akademik çalışmalar yürütmesine sebep olmuştur.",
+    richtig: "C"
+  },
+  {
+    frage: "64. 1949 sonrası İmam-Hatip Kurslarının ve Ankara İlahiyat Fakültesi’nin açılması aşağıdaki gelişmelerden hangisine sebep olmuştur?",
+    A: "A) Yenilikçi-muhafazakâr ittifakının sona ermesine ve iki grup arasında yeniden ayrışmaya yol açmasına",
+    B: "B) Tüm dinî eğitimin tamamen devlet kontrolüne alınmasına",
+    C: "C) Medreselerin resmî olarak yeniden açılmasına",
+    D: "D) Dinî eğitim veren kurumların tamamen kapatılmasına",
+    richtig: "A"
+  },
+  {
+    frage: "65. 1950 sonrası kelam ilmiyle ilgili aşağıdakilerden hangisi doğrudur?",
+    A: "A) Kelam ilmi, 1930-1950 yılları arasında akademik olarak tamamen yok olmuş ve tekrar gündeme gelmemiştir.",
+    B: "B) 1950 sonrası kelam ilmi, Osmanlı'nın son dönemindeki yenilikçi kelamcıların ve Arap dünyasında eğitim gören akademisyenlerin etkisiyle yeniden canlanmıştır.",
+    C: "C) Kelam ilmi, sadece klasik Osmanlı medrese sistemine dayalı olarak devam etmiştir.",
+    D: "D) Türkiye'deki kelam ilmi tamamen Batı felsefesine dayanarak geliştirilmiştir.",
+    richtig: "B"
+  },
+  {
+    frage: "66. Aşağıdaki isimlerden hangisi Cumhuriyet döneminde kelam ilminin yeniden canlanmasına önemli katkılarda bulunmuş isimlerden biri değildir?",
+    A: "A) Hüseyin Atay",
+    B: "B) Bekir Topaloğlu",
+    C: "C) Şerafeddin Gölcük",
+    D: "D) İbn Rüşd",
+    richtig: "D"
+  },
+  {
+    frage: "67. Hüseyin Atay’ın kelam anlayışıyla ilgili aşağıdakilerden hangisi doğrudur?",
+    A: "A) Kelamı tamamen reddederek sadece hadis merkezli bir din anlayışını savunmuştur.",
+    B: "B) Kelamı, Kur’an merkezli bir düşünce olarak tanımlamış ve aklın hüküm koyabileceğini ileri sürmüştür.",
+    C: "C) Kelamı, geleneksel Sünni anlayışa uygun olarak aynen devam ettirmeyi savunmuştur.",
+    D: "D) Felsefeyi tamamen reddederek sadece rivayetlere dayalı bir kelam anlayışı geliştirmiştir.",
+    richtig: "B"
+  },
+  {
+    frage: "68. Bekir Topaloğlu’nun kelam anlayışında vurguladığı en önemli noktalardan biri aşağıdakilerden hangisidir?",
+    A: "A) Kur’an merkezli bir kelam anlayışı benimsemesi ve sünneti de bilgi kaynağı olarak kabul etmesi",
+    B: "B) Kelam ilmini tamamen terk ederek modern bilimlerle değiştirilmesi gerektiğini savunması",
+    C: "C) Akıl ve naklin tamamen birbirinden bağımsız olması gerektiğini ileri sürmesi",
+    D: "D) Kelamın yalnızca klasik ulema tarafından yorumlanması gerektiğini savunması",
+    richtig: "A"
+  },
+  {
+    frage: "69. Şerafeddin Gölcük’ün kelam ilmiyle ilgili görüşlerinden biri aşağıdakilerden hangisidir?",
+    A: "A) Kelamın Batı felsefesi ile birleştirilerek tamamen yeni bir anlayış geliştirilmesini önermiştir.",
+    B: "B) Kelamın yalnızca geçmiş İslam âlimlerinin yazdığı eserlerden öğrenilmesi gerektiğini savunmuştur.",
+    C: "C) Kelamın, Kur’an’ın felsefesi olduğunu ve büyük ölçüde akıl ile yorumlanması gerektiğini savunmuştur.",
+    D: "D) Kelamın artık gereksiz hale geldiğini ve fıkıh ilminin yeterli olduğunu ileri sürmüştür.",
+    richtig: "C"
+  },
+  {
+    frage: "70. Cumhuriyet dönemi kelamcılarından Ahmet Saim Kılavuz’un kelam alanındaki en önemli katkısı aşağıdakilerden hangisidir?",
+    A: "A) Hadis kaynaklarına dayalı bir kelam anlayışını savunmuştur.",
+    B: "B) Kelam ilmini tamamen terk ederek Batı felsefesine yönelmiştir.",
+    C: "C) Kelam ilmini bir felsefi spekülasyon olarak değerlendirip reddetmiştir.",
+    D: "D) Anahatlarıyla İslam Akaidi ve Kelam’a Giriş adlı eserleriyle yeni nesillere kelam ilmini tanıtmıştır.",
+    richtig: "D"
+  },
+  {
+    frage: "71. Bekir Topaloğlu'nun bilgi elde etme yolları konusundaki yaklaşımı aşağıdakilerden hangisidir?",
+    A: "A) Sadece akla dayanarak bilgi edinilmesi gerektiğini savunmuştur.",
+    B: "B) Mâturîdî geleneği takip ederek sağlam duyu, doğru haber ve aklı bilgi kaynakları olarak kabul etmiştir.",
+    C: "Sadece Kur’an’ı bilgi kaynağı olarak görmüş ve hadisleri tamamen reddetmiştir.",
+    D: "Batı felsefesine dayalı bilgi kaynaklarını esas almıştır.",
+    richtig: "B"
+  },
+  {
+    frage: "72. 1970’li yıllarda Türkiye’de yenilikçi ve muhafazakâr kelamcılar arasında yaşanan tartışmalar hangi eski tartışmaları hatırlatmaktadır?",
+    A: "A) Ebû Hanîfe ile İmam Mâlik arasındaki fıkıh tartışmalarını",
+    B: "B) Osmanlı uleması ile Batı felsefecileri arasındaki epistemolojik tartışmaları",
+    C: "C) Şeyhülislam Mustafa Sabri Efendi ile Musa Cârullah Bigiyef arasındaki kelam tartışmalarını",
+    D: "D) Tasavvuf ehli ile kelamcılar arasındaki iman konusundaki görüş ayrılıklarını",
+    richtig: "C"
+  },
+  {
+    frage: "73. Kelam ilminde bilgi edinme yollarından biri olan beş duyunun işlevi hakkında aşağıdakilerden hangisi doğrudur?",
+    A: "A) Beş duyu, yalnızca kendine özgü alanlarda işlev görebilir ve birbirinin yerini tutamaz.",
+    B: "B) Beş duyu birbirinin yerine geçebilir ve her duyuyla her türlü bilgi edinilebilir.",
+    C: "C) Görme duyusunun yokluğu diğer duyuların işlevlerini de tamamen devre dışı bırakır.",
+    D: "D) Duyular aracılığıyla elde edilen bilgiler mutlak doğruluğa sahiptir ve sorgulanamaz.",
+    richtig: "A"
+  },
+  {
+    frage: "74. Haber-i sadık ile ilgili aşağıdaki ifadelerden hangisi yanlıştır?",
+    A: "A) Haber-i sadık, aktarma yoluyla insanda meydana gelen gerçeğe uygun bilgidir.",
+    B: "B) Mütevatir haber, yalanda birleşmesi imkânsız olan bir topluluğun aktardığı haberdir.",
+    C: "C) Dinin esasları haber türü bilgiye dayanır ancak bu haberin kaynağı güvenilir olmalıdır.",
+    D: "D) Âhâd haber, mutlak kesinlik taşıyan ve hiçbir zaman sorgulanmayan haberdir.",
+    richtig: "D"
+  },
+  {
+    frage: "75. Kelamcıların bilgi tasnifinde kullandıkları 'zaruri bilgi' ile ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+    A: "A) Zaruri bilgi, düşünme ve akıl yürütme sonucunda elde edilen bilgilerdir.",
+    B: "B) Zaruri bilgi, herhangi bir şüpheye yer bırakmadan kendiliğinden elde edilen bilgidir.",
+    C: "C) Zaruri bilgi, sadece peygamberlere ve velilere özgüdür.",
+    D: "D) Zaruri bilgi, yalnızca keşif ve ilham yoluyla elde edilen bilgilere dayanır.",
+    richtig: "B"
+  },
+  {
+    frage: "76. Akıl ile bilgi elde edilmesi konusunda Mu’tezile ve Mâturîdî kelamcılarının görüşü aşağıdakilerden hangisidir?",
+    A: "A) Akıl, hem genel hem de özel olayları kesin olarak bilebilir.",
+    B: "B) Akıl, iyi ve kötüyü tamamen kendi başına belirleyebilir.",
+    C: "C) Akıl, küllî (tümel) meseleleri bilebilir ancak cüz’î (tikel) meseleleri bilemez.",
+    D: "D) Akıl, yalnızca duyular tarafından desteklenirse bilgi üretebilir.",
+    richtig: "C"
+  },
+  {
+    frage: "77. Keşif ve ilhamın bilgi ve hüküm değeriyle ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+    A: "A) Keşif ve ilham yalnızca peygamberlere mahsustur ve mutlak kesin bilgi kaynağıdır.",
+    B: "B) Keşif yoluyla elde edilen bilgiler bağlayıcıdır ve herkes için kesin delil niteliğindedir.",
+    C: "C) Keşif, yalnızca dinî konular hakkında bilgi vermekte olup bilimsel alanlarda bir değeri yoktur.",
+    D: "D) İslam âlimleri keşif ve ilhamı bireysel bir bilgi olarak kabul etmiş ve hüküm kaynağı olarak değerlendirmemişlerdir.",
+    richtig: "D"
+  },
+  {
+    frage: "78. Rüyanın bilgi kaynağı olarak kabul edilmemesinin sebebi aşağıdakilerden hangisidir?",
+    A: "A) Rüyaların doğruluklarının test edilmesinin zor olması ve sübjektif olması",
+    B: "B) Peygamberlerin bile rüyalarının kesin bilgi içermemesi",
+    C: "C) İslam ulemasının rüyaların tümüyle geçersiz ve uydurma olduğunu kabul etmesi",
+    D: "D) Rüyaların, herkes tarafından aynı şekilde yorumlanabilen nesnel bilgiler sunması",
+    richtig: "A"
+  },
+  {
+    frage: "79. Kelam ilminde bilginin tasnifinde Allah’ın bilgisi ile insanın bilgisi arasındaki fark aşağıdakilerden hangisidir?",
+    A: "A) Allah’ın bilgisi zaman ve mekâna bağımlıyken, insanın bilgisi bunlardan bağımsızdır.",
+    B: "B) Allah’ın bilgisi sonradan elde edilirken, insanın bilgisi önceden belirlenmiştir.",
+    C: "C) Allah’ın bilgisi öncesiz ve sonrasızdır, insanın bilgisi ise öğrenme süreciyle oluşur.",
+    D: "D) Allah’ın bilgisi sürekli gelişirken, insanın bilgisi durağandır.",
+    richtig: "C"
+  },
+  {
+    frage: "80. Kelam ilminde akli bilginin bir türü olan burhanî bilgi aşağıdakilerden hangisini ifade eder?",
+    A: "A) İkna yoluyla kabul ettirilen sübjektif bilgidir.",
+    B: "B) Kesin ve sağlam delillere dayanan objektif bilgidir.",
+    C: "C) Deney ve gözlem yoluyla elde edilen bilimsel bilgidir.",
+    D: "D) Peygamberlerin getirdiği haberlerden oluşan bilgidir.",
+    richtig: "B"
+  },
+  {
+    frage: "81. Kelam ilminde varlık ve varolan kavramlarının tartışılmaya başlanması hangi dönemde yaygınlaşmıştır?",
+    A: "A) Gazzâlî sonrası felsefenin etkisiyle",
+    B: "B) İlk dönem Mu’tezile kelamcıları tarafından",
+    C: "C) Osmanlı medreselerinde klasik dönem boyunca",
+    D: "D) Modern kelamcıların Batı felsefesiyle etkileşimi sonucu",
+    richtig: "A"
+  },
+  {
+    frage: "82. Kelam ilminde 'varolan' kavramı nasıl tanımlanır?",
+    A: "A) Sadece maddi dünyada bulunan şeyler varolan kabul edilir.",
+    B: "B) Varolan, yalnızca duyularla algılanabilen nesnelerdir.",
+    C: "C) Varolan, insanın zihninde ürettiği soyut kavramlardır.",
+    D: "Varolan, zihin haricinde kesin bir gerçekliği bulunan şeydir.",
+    richtig: "D"
+  },
+  {
+    frage: "83. Mütevatir haberin özelliklerinden biri aşağıdakilerden hangisidir?",
+    A: "A) Tek bir kişinin aktardığı güvenilir haberlerdir.",
+    B: "B) Yalanda birleşmesi imkânsız olan bir topluluk tarafından aktarılır.",
+    C: "C) Doğruluğu şüpheli ancak kabul edilen bilgilerdir.",
+    D: "D) Zannî bilgi grubuna girer ve kesin kabul edilmez.",
+    richtig: "B"
+  },
+  {
+    frage: "84. Kelamcılar açısından 'yokluk' kavramı aşağıdaki hangi şekilde ele alınır?",
+    A: "A) Yokluk, sadece zihinsel bir durum olup gerçekte mümkün değildir.",
+    B: "B) Yokluk, varlığın bir türü olarak kabul edilir ve ontolojik bir anlam taşır.",
+    C: "C) Yokluk, mutlak ve göreceli olmak üzere iki şekilde değerlendirilir.",
+    D: "D) Yokluk tamamen reddedilir ve varlık her durumda kabul edilir.",
+    richtig: "C"
+  },
+  {
+    frage: "85. Felsefi anlamda 'mümkin varlık' aşağıdaki hangi anlamı taşır?",
+    A: "A) Mutlaka var olması gereken varlıktır.",
+    B: "B) Sonsuz ve değişmez varlıktır.",
+    C: "C) Kendi kendine var olan zorunlu varlıktır.",
+    D: "D) Varlık ve yokluk açısından eşit olan varlıktır.",
+    richtig: "D"
+  },
+  {
+    frage: "86. Kadim ve hâdis varlık ayrımı aşağıdakilerden hangisine dayanır?",
+    A: "A) Bir varlığın ezelî olup olmadığına",
+    B: "B) Bir varlığın maddi veya manevi olmasına",
+    C: "C) Bir varlığın duyularla algılanıp algılanmamasına",
+    D: "D) Bir varlığın akıl yoluyla bilinip bilinmemesine",
+    richtig: "A"
+  },
+  {
+    frage: "87. Gazzâlî’ye göre varlık aşağıdaki hangi ölçüte göre tasnif edilir?",
+    A: "A) Varlığın Allah tarafından yaratılıp yaratılmamasına",
+    B: "B) Varlığın yer kaplayıp kaplamamasına",
+    C: "C) Varlığın maddi olup olmamasına",
+    D: "D) Varlığın duyu organlarıyla algılanıp algılanmamasına",
+    richtig: "B"
+  },
+  {
+    frage: "88. Kelamcıların varlık anlayışı ile felsefecilerin varlık anlayışı arasındaki temel fark aşağıdakilerden hangisidir?",
+    A: "A) Kelamcılar varlığı yalnızca fiziksel varlıklarla sınırlandırırken, felsefeciler soyut varlıkları da kabul eder.",
+    B: "B) Kelamcılar, varlığın sadece akıl yoluyla bilinebileceğini iddia ederken, felsefeciler duyusal algıyı esas alır.",
+    C: "C) Kelamcılar varlığı tamamen reddederken, felsefeciler varlığın mutlak gerçeklik olduğunu ileri sürer.",
+    D: "D) Kelamcılar yaratma düşüncesini merkeze alırken, felsefeciler varlığın zorunlu ve mümkün olarak tasnifini yapar.",
+    richtig: "D"
+  },
+  {
+    frage: "89. Gazzâlî sonrası kelam ilminde varlık ile ilgili hangi yeni kavramlar tartışılmaya başlanmıştır?",
+    A: "A) Allah’ın sıfatlarının mahiyeti ve zatı ile ilişkisi",
+    B: "B) Akıl ve duyuların bilgi elde etme gücü",
+    C: "C) Vâcib ve mümkin varlık kategorileri",
+    D: "D) Peygamberlerin bilgi kaynakları",
+    richtig: "C"
+  },
+  {
+    frage: "90. Keşif ve ilhamın bilgi kaynağı olarak görülmemesinin en önemli nedeni nedir?",
+    A: "A) Keşif ve ilham yoluyla elde edilen bilgilerin doğruluklarının test edilememesi",
+    B: "B) Keşif ve ilhamın sadece peygamberlere mahsus olması",
+    C: "C) Keşif ve ilhamın tamamen uydurma ve sahte bilgiler olması",
+    D: "D) Keşif ve ilhamın yalnızca filozoflar tarafından kabul edilmesi",
+    richtig: "A"
+  },
+  {
+    frage: "91. Kelamcıların bilgi tasnifinde yer verdiği 'hatabî bilgi' hangi özelliği taşır?",
+    A: "A) Kesin ve sağlam delillere dayanır, mutlak doğruluk içerir.",
+    B: "B) Hitabet gücü ve ikna edici söylemlerle kabul ettirilen bilgidir.",
+    C: "C) Deney ve gözlem yoluyla elde edilen bilimsel bilgidir.",
+    D: "D) Dini metinlerin yorumlanmasıyla elde edilen kesin bilgidir.",
+    richtig: "B"
+  },
+  {
+    frage: "92. Aşağıdakilerden hangisi Sünni kelamcıların varlığı ele alış biçimine uygundur?",
+    A: "A) Varlık yalnızca soyut kavramlardan ibarettir ve somut gerçekliği yoktur.",
+    B: "B) Varlık yalnızca zihinsel bir kurgudur, dış dünyada gerçekliği bulunmaz.",
+    C: "C) Varlık, cevher, cisim ve arazdan ibarettir ve bunların dışında bir varlık düşünülemez.",
+    D: "D) Varlık, akıl tarafından üretilen ve duyu organlarıyla doğrulanan olgulardan ibarettir.",
+    richtig: "C"
+  },
+  {
+    frage: "93. Hadis ehlinin kelam ilmine yönelttiği eleştirinin temel nedeni aşağıdakilerden hangisidir?",
+    A: "A) Kelamcıların Allah’ın sıfatlarını reddetmeleri",
+    B: "B) Kelamcıların yeni bir mezhep kurmaları",
+    C: "C) Kelamcıların hadisleri sahih kabul etmemeleri",
+    D: "D) Kelamcıların dini konuları felsefi yöntemlerle ele almaları",
+    richtig: "D"
+  },
+  {
+    frage: "94. Felsefecilerin kelam ilmine yönelttiği en temel eleştirilerden biri aşağıdakilerden hangisidir?",
+    A: "A) Kelamcıların akla ve burhanî bilgiye yeterince yer vermemesi",
+    B: "B) Kelamcıların evreni sonsuz ve ezelî kabul etmeleri",
+    C: "C) Kelamcıların sudûr teorisini savunmaları",
+    D: "D) Kelamcıların doğrudan deney ve gözleme dayalı bilimsel yöntem kullanmaları",
+    richtig: "A"
+  },
+  {
+    frage: "95. Sufilerin kelam ilmine yönelttiği eleştirilerde en çok üzerinde durdukları konu aşağıdakilerden hangisidir?",
+    A: "A) Kelamcıların Allah’ın varlığını kabul etmemesi",
+    B: "B) Kelamcıların ilham ve keşfi bilgi kaynağı olarak reddetmesi",
+    C: "C) Kelamcıların yalnızca Arapça metinleri esas alması",
+    D: "D) Kelamcıların peygamberlerin nübüvvetini sorgulaması",
+    richtig: "B"
+  },
+  {
+    frage: "96. Kelamcıların atom teorisini savunmalarının temel nedeni aşağıdakilerden hangisidir?",
+    A: "A) Evrenin ezelî olmadığını, yaratılmış olduğunu göstermek",
+    B: "B) Evrenin maddenin sürekli bölünebilirliği ile açıklanabileceğini kanıtlamak",
+    C: "C) Tanrı’nın âleme müdahalesini reddetmek",
+    D: "D) Determinizmi savunmak ve doğa yasalarının zorunluluğunu kabul etmek",
+    richtig: "A"
+  },
+  {
+    frage: "97. Kelamcıların sebep-sonuç ilişkisini mutlak şekilde reddetmelerinin sebebi aşağıdakilerden hangisidir?",
+    A: "A) Evrendeki olayların rastgele gerçekleştiğini göstermek",
+    B: "B) İslam felsefesinin temel ilkelerini reddetmek",
+    C: "C) İnsan iradesinin tamamen özgür olduğunu ispat etmek",
+    D: "D) Allah’ın âleme sürekli müdahale ettiğini ve her fiilin O’nun yaratmasıyla meydana geldiğini göstermek",
+    richtig: "D"
+  },
+  {
+    frage: "98. Felsefecilerin kelamcılara yönelttiği sudûr teorisi ile ilgili eleştirileri en çok hangi konuda yoğunlaşmaktadır?",
+    A: "A) Allah’ın yaratıcı olmadığı ve evrenin tesadüfen var olduğu fikri",
+    B: "B) Allah’ın evreni doğrudan yaratmadığı, sudûr yoluyla var ettiği iddiası",
+    C: "C) Varlıkların yoktan yaratıldığı anlayışı",
+    D: "D) Evrenin kaos hâlinde olduğu ve düzeninin olmadığını savunmaları",
+    richtig: "B"
+  },
+  {
+    frage: "99. Darwinizm’in İslam düşüncesine en büyük etkisi aşağıdakilerden hangisidir?",
+    A: "A) İnsan ve tüm canlıların yaratılış yerine evrimle var olduğu fikrini savunması",
+    B: "B) Allah’ın kudretinin ve iradesinin her şeye hükmettiğini ispat etmesi",
+    C: "C) Meleklerin evrimsel süreçte ortaya çıktığını öne sürmesi",
+    D: "D) Peygamberlerin evrimsel süreçte seçildiğini iddia etmesi",
+    richtig: "A"
+  },
+  {
+    frage: "100. Pozitivist felsefenin İslam’a yönelik eleştirisi hangi temel varsayıma dayanmaktadır?",
+    A: "A) İnsan aklının mutlak bilgiye ulaşamayacağını iddia etmesi",
+    B: "B) Dinin insanlığın ilkel çağlarına ait bir olgu olduğunu öne sürmesi",
+    C: "C) Bilimin ve aklın Tanrı’nın varlığını ispat ettiğini söylemesi",
+    D: "D) Vahyin tek bilgi kaynağı olduğunu savunması",
+    richtig: "B"
+  },
+  {
+    frage: "101. Freud’un psikoloji anlayışı kelamcılar tarafından neden eleştirilmiştir?",
+    A: "A) İnsan aklının vahiyden üstün olduğunu savunması",
+    B: "B) İnsanın özgür iradesini kabul etmesi",
+    C: "C) İnsan davranışlarını sadece cinsellik temeline indirgemesi",
+    D: "D) Dini metafizik bir gerçeklik olarak kabul etmesi",
+    richtig: "C"
+  },
+  {
+    frage: "102. Coğrafi keşifler ve arkeolojik bulguların din karşıtı ideolojilere nasıl hizmet ettiği düşünülmektedir?",
+    A: "A) İnsanların tarih boyunca hep aynı bilinç seviyesinde olduklarını savunmaları",
+    B: "B) Dini metinlerin tarihsel olarak doğrulandığını göstermeleri",
+    C: "C) Evrendeki düzenin Allah tarafından yaratıldığını kanıtlamaları",
+    D: "D) İlkel insan topluluklarının varlığını öne sürerek dini inançların sonradan geliştiğini iddia etmeleri",
+    richtig: "D"
+  },
+  {
+    frage: "103. Oryantalist çalışmaların 19. yüzyıldan itibaren Müslüman aydınlar üzerindeki etkisi aşağıdakilerden hangisidir?",
+    A: "A) Oryantalizmin pozitivist yaklaşımı eleştirel bir süzgeçten geçirilerek benimsenmiştir.",
+    B: "B) Oryantalist eserler doğrudan adapte edilerek, içerik analizi yapılmaksızın içselleştirilmiştir.",
+    C: "C) Müslüman aydınlar oryantalist metodolojiyi tamamen reddetmişlerdir.",
+    D: "D) Oryantalist eserler yalnızca Batı’daki akademik çevrelerce incelenmiştir.",
+    richtig: "B"
+  },
+  {
+    frage: "104. Modern eğitimin dini anlayış üzerindeki en büyük etkisi aşağıdakilerden hangisidir?",
+    A: "A) Dini metinlerin daha geniş kesimler tarafından anlaşılmasını sağlamıştır.",
+    B: "B) Ezbercilik karşıtı anlayış, dinî hafızanın zayıflamasına yol açmıştır.",
+    C: "C) Geleneksel metinlerin daha fazla öğretilmesini teşvik etmiştir.",
+    D: "D) Dini aidiyetleri güçlendirmiştir.",
+    richtig: "B"
+  },
+  {
+    frage: "105. Tarihî mirasın taşınma zorluğunun temel nedeni aşağıdakilerden hangisidir?",
+    A: "A) Geçmişin tamamen terk edilmesi gerektiği düşüncesinin yaygınlaşması",
+    B: "B) Gazzâlî sonrası kelam anlayışının tamamen terk edilmesi",
+    C: "C) İslam dünyasının felsefi mirası bütünüyle reddetmesi",
+    D: "D) Kelamcıların, tarihî metinlerin esas alınması konusunda farklı yaklaşımlar benimsemesi",
+    richtig: "D"
+  },
+  {
+    frage: "106. Yeni sosyal hayat anlayışının dinî aidiyetlere etkisi hangi şekilde ortaya çıkmıştır?",
+    A: "A) Mahalle ve cemaat bağlarının zayıflaması, bireyselleşmeyi artırmıştır.",
+    B: "B) Geleneksel mezhep aidiyetleri güçlenmiştir.",
+    C: "C) Dini inançlar, modern teknolojiyle daha da yaygınlaşmıştır.",
+    D: "D) İnsanların dini değerlerle ilişkisi geçmişe göre daha güçlü hale gelmiştir.",
+    richtig: "A"
+  },
+  {
+    frage: "107. Yeni teknolojilerin insan ve toplum üzerindeki etkisi hakkında aşağıdaki ifadelerden hangisi doğrudur?",
+    A: "A) Yeni teknolojiler toplumsal dayanışmayı güçlendirmiştir.",
+    B: "B) Sanal dünya, dinî aidiyetleri daha sağlam bir zemine oturtmuştur.",
+    C: "C) İnsanların yalnızlaşmasına ve dini pratiklerinden uzaklaşmasına neden olmuştur.",
+    D: "D) Dinî öğretilerin daha etkin bir şekilde uygulanmasını sağlamıştır.",
+    richtig: "C"
+  },
+  {
+    frage: "108. Din bilimlerinin kelam ilmi üzerindeki etkisiyle ilgili aşağıdakilerden hangisi söylenebilir?",
+    A: "A) Kelam ilmi, din bilimlerinden bağımsız olarak gelişmeye devam etmiştir.",
+    B: "B) Pozitif bilimlerin dinî konuları ele alışı, kelam zihniyetinde kaymalara neden olmuştur.",
+    C: "C) Kelam ilmi, din sosyolojisi ve psikolojisiyle tamamen bütünleşmiştir.",
+    D: "D) Din bilimleri, kelamın yöntemini geliştirmek için kullanılmamaktadır.",
+    richtig: "B"
+  },
+  {
+    frage: "109. Modern zamanlarda ortaya çıkan İslamcılık hareketinin en belirgin amacı aşağıdakilerden hangisidir?",
+    A: "A) Sadece siyasi alanda İslam’ı hâkim kılmak",
+    B: "B) Müslüman toplumların Batı karşısındaki yenilgilerini telafi etmek",
+    C: "C) İslam dünyasında sekülerleşmeyi teşvik etmek",
+    D: "D) Mezhepler arasındaki ayrılığı derinleştirmek",
+    richtig: "B"
+  },
+  {
+    frage: "110. Selefîlik hareketinin en temel iddiası aşağıdakilerden hangisidir?",
+    A: "A) İlk üç neslin dini anlayışına geri dönmek ve onların metodolojisini takip etmek",
+    B: "B) Mezheplerin içtihatlarına dayanarak dini yorumlamak",
+    C: "C) İslam'ı modern bilimlerle yeniden yorumlamak",
+    D: "D) Batı düşüncesini İslam’a entegre etmek",
+    richtig: "A"
+  },
+  {
+    frage: "111. Kur’ancılık anlayışının en büyük zayıflığı aşağıdakilerden hangisidir?",
+    A: "A) Mezheplerin önemini artırması",
+    B: "B) Sadece hadislerle dini açıklamaya çalışması",
+    C: "C) Kur’an’ın tarihî bağlamdan koparılması ve sünnetin dışlanması",
+    D: "D) Kendi içinde farklı mezhepler oluşturması",
+    richtig: "C"
+  },
+  {
+    frage: "112. Mezhepçiliğin dini anlayışa verdiği en büyük zarar aşağıdakilerden hangisidir?",
+    A: "A) Mezheplerin dini yaşama katkısını azaltması",
+    B: "B) Dini kuralların daha iyi anlaşılmasını sağlaması",
+    C: "C) İslam’ın siyasi gücünü artırması",
+    D: "D) Farklı dini gruplar arasında hoşgörüsüzlük ve bölünmelere yol açması",
+    richtig: "D"
+  }
+	];
+	
+	var nr = 0;
+	function anzeigen() {
+    document.getElementById("frageText").innerHTML = fragen[nr].frage;
+    document.getElementById("textA").innerHTML = fragen[nr].A;
+    document.getElementById("textB").innerHTML = fragen[nr].B;
+    document.getElementById("textC").innerHTML = fragen[nr].C;
+    document.getElementById("textD").innerHTML = fragen[nr].D;
+    document.getElementById("meldung").innerHTML = "";
+
+    var radios = document.querySelectorAll('input[name="ant"]');
+    for (var i = 0; i < radios.length; i++) {
+        radios[i].checked = false;
+    }
+    document.querySelector('form').style.display = "block";
+	}
+
+	function weiter() {
+		var auswahl = document.querySelector('input[name="ant"]:checked');
+		if(auswahl == null){
+			document.getElementById("meldung").innerHTML = "Lütfen bir cevap seçiniz!";
+			return;
+		}
+		if(auswahl.value == fragen[nr].richtig){
+			nr = nr + 1;
+
+			if(nr < fragen.length){
+				anzeigen();
+			} else {
+				document.getElementById("frageText").innerHTML = "Bölüm tamamlandı";
+				document.getElementById("meldung").innerHTML = "Tüm soruları doğru cevapladın! <br> Aferin...";
+				document.querySelector('form').style.display = "none";
+				}
+		} else {
+			document.getElementById("meldung").innerHTML = "Cevabın yanlış, tekrar dene";
+		}
+	}
+	
+	function springeZuFrage() {
+    var nummer = parseInt(document.getElementById("frageNummer").value);
+    if(isNaN(nummer) || nummer < 1){
+        document.getElementById("meldungSprung").innerHTML = "Lütfen geçerli bir sayı girin!";
+        return;
+    }
+    if(nummer > fragen.length){
+        document.getElementById("meldungSprung").innerHTML = 
+            "O kadar soru yok! <br> Kelam bölümünde en fazla " + fragen.length + " soru bulunmaktadır.";
+        return;
+    }
+    nr = nummer - 1;
+    anzeigen();
+    document.getElementById("meldungSprung").innerHTML = "";
+	}
+	
+	anzeigen();
+	</script>
+	</body>
+</html>

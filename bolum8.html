@@ -1,0 +1,1079 @@
+<html lang="de">
+	<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Bölüm 8 - Fıkıh</title>
+		<style>
+		body{
+			font-family: Arial;
+			background:#f2f2f2;
+			text-align:center;
+		}
+		.box{
+			background:white;
+			width:90%;
+			max-width:600px;
+			margin:20px auto;
+			padding:20px;
+			border-radius:10px;
+			box-shadow:0 0 10px #aaa;
+		}
+		button{
+			padding:10px 20px; 
+			background:#2c7be5; 
+			color:white; 
+			border:none; 
+			border-radius:5px; 
+			cursor:pointer;
+		}
+		button:hover{
+			background:#1a5fc2;
+		}
+		a{
+			display:inline-block;
+			margin-top:20px;
+			text-decoration:none;
+			color:#2c7be5;
+		}
+		@media (max-width: 400px) {
+			h1 {
+				font-size: 1.5rem;
+			}
+			h2 {
+				font-size: 1.2rem;
+			}
+			button {
+				padding: 10px 0;
+			}
+		}
+		</style>
+	</head>
+
+	<body>
+	<div class="box">
+		<h1>Bölüm 8 - Fıkıh</h1>
+		<h2 id="frageText"></h2>
+		<form>
+			<input type="radio" name="ant" value="A"> <span id="textA"></span><br><br>
+			<input type="radio" name="ant" value="B"> <span id="textB"></span><br><br>
+			<input type="radio" name="ant" value="C"> <span id="textC"></span><br><br>
+			<input type="radio" name="ant" value="D"> <span id="textD"></span><br><br>
+			<button type="button" onclick="weiter()">sonraki soru</button>
+		</form>
+		<p id="meldung"></p>
+		<a href="index.html"> Ana sayfaya dön </a>
+	</div>
+	
+	<div class="box">
+	  <h2> Hangi soruya atlamak istiyorsun? </h2>
+	  <input type="number" id="frageNummer" placeholder="Sayı girin" style="width: 80px;"><br><br>
+	  <button type="button" onclick="springeZuFrage()"> Soruya git </button>
+	  <p id="meldungSprung"></p>
+	</div>
+
+	
+	<script>
+	var fragen = [
+{
+    frage: "1. Geleneksel sınıflamadan farklı olarak, günümüzde fıkhın ibadet konularını kapsayan kısmı ilmihâl olarak adlandırılmış, hukuka ilişkin meseleler ise İslam hukuku çerçevesinde incelenmiştir. Bu ayrımın temel sebeplerinden biri aşağıdakilerden hangisidir?",
+    A: "A) Fıkıh ilminin yalnızca ibadetleri ele alması",
+    B: "B) İslam hukukunun ibadet konularını kapsamayacak şekilde düzenlenmesi",
+    C: "C) İbadet hükümlerinin değişken, hukuki hükümlerin ise sabit olması",
+    D: "D) İlmihâl bilgilerinin herkesin kolayca anlayabileceği şekilde tasnif edilmesi",
+    richtig: "D"
+},
+{
+    frage: "2. İmam-ı Azam Ebû Hanîfe, fıkhı 'kişinin lehine ve aleyhine olan şeyleri bilmesi' olarak tanımlamıştır. Buna göre, fıkhın kapsamına giren konular aşağıdakilerden hangisidir?",
+    A: "A) Sadece ibadet hükümleri",
+    B: "B) Hukuki düzenlemeler ve ibadetler",
+    C: "C) Kişinin dini, hukuki ve ahlaki sorumluluklarını bilmesi",
+    D: "D) Matematik ve mantık ilkeleri",
+    richtig: "C"
+},
+{
+    frage: "3. İslam hukukunun gelişimi sürecinde içtihat, hukukçuların naslardan hüküm çıkarma çabası olarak değerlendirilmiştir. Ancak 4. (10.) yüzyıldan itibaren içtihat kapısının kapandığı yönünde bir görüş ortaya çıkmıştır. Bu görüşün ortaya çıkma sebeplerinden biri aşağıdakilerden hangisi değildir?",
+    A: "A) İslam hukukunun değişime kapalı olduğuna dair dini bir kaide bulunması",
+    B: "B) Farazi meselelerin çözüme kavuşturulmasıyla yeni içtihada gerek kalmadığının düşünülmesi",
+    C: "C) Bütün meselelerin çözüldüğü ve yeni problemlerin ortaya çıkmayacağı inancı",
+    D: "D) Devletlerin hukuki sistemlerini sabitlemek adına içtihatları sınırlaması",
+    richtig: "A"
+},
+{
+    frage: "4. Fıkıh, vahiy kaynaklı bir ilim olup hukuk, ahlak ve dini kuralları iç içe bulundurur. Ancak bazı modern çalışmalarda, İslam hukukunun statik bir yapıya sahip olduğu eleştirisi getirilmiştir. Bu eleştirinin temel dayanağı aşağıdakilerden hangisidir?",
+    A: "A) İslam hukukunun mutlak olarak değişmez kurallar koyması",
+    B: "B) İçtihat mekanizmasının zaman içinde işlevini kaybetmesi",
+    C: "C) Dinin temel kurallarının sabit olup hayatın değişken yapısına uyum sağlayamaması",
+    D: "D) İslam hukukunun yalnızca bireysel ibadetleri düzenlemesi",
+    richtig: "C"
+},
+{
+    frage: "5. Hz. Peygamber’in Muâz b. Cebel’i Yemen’e gönderirken ona bir sorunla karşılaştığında nasıl hüküm vereceğini sorması üzerine Muâz’ın verdiği cevaplar içtihadın önemine işaret etmektedir. Bu diyalogda içtihat süreci hangi sırayla takip edilmiştir?",
+    A: "A) Kıyas → Sünnet → Kur’an",
+    B: "B) Kur’an → Sünnet → İçtihat",
+    C: "C) Sünnet → Kur’an → İçtihat",
+    D: "D) İçtihat → Sünnet → Kur’an",
+    richtig: "B"
+},
+{
+    frage: "6. İslam hukukunda zaruret hâli, dinin yasakladığı bazı şeylerin belirli sınırlar çerçevesinde mübah kılınmasına imkân tanır. Ancak bu ruhsatın sınırları da belirlenmiştir. Aşağıdaki durumlardan hangisi, zaruret hâlinin ölçüsünü aşarak dinî hükümlerin ihlal edilmesine sebep olacak bir uygulamadır?",
+    A: "A) Ölüm tehlikesiyle karşı karşıya kalan birinin hayatta kalabilmek için domuz etinden ölmeyecek kadar yemesi",
+    B: "B) Açlıktan ölmek üzere olan birinin haram olan bir yiyeceği zaruret miktarınca tüketmesi",
+    C: "C) Hayati bir tehlike söz konusu olmadan, kişinin rahat etmek için dinin haram kıldığı bir fiili işlemesi",
+    D: "D) Bir hasta için doktor tavsiyesiyle oruç tutmama ruhsatının kullanılması",
+    richtig: "C"
+},
+{
+    frage: "7. İslam hukuku, bazı yasakları bir anda değil, toplumun hazır olmasını sağlayarak aşamalı olarak uygulamıştır. İçki ve faizin dört aşamada yasaklanması da bu yöntemin bir örneğidir. Bu uygulamanın temel sebebi aşağıdakilerden hangisidir?",
+    A: "A) Toplumun ani değişiklikleri kabul edemeyecek yapıda olması",
+    B: "B) Yasakların insan iradesini sınamak amacıyla zamana yayılması",
+    C: "C) Dini hükümlerin belirli bir zaman aralığında geçerlilik kazanması",
+    D: "D) Bütün yasakların aynı anda yürürlüğe girmesiyle dinin zorluk içermesi",
+    richtig: "A"
+},
+{
+    frage: "8. İslam hukukunda hükümler ta‘lîl edilebilir ve taabbüdî olarak ikiye ayrılır. Taabbüdî hükümler, illeti akıl yoluyla anlaşılamayan, doğrudan Allah’ın emriyle yapılan hükümlerdir. Aşağıdaki hükümlerin hangisi taabbüdî olup içtihada kapalıdır?",
+    A: "A) Zekât miktarının belirlenmesi",
+    B: "B) Evlenme akdinin şartları",
+    C: "C) Borçların nakliyesine dair hükümler",
+    D: "D) Alım-satım sözleşmelerindeki tarafların yükümlülükleri",
+    richtig: "A"
+},
+{
+    frage: "9. Din, ahlak ve hukuk arasındaki sıkı bağ, bireyin ve toplumun düzen içinde yaşamasını sağlamayı amaçlar. Ancak bu üç unsurun birbiriyle örtüşmemesi durumunda ortaya çıkan değerler çatışması hangi kavramla ifade edilir?",
+    A: "A) Meşruiyet",
+    B: "B) Anomi",
+    C: "C) Hakkaniyet",
+    D: "D) Teabbüd",
+    richtig: "B"
+},
+{
+    frage: "10. Bir kişinin hukukun verdiği bir hakkı, başka bir hakkı ortadan kaldıracak şekilde kötü niyetle kullanması 'hakkın kötüye kullanılması' olarak değerlendirilir. Aşağıdakilerden hangisi bu duruma örnek teşkil eder?",
+    A: "A) Kişinin yasal süresi dolmadan malını bağışlaması",
+    B: "B) Bir kimsenin kendisine tanınan mülkiyet hakkını, komşusunun manzarasını kesmek amacıyla kullanması",
+    C: "C) Ticari bir sözleşmede tarafların karşılıklı anlaşarak şartları belirlemesi",
+    D: "D) Bir kişinin vakıf mallarını kamu yararına bağışlaması",
+    richtig: "B"
+},
+{
+    frage: "11. İslam hukuku, dünyevi yaptırımlarla birlikte ahirette de bir karşılık öngören uhrevi müeyyide sistemine sahiptir. Buna göre, dünyevi mahkemeler tarafından tespit edilemeyen veya ispat edilemediği için cezasız kalan bir hak ihlali, ahiret yurdunda mutlaka karşılığını bulacaktır. Aşağıdakilerden hangisi uhrevi müeyyide ilkesine örnek olarak gösterilemez?",
+    A: "A) Bir kimsenin, dünyevi mahkemeler önünde ispat edemediği bir hakkını kıyamet günü elde etmesi",
+    B: "B) İyi niyetle işlenmiş olsa bile, bir başkasının hakkına zarar veren kişinin ahirette bundan dolayı mesul tutulması",
+    C: "C) Bir şahsın, dünyada işlediği suç sebebiyle mahkemede yargılanıp ceza almasının ardından, ahirette aynı suçtan dolayı tekrar cezalandırılması",
+    D: "D) Hak sahibinin dünyada affetmediği bir haksızlığın ahirette mutlaka adaletle karşılık bulması",
+    richtig: "C"
+},
+{
+    frage: "12. İslam hukukunda bir hakkın kötüye kullanılması, uhrevi bir ceza gerektiren bir fiil olarak değerlendirilmiştir. Örneğin bir kişi zekât vermemek için malını yıl dolmadan önce eşine hibe ederse, hukuken hibe geçerli kabul edilir. Ancak Allah katında niyetin mal kaçırmak olması sebebiyle bu eylem uhrevi cezayı gerektirir. Bu durum aşağıdaki hangi ilke ile açıklanabilir?",
+    A: "A) 'Hukuken geçerli olan her işlem dinen de makbuldür.'",
+    B: "B) 'Şekil şartlarını taşıyan her işlem Allah katında da geçerlidir.'",
+    C: "C) 'Dünyevi yaptırımlardan kaçan, uhrevi cezalardan da kurtulur.'",
+    D: "D) 'Kazâen geçerli olan her işlem, diyâneten de geçerli olmayabilir.'",
+    richtig: "D"
+},
+{
+    frage: "13. İslam hukuku, özellikle mezhep imamlarının ve fukahanın çabaları ile siyasi otoritelerden bağımsız olarak gelişmiştir. Mezhep imamları, hükümdarların teklif ettiği kadılık görevlerini kabul etmeyerek hukukun bağımsız gelişimine katkıda bulunmuşlardır. Aşağıdaki âlimlerden hangisi bu bağlamda Abbâsîler döneminde kadılık teklifini reddeden isimlerden biri değildir?",
+    A: "A) Ebû Hanîfe",
+    B: "B) İbn Dakîkı’l-‘Îd",
+    C: "C) İmam Mâlik",
+    D: "D) Cessâs",
+    richtig: "B"
+},
+{
+    frage: "14. Fıkıh kitapları, konularını belirli bir mantık çerçevesinde sıralamıştır. Genellikle ibadetler ile başlayıp muamelat, cezalar ve miras hükümleri ile devam eden bir dizilim söz konusudur. Bu sistematik içinde aşağıdaki hükümlerin hangi sırayla ele alınması beklenir?",
+    A: "A) Alışveriş → Namaz → Boşanma → Zekât",
+    B: "B) Namaz → Zekât → Boşanma → Miras",
+    C: "C) Miras → Boşanma → Oruç → Hac",
+    D: "D) Hırsızlık cezaları → Namaz → Ticaret → Miras",
+    richtig: "B"
+},
+{
+    frage: "15. İslam hukuku, meseleci (kazuistik) yöntemle gelişmiş, fetvalar ve pratik meseleler üzerinden şekillenmiştir. Bu yöntem, özellikle fıkıh kitaplarında çeşitli meselelerin delilleriyle birlikte ele alınmasını sağlamıştır. Kazuistik yöntemin İslam hukukundaki temel faydalarından biri aşağıdakilerden hangisidir?",
+    A: "A) Hukuk teorilerinin değil, yalnızca pratik meselelerin öne çıkarılması",
+    B: "B) Hukukun temel ilkelerinin gelişmesini engellemesi",
+    C: "C) Yeni karşılaşılan olaylara içtihat yoluyla daha hızlı çözümler bulunabilmesi",
+    D: "D) Mezheplerin görüş ayrılıklarını ortadan kaldırarak tek bir hukuk sistemine yönlendirilmesi",
+    richtig: "C"
+},
+{
+    frage: "16. İslam hukukunun Roma hukukundan etkilendiği iddiasını savunan araştırmacılar, İslam hukukunun aslında Arap kültürüne uyarlanmış Roma hukuku olduğunu öne sürmüştür. Ancak bu görüşe karşı çıkan hukukçular, İslam hukukunun orijinal olduğunu ve Roma hukukundan bağımsız geliştiğini delilleriyle savunmuşlardır. Aşağıdakilerden hangisi İslam hukuku ile Roma hukuku arasındaki temel farklardan biri değildir?",
+    A: "A) İslam hukuku vahye dayanırken, Roma hukuku laik bir yapıya sahiptir.",
+    B: "B) İslam hukukunda kadının tasarruf ehliyeti tamdır, Roma hukukunda ise kadın ömür boyu vesayet altındadır.",
+    C: "C) Roma hukukunda mirasçıyı seçme hakkı varken, İslam hukukunda varise vasiyet yasaklanmıştır.",
+    D: "D) İslam hukukunda borcunu ödeyemeyen kişi alacaklısının kölesi olurken, Roma hukukunda böyle bir hüküm yoktur.",
+    richtig: "D"
+},
+{
+    frage: "17. Batılı araştırmacıların bir kısmı, İslam hukukunun Roma hukukundan etkilenmiş olduğunu iddia etmiştir. Bu iddialara karşı çıkan İslam hukukçularının sunduğu delillerden biri de Jüstinyen’in 533 yılında çıkardığı bir emirnameyle Roma dışındaki tüm hukuk okullarını kapatmış olmasıdır. Aşağıdaki durumlardan hangisi bu delili destekleyen bir argüman olarak gösterilebilir?",
+    A: "A) Roma hukukçuları, İslam hukukçularına ders vermeye devam etmişlerdir.",
+    B: "B) İslam hukukunun en önemli metinleri Roma hukukçuları tarafından yazılmıştır.",
+    C: "C) İslam hukukçularının Roma hukukuna dair herhangi bir bilgi sahibi olmasına imkân yoktur.",
+    D: "D) Roma hukukunda hukuki işlemlerde şekil şartı esastır, İslam hukukunda ise asgari düzeydedir.",
+    richtig: "C"
+},
+{
+    frage: "18. İslam hukukuna özgü olan ancak Roma hukukunda bulunmayan bazı hukuki mekanizmalar bulunmaktadır. Aşağıdaki kavramlardan hangisi yalnızca İslam hukukuna özgüdür?",
+    A: "A) Şuf’a (Ön alım hakkı)",
+    B: "B) Evlat edinme",
+    C: "C) Vasiyet yoluyla mirasçıyı belirleme",
+    D: "D) Baba hâkimiyeti (Pederşâhilik)",
+    richtig: "A"
+},
+{
+    frage: "19. İslam hukukunun özgün bir sistematiği vardır. Roma hukuku, konularını şahıslar, eşya ve kaza olarak sınıflandırırken, İslam hukuku farklı bir tasnife sahiptir. Aşağıdakilerden hangisi İslam hukukunun temel tasniflerinden biridir?",
+    A: "A) Suçlar, ceza, yargılama",
+    B: "B) İbadetler, muamelat, ukubat",
+    C: "C) Kamu hukuku, özel hukuk, ticaret hukuku",
+    D: "D) Kişi hukuku, borçlar hukuku, ceza hukuku",
+    richtig: "B"
+},
+{
+    frage: "20. Câhiliye döneminde Araplar, kadınlara yönelik birçok hukuksuz uygulamada bulunuyordu. İslam hukuku ise bu uygulamalardan bazılarını tamamen kaldırmış, bazılarını ıslah etmiş, bazılarını ise olduğu gibi korumuştur. Aşağıdakilerden hangisi İslam’ın tamamen kaldırdığı bir uygulamadır?",
+    A: "A) Hılfü’l-Fudûl (Adalet ve yardımlaşma anlaşması)",
+    B: "B) Yetimlerin malına el koyma",
+    C: "C) Mehrin kadına değil, kocanın ailesine verilmesi",
+    D: "D) Kâbe hizmetleri",
+    richtig: "B"
+},
+{
+    frage: "21. İslam hukuku, câhiliye dönemindeki kadınlara yönelik adaletsizlikleri gidermek amacıyla çeşitli düzenlemeler getirmiştir. Aşağıdakilerden hangisi İslam hukukunun kadınlara tanıdığı haklardan biridir?",
+    A: "A) Kadının boşanma hakkının tamamen ortadan kaldırılması",
+    B: "B) Kadının evliliğinde sadece babasının söz hakkına sahip olması",
+    C: "C) Kadının mal varlığı üzerinde tam tasarruf yetkisine sahip olması",
+    D: "D) Kadının her durumda mirastan tamamen mahrum bırakılması",
+    richtig: "C"
+},
+{
+    frage: "22. Câhiliye döneminde yaygın bir boşama yöntemi olan zıhar, İslam tarafından sınırlandırılmış ve düzeltilmiştir. Aşağıdakilerden hangisi zıhar ile ilgili İslam hukukunun getirdiği düzenlemelerden biridir?",
+    A: "A) Zıhar yapan kişi, eşine hemen dönebilir.",
+    B: "B) Zıhar yapan kişi, eşine dönmeden önce belirli bir kefaret ödemelidir.",
+    C: "C) Zıhar yapıldığında, evlilik otomatik olarak sona erer.",
+    D: "D) Zıhar yalnızca kadının talebiyle geçerli olur.",
+    richtig: "B"
+},
+{
+    frage: "23. İslam öncesinde erkekler, eşlerini cezalandırmak amacıyla onların evlilik bağını askıda tutabiliyorlardı. İslam hukuku, bunu dört ayla sınırlandırarak îlâ uygulamasına müdahale etti. Îlâ'nın hükmü nedir?",
+    A: "A) Erkek, istediği kadar kadını askıda bırakabilir.",
+    B: "B) Kadın, dört ay sonunda evlilikten ayrılma hakkına sahip olur.",
+    C: "C) Erkek, eşini askıda bırakmak için mahkemeden izin almalıdır.",
+    D: "D) Îlâ yapan erkek, kadınla hiçbir şekilde barışamaz.",
+    richtig: "B"
+},
+{
+    frage: "24. Câhiliye döneminde boşanma sınırsızdı ve erkek istediği zaman eşini geri alabiliyordu. İslam hukukunda boşanmayı disipline eden temel hüküm nedir?",
+    A: "A) Boşanma ancak kadının rızasıyla gerçekleşebilir.",
+    B: "B) Erkek aynı kadını üç defadan fazla boşayamaz.",
+    C: "C) Boşanan kadın hiçbir şekilde eski eşiyle evlenemez.",
+    D: "D) Boşanma, yalnızca mahkeme kararıyla geçerli olur.",
+    richtig: "B"
+},
+{
+    frage: "25. İslam hukuku, hakkın kötüye kullanılmasını engellemek için birtakım düzenlemeler getirmiştir. Aşağıdaki örneklerden hangisi hakkın kötüye kullanılması kavramına örnektir?",
+    A: "A) Bir kişinin evlenmeden önce eşinden mehir talep etmesi",
+    B: "B) Bir kişinin borcunu zamanında ödememesi",
+    C: "C) Zekât vermemek için malını eşine devredip sonrasında geri alması",
+    D: "D) Bir kişinin miras hakkından feragat etmesi",
+    richtig: "C"
+},
+{
+    frage: "26. İslam öncesi Arap toplumunda yetim kızların mal varlıklarına el koymak için bazı erkekler onlarla evlenmekte veya evlenmelerini engellemekteydi. İslam hukuku, yetim kızların mallarına haksız yere el konulmasını engellemek için hangi düzenlemeyi getirmiştir?",
+    A: "A) Yetim kızlarla evlenmeyi tamamen yasaklamıştır.",
+    B: "B) Yetimlerin mallarının velileri tarafından kontrol edilmesini şart koşmuştur.",
+    C: "C) Yetim kızlarla evlenmenin ancak onların rızası ve adalet şartıyla mümkün olabileceğini belirtmiştir.",
+    D: "D) Yetim kızların mallarının tamamının devlet kontrolünde olması gerektiğini hükmetmiştir.",
+    richtig: "C"
+},
+{
+    frage: "27. İslam hukuku, siyasi otoritenin baskısından bağımsız olarak sivil bir çaba ile gelişmiştir. Aşağıdakilerden hangisi bu durumun en önemli göstergelerinden biridir?",
+    A: "A) Devletin tüm hukuk kararlarını belirleyen tek otorite olması",
+    B: "B) Mezhep imamlarının devlet kadılık görevlerini reddetmeleri",
+    C: "C) Hukukî düzenlemelerin yalnızca devlet eliyle yürütülmesi",
+    D: "D) Hukuk kurallarının sadece hükümdarın iradesine bağlı olması",
+    richtig: "B"
+},
+{
+    frage: "28. Batı hukukunun gelişimi, Roma hukuku temelli olup birçok teorik tartışmalar sonucunda modern halini almıştır. İslam hukukunda ise vahiy ve içtihat yoluyla hukuki kurallar ortaya konmuştur. Aşağıdakilerden hangisi İslam hukukuna özgü bir kavramdır?",
+    A: "A) Kişilik hakları teorisi",
+    B: "B) Tazir cezaları",
+    C: "C) Hukuki pozitifizm",
+    D: "D) Kamu hukuku – özel hukuk ayrımı",
+    richtig: "B"
+},
+{
+    frage: "29. Roma hukukunda mirasçıyı seçme hakkı bulunurken, İslam hukukunda miras paylaşımı belirli kurallara bağlıdır. Aşağıdakilerden hangisi İslam hukukunun miras paylaşımı ile ilgili getirdiği temel ilkelerden biridir?",
+    A: "A) Mirasın tamamı en büyük erkek çocuğa verilir.",
+    B: "B) Kadın mirastan tamamen mahrum bırakılır.",
+    C: "C) Miras, Kur’an’da belirlenen oranlara göre bölüştürülür.",
+    D: "D) Miras ancak vasiyet yoluyla paylaşılabilir.",
+    richtig: "C"
+},
+{
+    frage: "30. İslam hukukunda bir kişinin hukuki sorumluluğu, yalnızca dünyevi müeyyidelerle değil, aynı zamanda uhrevi yaptırımlarla da ilişkilidir. Bu bağlamda, İslam hukukunda ahiret yurdunda da sorumluluk gerektiren bir durum aşağıdakilerden hangisidir?",
+    A: "A) Mahkemede delil yetersizliği nedeniyle ceza almadan kurtulmak ancak suçu işlemiş olmak",
+    B: "B) Zekâtını eksik hesaplayarak ödemek",
+    C: "C) Namaz vakitlerini sürekli kaçırmak",
+    D: "D) Birine borç verip, borcunu geri istememek",
+    richtig: "A"
+},
+{
+    frage: "31. Hanefîler ve diğer fakihler, şeri hükmü farklı şekilde tanımlamışlardır. Hanefîlere göre şeri hüküm, şâri‘in hitabının neticesi iken, diğer fakihlere göre doğrudan şâri‘in hitabıdır. Buna göre aşağıdakilerden hangisi Hanefîlerin hüküm anlayışına daha uygundur?",
+    A: "A) 'Namaz kılın!' emri bizzat hükmün kendisidir.",
+    B: "B) 'Zekât verin!' ayeti doğrudan hükmü oluşturur.",
+    C: "C) 'Namaz kılın!' hitabından çıkan sonuç, namazın farz oluşudur.",
+    D: "D) Hüküm sadece Hz. Peygamber’in sözlerinden çıkarılabilir.",
+    richtig: "C"
+},
+{
+    frage: "32. Hanefîlere göre farz ve vacip arasında dereceli bir ayrım vardır. Buna göre aşağıdakilerden hangisi Hanefîlerin vacip anlayışına uygundur?",
+    A: "A) Kesin ve bağlayıcı delillere dayanan hükümler vaciptir.",
+    B: "B) Vacip olan bir hükmü inkâr eden kişi dinden çıkar.",
+    C: "C) Namaz, oruç ve hac vacip kapsamına girer.",
+    D: "D) Namazda Fâtiha suresini okumak ve kurban kesmek vaciptir.",
+    richtig: "D"
+},
+{
+    frage: "33. Hanefî mezhebine göre haram ve tahrîmen mekruh arasında fark bulunmaktadır. Aşağıdakilerden hangisi tahrîmen mekruhun özelliklerinden biri değildir?",
+    A: "A) Zannî delille yasaklanan fiillerdir.",
+    B: "B) İşleyen günahkâr olur, ancak inkâr eden dinden çıkmaz.",
+    C: "C) Haramla aynı derecede bağlayıcıdır ve cezalandırılmayı gerektirir.",
+    D: "D) Tahrîmen mekruh olan bir fiil, toplum düzenini bozan ağır bir suçtur.",
+    richtig: "D"
+},
+{
+    frage: "34. İslam hukukunda sebep ve şart kavramları arasında önemli farklar vardır. Aşağıdakilerden hangisi bu farkı doğru şekilde açıklar?",
+    A: "A) Sebep ve şart birbirinin yerine kullanılabilir.",
+    B: "B) Sebep, hükmün varlığını zorunlu kılarken, şart sadece hükmün tamamlanmasını sağlar.",
+    C: "C) Hükmün oluşması için sebep yeterlidir, şartın varlığı gerekmez.",
+    D: "D) Namazın sebebi vaktin girmesidir, ancak vakit aynı zamanda namazın rüknüdür.",
+    richtig: "B"
+},
+{
+    frage: "35. Mâni, bir hükmün veya sebebin gerçekleşmesine engel olan unsurdur. Aşağıdaki örneklerden hangisi bir hükmün mâniine örnektir?",
+    A: "A) Ramazan hilalinin görülmesi oruç için sebep olması",
+    B: "B) Hayız ve nifas durumunun namaz kılmaya engel olması",
+    C: "C) Namazın kılınması için vaktin girmesi şartının aranması",
+    D: "D) Mükellefin oruç tutması için sağlıklı olması",
+    richtig: "B"
+},
+{
+    frage: "36. İslam hukukunda bazı haklar yalnızca Allah’a aittir, bazıları ise hem kul hem de Allah hakkı içerir. Aşağıdaki hükümlerden hangisi sırf Allah hakkı kapsamında yer almaz?",
+    A: "A) Zekâtın verilmesi",
+    B: "B) Namazın farz kılınması",
+    C: "C) Kısas cezasının uygulanması",
+    D: "D) Orucun tutulması",
+    richtig: "C"
+},
+{
+    frage: "37. İslam hukukunda fetret ehlinin sorumluluğu tartışmalıdır. Aşağıdakilerden hangisi fetret ehlinin durumuyla ilgili Eş‘arî görüşüne uygundur?",
+    A: "A) Peygamber daveti olmadan insanlar dini sorumluluk taşımazlar.",
+    B: "B) İnsanlar akıllarıyla Allah’ı bulmakla yükümlüdür.",
+    C: "C) Fetret ehli ahirette bir imtihana tabi tutulacaktır.",
+    D: "D) Fetret ehli, hesap günü tamamen yok edilecektir.",
+    richtig: "A"
+},
+{
+    frage: "38. İslam hukukunda ehliyet, kişinin dini ve hukuki hükümlerin muhatabı olmaya elverişliliğini ifade eder. Buna göre aşağıdakilerden hangisi vücûb ehliyeti ile ilgili yanlış bir bilgidir?",
+    A: "A) Vücûb ehliyeti, kişinin haklara sahip olmasını ve borç altına girmesini mümkün kılar.",
+    B: "B) Vücûb ehliyetine sahip olmak için akıl ve temyiz şarttır.",
+    C: "C) Cenin de vücûb ehliyetine sahiptir ancak eksiktir.",
+    D: "D) Vücûb ehliyeti, insanın doğumuyla değil, ana rahmine düşmesiyle başlar.",
+    richtig: "B"
+},
+{
+    frage: "39. Cenin bazı haklara sahip olmakla birlikte, bazı haklardan yoksundur. Aşağıdakilerden hangisi ceninin sahip olabileceği haklardan biridir?",
+    A: "A) Bağış (hibe) kabul etme hakkı",
+    B: "B) Nafaka yükümlülüğü",
+    C: "C) Miras hakkı (sağ doğması kaydıyla)",
+    D: "D) Ticaret yapma hakkı",
+    richtig: "C"
+},
+{
+    frage: "40. İslam hukukuna göre temyiz çağına ulaşan çocuk (mümeyyiz sabi), belirli durumlarda bazı tasarruflarda bulunabilir. Aşağıdakilerden hangisi mümeyyiz bir çocuğun kanuni temsilcisinin izni olmadan yapabileceği bir işlemdir?",
+    A: "A) Bir malını satmak",
+    B: "B) Sadaka ve zekât vermek",
+    C: "C) Kendi malını vakfetmek",
+    D: "D) Büyük bir ticari anlaşmaya imza atmak",
+    richtig: "B"
+},
+{
+    frage: "41. İslam hukukunda akıl hastalığı (cünûn) kişinin ehliyetine doğrudan etki eden bir faktördür. Aşağıdakilerden hangisi akıl hastası olan bir kişinin hukuki durumunu doğru ifade eder?",
+    A: "A) Akıl hastası olan kişi tam vücûb ehliyetine sahiptir, ancak eda ehliyeti yoktur.",
+    B: "B) Akıl hastası olan kişi hem vücûb hem de eda ehliyetine tamamen sahiptir.",
+    C: "C) Akıl hastası bir kişi ticaret yapabilir ve sözleşme imzalayabilir.",
+    D: "D) Akıl hastası biri ibadetlerle sorumludur ve yerine getirmediğinde günah kazanır.",
+    richtig: "A"
+},
+{
+    frage: "42. Sarhoşluk, İslam hukukunda hukuki işlemlerin geçerliliği açısından farklı değerlendirilmiştir. Aşağıdakilerden hangisi haram yolla sarhoş olan bir kişinin yaptığı bir işlem için doğrudur?",
+    A: "A) Haram yolla sarhoş olan kişinin yaptığı evlilik geçerli değildir.",
+    B: "B) Haram yolla sarhoş olan kişinin yaptığı alışveriş geçerli sayılmaz.",
+    C: "C) Haram yolla sarhoş olan kişinin boşaması geçerlidir.",
+    D: "D) Haram yolla sarhoş olan kişi, hiçbir fiilinden sorumlu tutulamaz.",
+    richtig: "C"
+},
+{
+    frage: "43. İslam hukukunda bir kişi zorlama (ikrah) altında bazı işlemleri yapmaya mecbur bırakılırsa bu işlemlerin geçerliliği farklı olabilir. Aşağıdakilerden hangisi tam zorlama (ikrah-ı mülci) durumunda geçerlidir?",
+    A: "A) Zorla yapılan nikâh geçersizdir.",
+    B: "B) Zorla yapılan alışveriş her durumda geçerlidir.",
+    C: "C) Zorla yapılan talak geçersizdir.",
+    D: "D) Zorla yaptırılan bir ibadet, kişinin kendi rızasıyla yaptığı gibi makbuldür.",
+    richtig: "C"
+},
+{
+    frage: "44. Mali tasarruf konusunda israf yapan bir kişi sefih olarak değerlendirilir ve bazı hukuki kısıtlamalara tabi olur. Aşağıdakilerden hangisi sefih bir kişinin durumu ile ilgili doğru bir bilgidir?",
+    A: "A) Sefih bir kişi mali işlemlerini özgürce yapabilir.",
+    B: "B) Sefih bir kişi hacir altına alınır ve mali işlemleri kanuni temsilcinin iznine bağlı olur.",
+    C: "C) Sefih biri evlenemez ve boşanamaz.",
+    D: "D) Sefih biri tamamen mümeyyiz sabi (çocuk) gibi değerlendirilir.",
+    richtig: "B"
+},
+{
+    frage: "45. İslam hukukunda ölümle sonuçlanan hastalık sürecinde kişinin mali tasarrufları dikkatle değerlendirilir. Aşağıdakilerden hangisi bu dönemde yapılan işlemlerden biri için doğrudur?",
+    A: "A) Ölüm hastalığındaki kişi mirasını dilediği gibi paylaştırabilir.",
+    B: "B) Ölüm hastalığındaki kişinin yaptığı tüm mali işlemler geçersizdir.",
+    C: "C) Ölüm hastalığındaki kişinin yaptığı evlilik, mirasçılarının izniyle geçerli sayılır.",
+    D: "D) Ölüm hastalığındaki kişi bir malını, mirasının üçte birini geçmeyecek şekilde vasiyet edebilir.",
+    richtig: "D"
+},
+{
+    frage: "46. İslam hukukunda maslahat, faydalı olanı almak ve zararlı olanı kaldırmak olarak tanımlanır. Aşağıdakilerden hangisi maslahatın kapsamına girmez?",
+    A: "A) Toplumu maddi ve manevi olarak koruyacak önlemler almak",
+    B: "B) Şeriatın temel ilkelerine aykırı bile olsa toplum için faydalı olanı benimsemek",
+    C: "C) İnsanların dünya ve ahiret saadetini sağlamak",
+    D: "D) Adalet, hikmet ve rahmet ilkeleriyle örtüşen düzenlemeler yapmak",
+    richtig: "B"
+},
+{
+    frage: "47. Zarûriyyât, toplumsal düzenin kendisine bağlı olduğu, bulunması zorunlu olan maslahatları ifade eder. Aşağıdakilerden hangisi zarûriyyât kapsamında değerlendirilen beş temel unsurdan biri değildir?",
+    A: "A) Canın korunması (Hıfzu’n-nefs)",
+    B: "B) Ekonomik kalkınmanın desteklenmesi",
+    C: "C) Dinin korunması (Hıfzu’d-dîn)",
+    D: "D) Aklın korunması (Hıfzu’l-akl)",
+    richtig: "B"
+},
+{
+    frage: "48. İslam hukukunda canın korunması esastır ve bu doğrultuda çeşitli hükümler getirilmiştir. Aşağıdakilerden hangisi bu ilkeye aykırı bir uygulama değildir?",
+    A: "A) Kasıtla ve suçsuz bir insanı öldürmenin cezalandırılması",
+    B: "B) Ölüm tehdidi altında kalan birinin inancını inkâr etmesine izin verilmesi",
+    C: "C) Aç kalan bir insanın başkasının malını çalarak karnını doyurmasının helal sayılması",
+    D: "D) Zehirli veya zararlı gıdaların tüketilmesinin yasaklanması",
+    richtig: "A"
+},
+{
+    frage: "49. Dinin korunması için İslam hukuku çeşitli düzenlemeler getirmiştir. Aşağıdakilerden hangisi bu kapsamda yer almaz?",
+    A: "A) Dinî eğitim ve öğretimin teşvik edilmesi",
+    B: "B) İslam’a saldıranlara karşı ilmî ve hukuki savunma yapılması",
+    C: "C) Dinî görüşlere serbestçe saldırılmasına izin verilmesi",
+    D: "D) Müslümanlara dinî vecibelerini yerine getirme imkânı sağlanması",
+    richtig: "C"
+},
+{
+    frage: "50. Mal güvenliğini sağlamak için alınan önlemler arasında yer almayan unsur aşağıdakilerden hangisidir?",
+    A: "A) Hırsızlık yapanın cezalandırılması",
+    B: "B) Ticari işlemlerde tarafların rızasına dayalı sözleşmelerin meşru kılınması",
+    C: "C) Kumar ve faiz gibi yollarla haksız kazanç elde etmenin yasaklanması",
+    D: "D) Devletin tüm ekonomik faaliyetleri yönlendirme yetkisine sahip olması",
+    richtig: "D"
+},
+{
+    frage: "51. Aklın korunması için alınan tedbirler arasında aşağıdakilerden hangisi yer almaz?",
+    A: "A) İçki ve uyuşturucu maddelerin haram kılınması",
+    B: "B) Aklî melekelere sahip olmayanların cezai ehliyetten muaf tutulması",
+    C: "C) Bilimsel gelişmelerin akıl yoluyla desteklenmesi",
+    D: "D) İnsanların özgür iradeleriyle her türlü maddeyi tüketmesine izin verilmesi",
+    richtig: "D"
+},
+{
+    frage: "52. Neslin korunması için alınan önlemler arasında aşağıdakilerden hangisi bulunmaz?",
+    A: "A) Nikâhın teşvik edilmesi ve zina yasağı",
+    B: "B) Boşanmanın tamamen yasaklanması",
+    C: "C) İffeti koruyucu düzenlemeler getirilmesi",
+    D: "D) Evlenme teklifinde bulunan birinin cevabı beklenmeden başka birinin teklif yapamaması",
+    richtig: "B"
+},
+{
+    frage: "53. Hâciyyât maslahatları, hayatın kolaylaştırılması için konulmuş hükümlerdir. Aşağıdakilerden hangisi hâciyyât kapsamında değerlendirilebilir?",
+    A: "A) Namazın cemaatle kılınmasının teşvik edilmesi",
+    B: "B) Yolculuk hâlinde namazların kısaltılmasına izin verilmesi",
+    C: "C) Zekâtın ihtiyaç sahiplerine verilmesi",
+    D: "D) Hırsızlığın ağır cezalarla önlenmesi",
+    richtig: "B"
+},
+{
+    frage: "54. Tahsîniyyât maslahatları, insana itibar kazandıran ve görgülü davranışlar içeren hükümlerdir. Aşağıdakilerden hangisi bu kapsamda yer almaz?",
+    A: "A) Güzel ve temiz giyinmeye teşvik edilmesi",
+    B: "B) Yeme içme adabına riayet edilmesi",
+    C: "C) Namazların belirli vakitlerde kılınmasının zorunlu olması",
+    D: "D) Kötü koku yayan yiyecekler yedikten sonra camiye gidilmemesi",
+    richtig: "C"
+},
+{
+    frage: "55. İslam hukukunda intihar, canın korunması ilkesi gereğince haram kılınmıştır. Aşağıdakilerden hangisi bu ilkenin bir gereği değildir?",
+    A: "A) İnsanların sağlıklı beslenmeye teşvik edilmesi",
+    B: "B) Ağır depresyon yaşayan kişilere destek verilmesi",
+    C: "C) İnsanın kendi hayatına son verme hakkına sahip olması",
+    D: "D) Zararlı alışkanlıkların yasaklanması",
+    richtig: "C"
+},
+{
+    frage: "56. Mükemmilât (tamamlayıcı maslahatlar) ana maslahatları destekleyici niteliktedir. Aşağıdakilerden hangisi bir mükemmilât örneğidir?",
+    A: "A) Ezanın farz bir ibadet olarak kabul edilmesi",
+    B: "B) İslam’ın evliliği teşvik etmesi ve eşler arasında uyum için kefâet şartı getirmesi",
+    C: "C) Namazın farz olması",
+    D: "D) Faiz yasağının getirilmesi",
+    richtig: "B"
+},
+{
+    frage: "57. İslam hukukunda irtidad eden kişilerin öldürülmesine dair klasik görüş, hangi gerekçeyle değerlendirilmiştir?",
+    A: "A) Dinden dönen her bireyin doğrudan ceza alması gerektiği için",
+    B: "B) İrtidad eden kişilerin toplum düzenine ve devlete başkaldırdığı için",
+    C: "C) Her bireyin inanç özgürlüğüne sahip olması gerektiğinden",
+    D: "D) Kendi hâlinde yaşayan her mürtedin savaş açmış sayılacağı için",
+    richtig: "B"
+},
+{
+    frage: "58. İslam hukukunda zaruret hâlinde haram gıdaların tüketilmesine izin verilmiştir. Aşağıdaki durumlardan hangisi bu hükmün kapsamına girmez?",
+    A: "A) Açlıktan ölmek üzere olan birinin domuz eti yemesi",
+    B: "B) Hasta birinin kendisini iyileştirecek tek ilaç olarak alkol içmesi",
+    C: "C) Rahatına düşkün olan birinin haram yiyecekleri tercih etmesi",
+    D: "D) Susuzluktan ölmek üzere olan birinin temiz olmayan su içmesi",
+    richtig: "C"
+},
+{
+    frage: "59. Ceza hukukunda sanığın şüpheden yararlanması hangi maslahat ilkesinin bir yansımasıdır?",
+    A: "A) Zarûriyyât",
+    B: "B) Hâciyyât",
+    C: "C) Tahsîniyyât",
+    D: "D) Mükemmilât",
+    richtig: "B"
+},
+{
+    frage: "60. İslam hukukunda maslahat ilkesi gereği kamu yararına öncelik verilmesi gereken durum aşağıdakilerden hangisidir?",
+    A: "A) Şüphe ile suçlanan bir kişinin cezalandırılması",
+    B: "B) Kamu düzeninin bozulmasını önlemek için devletin bazı bireysel hakları sınırlaması",
+    C: "C) Bireysel hak ve özgürlüklerin her durumda kamu yararına üstün tutulması",
+    D: "D) Kamu düzenini bozma ihtimali olan suçların hoşgörüyle karşılanması",
+    richtig: "B"
+},
+{
+    frage: "61. Hz. Peygamber’in sözleri, fiilleri ve takrirleri İslam hukukunun ikinci kaynağı olan sünneti oluşturur. Takrirî sünnet, Hz. Peygamber’in bir fiile sessiz kalmasıyla gerçekleşir. Takrirî sünnetin delil olmasının temel gerekçesi nedir?",
+    A: "A) Hz. Peygamber’in sessiz kaldığı konularda hüküm vermek istememesi",
+    B: "B) Hz. Peygamber’in fiillere müdahale etmeyerek toplumun gelişmesini istemesi",
+    C: "C) Hz. Peygamber’in görevinin dinî konularda yanlış uygulamaları düzeltmek olması",
+    D: "D) Sahabenin, Hz. Peygamber’in sessiz kaldığı konulara büyük önem vermesi",
+    richtig: "C"
+},
+{
+    frage: "62. Hanefîler hadisleri sübut açısından mütevatir, meşhur ve âhâd olarak üçe ayırırken diğer mezhepler mütevatir ve âhâd olarak ikiye ayırır. Aşağıdakilerden hangisi âhâd haberler arasında yer alan bir hadis türüdür?",
+    A: "A) Her üç tabakada da ravi sayısı üçten aşağıya düşmeyen hadisler",
+    B: "B) Sahabe döneminde tevatür derecesine ulaşmayan, ancak sonraki tabakalarda tevatür seviyesine ulaşan hadisler",
+    C: "C) Hz. Peygamber’e isnat edilen, kesintisiz ve çok sayıda ravi tarafından aktarılan hadisler",
+    D: "D) Her üç tabakada veya tabakaların birinde ravi sayısı tek olan hadisler",
+    richtig: "D"
+},
+{
+    frage: "63. Hadislerin Kur’an hükümleriyle bağlantısının kurulması sünnetin sağlıklı anlaşılması için önemlidir. Hz. Peygamber’in hadisleri hangi durumda teşriî (hukuk koyucu) nitelik taşımayabilir?",
+    A: "A) Hadis, Kur’an’da yer almayan bir konuda hüküm koyuyorsa",
+    B: "B) Hadis, Hz. Peygamber’in devlet başkanı olarak söylediği bir söz ise",
+    C: "C) Hadis, Hz. Peygamber’in kıyamete kadar geçerli olacak bir emir içeriyorsa",
+    D: "D) Hadis, sahabeler tarafından icma ile kabul edilmişse",
+    richtig: "B"
+},
+{
+    frage: "64. İslam hukukunda icma, müçtehitlerin bir meselede ittifak etmeleriyle oluşur. Aşağıdakilerden hangisi icmanın muteber bir kaynak olmasının gerekçelerinden biridir?",
+    A: "A) İcma edilen meselelerde halkın görüşü dikkate alınmıştır",
+    B: "B) İcma, müçtehitlerin ferdi kanaatlerinden bağımsız olarak gerçekleşir",
+    C: "C) “Müminlerin yolundan ayrılan” kişi hakkında Kur’an’da uyarı bulunması",
+    D: "D) Sükûtî icmanın tüm mezhepler tarafından kesin delil olarak kabul edilmesi",
+    richtig: "C"
+},
+{
+    frage: "65. Kur’an ve sünnette hükmü bulunmayan bir meseleye, ortak illet sebebiyle bir nas hükmünün uygulanmasına kıyas denir. Aşağıdakilerden hangisi kıyasın temel unsurlarından biri değildir?",
+    A: "A) İllet",
+    B: "B) Hüküm",
+    C: "C) Re’y",
+    D: "D) Asıl",
+    richtig: "C"
+},
+{
+    frage: "66. Hanefî fıkhında önemli bir yer tutan istihsan yöntemi, kıyasın genel prensipleriyle çelişebilecek durumları düzenlemek için kullanılır. Aşağıdaki hangi durum istihsanın uygulanmasına örnektir?",
+    A: "A) Hırsızlık yapanın cezalandırılması",
+    B: "B) Namazın farz olarak kılınması",
+    C: "C) Terzinin dikim için aldığı kumaşın zarar görmesi durumunda tazminat ödemesi",
+    D: "D) Bir kişinin kendi mülküne zarar vermesi",
+    richtig: "C"
+},
+{
+    frage: "67. Maslahat-ı mürsele, açık bir nas veya icma olmaksızın kamu yararını gözeterek verilen hükümlerdir. Aşağıdakilerden hangisi maslahat-ı mürsele ilkesine göre alınan bir karara örnektir?",
+    A: "A) Namazın farz olması",
+    B: "B) Kur’an sahifelerinin bir mushafta toplanması",
+    C: "C) Kıyamet günü hesap gününün olacağının bildirilmesi",
+    D: "D) Hz. Peygamber’in oruç tutmayı emretmesi",
+    richtig: "B"
+},
+{
+    frage: "68. İslam hukukunda sedd-i zerâi ilkesi, harama götürebilecek yolların engellenmesini ifade eder. Aşağıdaki modern uygulamalardan hangisi sedd-i zerâi ilkesine uygun bir örnektir?",
+    A: "A) Trafik kurallarına uymayanlara sadece uyarı verilmesi",
+    B: "B) Kumarhane yapacağı bilinen birine arsa satılmasının yasaklanması",
+    C: "C) Ticaretin tamamen serbest bırakılması",
+    D: "D) Üniversitelerde her öğrenciye serbest kıyafet hakkı tanınması",
+    richtig: "B"
+},
+{
+    frage: "69. Sahâbî kavli, sahabenin Hz. Peygamber’den öğrendiği veya kendi içtihadıyla ulaştığı görüşlere verilen isimdir. Sahabenin görüşlerinin delil olup olmadığı konusunda farklı yaklaşımlar bulunmaktadır. Aşağıdaki durumların hangisinde sahâbî kavli bağlayıcı kabul edilmez?",
+    A: "A) Akıl ile kavranamayan konularda sahâbî kavlinin Hz. Peygamber’den duymuş olma ihtimali varsa",
+    B: "B) Sahâbîler arasında ittifak edilen bir mesele icma kapsamına giriyorsa",
+    C: "C) Sahâbî kavli içtihada dayanıyor ve sahabenin birbirine itiraz ettiği örnekler bulunuyorsa",
+    D: "D) Sahâbî kavli, Kitap ve sünnette açık bir hüküm bulunmadığında delil kabul ediliyorsa",
+    richtig: "C"
+},
+{
+    frage: "70. İslam hukukunda, önceki semavi dinlerde yer alan hükümlerden bazıları yürürlükte olabilirken, bazıları kaldırılmıştır. Aşağıdaki hükümlerden hangisi Müslümanlar için bağlayıcı değildir?",
+    A: "A) Kısas cezasının uygulanması",
+    B: "B) Önceki ümmetlerde yasak olduğu halde İslam'da serbest bırakılan yiyeceklerin tüketilmesi",
+    C: "C) Hz. Musa’nın kavmine bildirilen namaz emri",
+    D: "D) Kurban ibadetinin uygulanması",
+    richtig: "B"
+},
+{
+    frage: "71. Kur’an ve sünnette yer alan önceki şeriat hükümlerinden bazıları, İslam hukukçuları arasında görüş ayrılığına sebep olmuştur. Aşağıdakilerden hangisi bu görüş ayrılıklarının temel sebebidir?",
+    A: "A) Önceki ümmetlerin tüm hükümlerinin tamamen İslam'da da geçerli olup olmadığının net olmaması",
+    B: "B) Hz. Peygamber’in önceki şeriatlarla ilgili hiçbir açıklama yapmamış olması",
+    C: "C) Önceki dinlerin tamamen iptal edilmiş ve İslam'la hiçbir bağlantılarının olmaması",
+    D: "D) Tüm mezheplerin önceki ümmetlerin şeriatını delil olarak eşit şekilde kabul etmesi",
+    richtig: "A"
+},
+{
+    frage: "72. İstishâb, geçmişte sabit olan bir durumun aksi ispat edilinceye kadar devam ettiğini kabul eder. Aşağıdaki hangi durum istishâb ilkesine uygundur?",
+    A: "A) İki kişi arasında borç ihtilafı çıkmış, borç iddiasında bulunan kişi borcun varlığını ispat edememiştir ve davalı borçlu sayılmıştır",
+    B: "B) Evliliğin sona erdiğine dair kesin bir bilgi olmadığı sürece eşlerin hala evli olduklarının kabul edilmesi",
+    C: "C) Bir kimsenin suçlu olduğuna dair kesin delil bulunmamasına rağmen şüphe üzerine cezalandırılması",
+    D: "D) Bir hayvanın etinin helal olup olmadığına dair kesin bilgi bulunmadığında onun haram kabul edilmesi",
+    richtig: "B"
+},
+{
+    frage: "73. İstishâbın bir yönü olan aslî berâet ilkesi, kişinin suçsuz ve borçsuz olduğu varsayımına dayanır. Aşağıdaki durumlardan hangisi bu ilkeye uygun değildir?",
+    A: "A) Suçlanan bir kişinin, suçlu olduğunu iddia eden tarafın delil sunamaması nedeniyle suçsuz kabul edilmesi",
+    B: "B) Bir satıcının sattığı malın ayıplı olmadığını ispat etmesi gerektiğinin kabul edilmesi",
+    C: "C) Bir kimsenin doğuştan suçsuz kabul edilmesi ve suç işlediği ispat edilmedikçe masum sayılması",
+    D: "D) Evli bir çiftin boşandıkları ispat edilmedikçe evli kabul edilmeleri",
+    richtig: "B"
+},
+{
+    frage: "74. Hz. Peygamber’in risâlet dönemi fıkhın doğuş dönemi olarak kabul edilir. Bu dönemin temel özelliklerinden biri aşağıdakilerden hangisidir?",
+    A: "A) Fıkhî hükümlerin genellikle farazi olaylar üzerinden belirlenmesi",
+    B: "B) Fıkhî hükümlerin yaşanan gerçek olaylar üzerinden oluşturulması",
+    C: "C) Mezheplerin doğuşu ve sistematik fıkıh anlayışının oluşması",
+    D: "D) Hadislerin tedvin edilerek yazılı hale getirilmesi",
+    richtig: "B"
+},
+{
+    frage: "75. Hz. Peygamber döneminde fıkhî hükümlerin oluşmasında belirleyici olan ana unsur aşağıdakilerden hangisidir?",
+    A: "A) Sahabenin içtihatları",
+    B: "B) Müslümanların örfi hukuk anlayışı",
+    C: "C) Vahyin belirleyiciliği",
+    D: "D) Mezhep imamlarının yorumları",
+    richtig: "C"
+},
+{
+    frage: "76. Dört Halife döneminde fıkhî hükümlerin belirlenmesinde hangi yöntem esas alınmıştır?",
+    A: "A) Sahabenin şahsi görüşlerine dayalı kararlar alması",
+    B: "B) Öncelikle Kur’an’a, sonra sünnete ve son olarak re’y içtihadına başvurulması",
+    C: "C) Farazi fıkhî meseleler üreterek hüküm belirlenmesi",
+    D: "D) Mezheplerin görüş birliği ile karar verilmesi",
+    richtig: "B"
+},
+{
+    frage: "77. Emevîler döneminde fıkhın gelişiminde en büyük etkiye sahip olan ana sebep aşağıdakilerden hangisidir?",
+    A: "A) Fıkıh alanında ihtilafın ortadan kalkması",
+    B: "B) İslam coğrafyasının genişleyerek farklı kültürlerle etkileşime girmesi",
+    C: "C) Hadislerin tamamen yazılı hale getirilmesi",
+    D: "D) Re’y kullanımının tamamen ortadan kaldırılması",
+    richtig: "B"
+},
+{
+    frage: "78. Kûfe’de gelişen Re’y okulunun hadis ekolünden ayrılmasına sebep olan temel faktör aşağıdakilerden hangisidir?",
+    A: "A) Kûfe’de sünnet malzemesinin az olması ve olayların karmaşıklığı nedeniyle re’ye daha fazla ihtiyaç duyulması",
+    B: "B) Re’y ekolünün hadisleri tamamen reddetmesi",
+    C: "C) Re’y ekolünün Kur’an’a dayanmaması",
+    D: "D) Hadis ekolünün tamamen farazi olaylara dayanması",
+    richtig: "A"
+},
+{
+    frage: "79. Hz. Ebû Bekir’in zekât vermeyenlerle savaş açması hangi fıkhî yöntemin uygulanmasına örnek olarak gösterilebilir?",
+    A: "A) Kıyas",
+    B: "B) Maslahat",
+    C: "C) İcma",
+    D: "D) İstihsan",
+    richtig: "B"
+},
+{
+    frage: "80. Hz. Ömer’in kıtlık yılında hırsızlık yapanlara had cezası uygulamaması hangi fıkhî ilke ile açıklanabilir?",
+    A: "A) Hükmün neshedilmesi",
+    B: "B) Maslahata dayalı karar alınması",
+    C: "C) Şura yöntemiyle karar alınması",
+    D: "D) Hükmün kesinlikle uygulanması gerektiği prensibi",
+    richtig: "B"
+},
+{
+    frage: "81. Fıkhın olgunluk ve kemal döneminde mezheplerin oluşumuna zemin hazırlayan temel etkenlerden biri aşağıdakilerden hangisidir?",
+    A: "A) Mezheplerin devlet tarafından resmi olarak ilan edilmesi",
+    B: "B) İslam coğrafyasının genişlemesi ve farklı kültürlerle etkileşim",
+    C: "C) Farazi meselelerin yasaklanarak yalnızca yaşanmış olaylara göre fıkhın şekillendirilmesi",
+    D: "D) Tüm İslam âlimlerinin tek bir mezhep altında birleşmesi",
+    richtig: "B"
+},
+{
+    frage: "82. Abbâsî Devleti döneminde fıkhın gelişimini hızlandıran başlıca etkenlerden biri aşağıdakilerden hangisidir?",
+    A: "A) İslam hukukunda içtihadın yasaklanması",
+    B: "B) Halifelerin ulemaya geniş bir ilmî özgürlük tanıması",
+    C: "C) Tüm mezheplerin birleşerek tek bir hukuk sistemi oluşturması",
+    D: "D) Hadislerin tedvin edilmemesi nedeniyle sadece kıyasa başvurulması",
+    richtig: "B"
+},
+{
+    frage: "83. Mezheplerin gelişimi açısından büyük bir öneme sahip olan fıkhî metodoloji (istinbat yöntemleri) hangi dönemde netleşmiştir?",
+    A: "A) Hz. Peygamber dönemi",
+    B: "B) Sahabe ve tâbiûn dönemi",
+    C: "C) Olgunluk ve kemal dönemi",
+    D: "D) Sanayi Devrimi sonrası dönem",
+    richtig: "C"
+},
+{
+    frage: "84. Tahrîc yöntemi aşağıdakilerden hangisini ifade eder?",
+    A: "A) Mezhebin kendi içindeki hükümler ve prensipler doğrultusunda yeni meselelere çözüm üretmek",
+    B: "B) Bir mezhep içindeki görüşlerden yalnızca en eski olanını kabul etmek",
+    C: "C) Mezheplerin bir araya gelerek ortak bir hukuk anlayışı oluşturması",
+    D: "D) Mezhep imamlarının tüm görüşlerini terk edip yeni içtihatlar oluşturmak",
+    richtig: "A"
+},
+{
+    frage: "85. Sanayi Devrimi’nden sonra fıkhın yeni meseleler karşısında yetersiz kalmasının temel sebebi aşağıdakilerden hangisidir?",
+    A: "A) Fıkhın dinamizmini kaybederek modern sorunlara cevap verememesi",
+    B: "B) Sanayi Devrimi’nin İslam coğrafyasında gerçekleşmemesi nedeniyle yeni durumların dışardan gelmesi",
+    C: "C) Mezheplerin içtihat yapmaya tamamen kapalı hale gelmesi",
+    D: "D) Müslüman toplumların tamamen sekülerleşerek fıkhı terk etmesi",
+    richtig: "B"
+},
+{
+    frage: "86. Modernist düşünürlerin fıkha yaklaşımı ile ilgili aşağıdakilerden hangisi doğrudur?",
+    A: "A) Geleneksel fıkıh yöntemlerini tamamen kabul ederek içtihadı reddetmişlerdir.",
+    B: "B) Fıkhî meseleleri yalnızca Kur’an ve sünnete dayandırarak çözüme ulaşmayı savunmuşlardır.",
+    C: "C) Hadislerin fıkıhta hiçbir değer taşımadığını ve sadece Kur’an’ın kaynak olarak alınması gerektiğini öne sürmüşlerdir.",
+    D: "D) Mezheplerin oluşturduğu geleneksel fıkıh yöntemlerinin modern dünyaya tamamen uyarlanabilir olduğunu iddia etmişlerdir.",
+    richtig: "B"
+},
+{
+    frage: "87. Osmanlı Devleti’nde fıkhın kanunlaştırılması sürecinin en önemli aşamalarından biri olan Mecelle ile ilgili aşağıdakilerden hangisi yanlıştır?",
+    A: "A) Hanefî mezhebinin muteber kaynaklarına dayanarak hazırlanmıştır.",
+    B: "B) Sadece Osmanlı Devleti'nde değil, başka ülkelerde de etkili olmuştur.",
+    C: "C) Hukukun tüm alanlarını kapsayan geniş bir kanunlaştırma hareketidir.",
+    D: "D) Hukukun temel prensiplerini içeren 100 küllî kaide içermektedir.",
+    richtig: "C"
+},
+{
+    frage: "88. Günümüz İslam dünyasında fıkhın yasama sürecine etkisi açısından aşağıdakilerden hangisi doğrudur?",
+    A: "A) Bütün İslam ülkeleri fıkhî hükümleri devlet yasalarına aynen uygulamaktadır.",
+    B: "B) İslam ülkelerinde fıkhî hükümler genellikle özel hukuk (aile ve miras hukuku) alanında yürürlüktedir.",
+    C: "C) Fıkhî hükümler, tüm İslam ülkelerinde modern seküler hukuk sistemine tamamen entegre edilmiştir.",
+    D: "D) Hiçbir İslam ülkesi fıkhî hükümleri resmi yasama sürecine dahil etmemektedir.",
+    richtig: "B"
+},
+{
+    frage: "89. Hanefî mezhebi, fıkıh metodolojisinde hangi özelliğiyle diğer mezheplerden ayrılır?",
+    A: "A) Hadisleri kabul ederken Medinelilerin amelini esas alması",
+    B: "B) Ahâd haberleri kabul konusunda daha titiz ve ihtiyatlı davranması",
+    C: "C) İçtihat konusunda sadece sahabe görüşlerine bağlı kalması",
+    D: "D) Maslahat prensibini hukukun temel kaynağı olarak kabul etmesi",
+    richtig: "B"
+},
+{
+    frage: "90. Ca‘ferî mezhebinin içtihat anlayışıyla ilgili aşağıdakilerden hangisi doğrudur?",
+    A: "A) Mutlak içtihat yalnızca on iki imam tarafından yapılabilir.",
+    B: "B) Ahbârîler içtihadı kabul ederken Usûlîler bunu reddetmiştir.",
+    C: "C) İçtihat, kıyas ve istihsan gibi yöntemleri esas alarak hüküm üretir.",
+    D: "D) İçtihadın temel kaynağı sünnet olup, sünnetin geçerliliği Ehl-i Beyt imamlarının rivayetleriyle sınırlıdır.",
+    richtig: "D"
+},
+{
+    frage: "91. İmam Mâlik’in fıkıh metodolojisinde “Medinelilerin ameli” kavramı ne anlama gelir?",
+    A: "A) Medinelilerin rivayet ettikleri hadislerin diğer bölgelere göre daha güvenilir olması",
+    B: "B) Medine’de yaşayan sahabelerin fıkhî uygulamalarının bağlayıcı olması",
+    C: "C) Sadece Medine’de yaşamış fakihlerin görüşlerinin kabul edilmesi",
+    D: "D) Hz. Peygamber’in yaşadığı şehir olması nedeniyle Medine toplumunun hukuki otorite kabul edilmesi",
+    richtig: "B"
+},
+{
+    frage: "92. Şâfiî mezhebiyle ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+    A: "A) Şâfiîler, istihsan yöntemini kabul ederek içtihadı genişletmiştir.",
+    B: "B) Hukuki işlemlerde niyete ve maksada büyük önem vermiştir.",
+    C: "C) Kadîm ve cedîd görüşleri olmak üzere farklı dönemlerde içtihat değişiklikleri yapmıştır.",
+    D: "D) İmam Şâfiî’nin temel metodolojisi farazi meseleler üzerine kuruludur.",
+    richtig: "C"
+},
+{
+    frage: "93. Hanbelî mezhebinin hukuki yaklaşımıyla ilgili aşağıdaki ifadelerden hangisi yanlıştır?",
+    A: "A) Nasların bulunmadığı konularda maslahat prensibini esas almıştır.",
+    B: "B) Akidlerde ve hukuki işlemlerde tarafların niyetine büyük önem vermiştir.",
+    C: "C) İçtihat yöntemleri açısından Ehl-i Rey ekolüne daha yakındır.",
+    D: "D) Farazi meselelerden büyük ölçüde kaçınmış, hadis merkezli bir fıkıh anlayışı benimsemiştir.",
+    richtig: "C"
+},
+{
+    frage: "94. Zeydiyye mezhebinin imamet anlayışı ile ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+    A: "A) İmamlar yalnızca Hz. Hüseyin’in soyundan gelebilir.",
+    B: "B) İmametin masumiyet şartına bağlı olduğu kabul edilir.",
+    C: "C) İmamın belirlenmesi için Hz. Peygamber’in açık bir vasiyeti gereklidir.",
+    D: "D) İmam, Ali-Fâtıma soyundan gelmeli, fazilet, cesaret ve takva sahibi olmalıdır.",
+    richtig: "D"
+},
+{
+    frage: "95. İbâzî mezhebinin fıkhî uygulamalarından hangisi diğer mezheplerle farklılık göstermektedir?",
+    A: "A) Namazlarda kunut duasının bulunmaması",
+    B: "B) Mestler üzerine meshetmenin caiz olması",
+    C: "C) Seferde namazların kısaltılmasının ruhsat olarak kabul edilmesi",
+    D: "D) Ramazan orucunu kaza ederken aralıklı tutulmasına izin verilmesi",
+    richtig: "A"
+},
+{
+    frage: "96. Mezheplerin doğuşundaki en önemli faktörlerden biri olan yöntem farklılıkları aşağıdaki durumlardan hangisine sebep olmuştur?",
+    A: "A) Tüm mezheplerin aynı usulü benimsemesi",
+    B: "B) Mezhepler arasında hiçbir görüş ayrılığının olmaması",
+    C: "C) Hadislerin kabul şartlarının farklılaşmasına",
+    D: "D) Fıkhî hükümlerin yalnızca sahabe kavliyle belirlenmesine",
+    richtig: "C"
+},
+{
+    frage: "97. Evzâî mezhebinin, fıkıh anlayışı açısından diğer mezheplerle olan temel farkı nedir?",
+    A: "A) Re’y ekolüne yakın olup kıyası sıkça kullanması",
+    B: "B) Hadisleri merkeze alıp, mürsel hadis ve sahâbî kavlini re’y ve kıyasa tercih etmesi",
+    C: "C) Tüm içtihatları mutlak bir imamın görüşlerine dayandırması",
+    D: "D) İçtihatta sadece imamın masumiyetine güvenmesi",
+    richtig: "B"
+},
+{
+    frage: "98. Mezhepler arasında ihtilafların doğmasının en temel nedenlerinden biri aşağıdakilerden hangisidir?",
+    A: "A) Coğrafi bölge farklılıkları ve toplumların sosyo-kültürel yapıları",
+    B: "B) İslam hukukunda yalnızca tek bir hükmün bulunması",
+    C: "C) Nasların tüm olaylara doğrudan açık ve kesin hüküm getirmesi",
+    D: "D) Mezhep imamlarının tamamen aynı metodolojiyi benimsemesi",
+    richtig: "A"
+},
+{
+    frage: "99. Hanefîler ile Şâfiîler arasında abdestin bozulmasıyla ilgili görüş ayrılığına sebep olan temel dilbilimsel mesele aşağıdakilerden hangisidir?",
+    A: "A) Kur’ân’daki 'lems' kelimesinin hakikat mi yoksa mecaz mı olduğu tartışması",
+    B: "B) 'Başlarınızı meshedin' ayetindeki 'bi' edatının anlamı",
+    C: "C) 'Üç kurû' ifadesindeki 'kurû' kelimesinin hayız mı yoksa temizlik mi olduğu tartışması",
+    D: "D) Abdest alırken uzuvların sıralı olarak yıkanmasının zorunluluğu",
+    richtig: "A"
+},
+{
+    frage: "100. Tahrîc yöntemi, bir mezhep mensubunun karşılaştığı yeni bir meselede mezhep ilkelerinden hareketle çözüm üretmesine dayanır. Aşağıdaki ifadelerden hangisi tahrîc yöntemini en iyi açıklar?",
+    A: "A) Bir mezhebin kurallarını sorgulamadan aynen kabul etmektir.",
+    B: "B) Mezhep içindeki bütün müçtehitlerin görüşlerini reddedip bağımsız içtihat yapmaktır.",
+    C: "C) Mezhep imamının doğrudan hüküm vermediği bir konuda, onun yöntemine dayanarak yeni bir hüküm üretmektir.",
+    D: "D) Sadece Kur’an ve Sünnet’i temel alarak, mezhep kurallarını dikkate almadan hüküm çıkarmaktır.",
+    richtig: "C"
+},
+{
+    frage: "101. Şâfiî mezhebine göre dokunma (lems) kelimesi nasıl yorumlanmıştır ve bu yorum hangi sonucu doğurmuştur?",
+    A: "A) Hakikat anlamında kullanılmış, dolayısıyla kadına dokunmanın abdesti bozacağı kabul edilmiştir.",
+    B: "B) Mecaz anlamında değerlendirilmiş, bu yüzden yalnızca cinsel ilişkinin abdesti bozduğu belirtilmiştir.",
+    C: "C) İstiare yoluyla yorumlanmış, bu nedenle yalnızca niyetle dokunmanın abdesti bozacağı kabul edilmiştir.",
+    D: "D) Kur’ân’daki diğer benzer ifadelerle kıyaslanmış ve abdesti bozmaması gerektiği sonucuna varılmıştır.",
+    richtig: "A"
+},
+{
+    frage: "102. Aşağıdakilerden hangisi mezhepler arası ilişkilerin İslam dünyasında fanatik bir çatışmaya dönüşmesini engelleyen temel sebeplerden biri değildir?",
+    A: "A) İçtihadın mutlak hakikati temsil etmediği anlayışının benimsenmesi",
+    B: "B) Mezheplerin birbirlerini tamamen batıl kabul etmeleri",
+    C: "C) Müçtehitlerin farklı görüşlere saygılı bir dil kullanmaları",
+    D: "D) Mezheplerin bireylerin zorunluluk halinde diğer mezheplerin görüşlerinden yararlanabileceğini kabul etmesi",
+    richtig: "B"
+},
+{
+    frage: "103. Telfîk yönteminin İslam hukukunda sınırlandırılmasının temel nedeni aşağıdakilerden hangisidir?",
+    A: "A) Mezheplerin görüşleri arasında herhangi bir çelişki bulunmaması",
+    B: "B) Telfîkin, şer’î hükümlerin düşmesine ve dinî yükümlülüklerden kaçmaya yol açma riskinin bulunması",
+    C: "C) Telfîkin, sadece Hanefî mezhebi içinde uygulanan bir yöntem olması",
+    D: "D) Telfîkin yalnızca müçtehitler arasında uygulanabilir olması ve halkın bunu yapmasının yasaklanması",
+    richtig: "B"
+},
+{
+    frage: "104. Fetvanın dört temel unsurundan biri olan 'müftâ bih' kavramı aşağıdakilerden hangisini ifade eder?",
+    A: "A) Fetva veren kişinin (müftî) şahsi kanaatini",
+    B: "B) Müsteftînin fetva talep ettiği soruyu",
+    C: "C) Fetvalar arasında tercihe esas alınan görüşü",
+    D: "D) Müftînin delillerle verdiği hükmü",
+    richtig: "C"
+},
+{
+    frage: "105. Fetvanın mahiyetiyle ilgili aşağıdakilerden hangisi doğrudur?",
+    A: "A) Devlet otoritesini bağlayıcı bir hüküm niteliğindedir.",
+    B: "B) Sadece belirli yetkililere ait olup bireysel olarak verilemez.",
+    C: "C) Şer’î hükmü açıklayan bir ilmi görüştür.",
+    D: "D) Müsteftînin vicdanı dışında hiçbir bağlayıcılığı yoktur.",
+    richtig: "C"
+},
+{
+    frage: "106. Hanefî mezhebine göre bir kimsenin yemini hangi durumda bozulur?",
+    A: "A) Yemini bozduğuna dair pişmanlık duyarsa",
+    B: "B) Yeminin bağlayıcı olmadığı bir konuda gerçekleşirse",
+    C: "C) Yeminin geçtiği bölgede örfe bağlı olarak farklı anlam yüklenmişse",
+    D: "D) Yeminin yerine getirilmesi zor veya imkânsız hâle gelirse",
+    richtig: "C"
+},
+{
+    frage: "107. Müftînin sorulan soruya verdiği fetvanın hatalı olması durumunda aşağıdakilerden hangisi doğrudur?",
+    A: "A) Müftî, fetvasını değiştirse bile önceki fetvaya göre hareket eden kişi sorumludur.",
+    B: "B) Müsteftî, müftînin fetva değişikliğinden sonra yeni fetvaya uymak zorundadır.",
+    C: "C) Müftî, hatasını fark ettiğinde müsteftîyi uyarmak zorunda değildir.",
+    D: "D) Hatalı fetva veren müftî, durumu düzeltmezse toplumda güvenilirliği devam eder.",
+    richtig: "A"
+},
+{
+    frage: "108. İslam hukukunda fetva değişikliğinin temel sebeplerinden biri aşağıdakilerden hangisidir?",
+    A: "A) Hükmün zamanla bağlayıcılığını kaybetmesi",
+    B: "B) Fetva veren kişinin şahsi kanaatinde değişiklik olması",
+    C: "C) Örf, maslahat veya illetin değişmesi",
+    D: "D) Fetvanın bağlayıcı olmaması nedeniyle herhangi bir değişiklik söz konusu olmaz",
+    richtig: "C"
+},
+{
+    frage: "109. Aşağıdakilerden hangisi hisbe teşkilatının temel görevlerinden biri değildir?",
+    A: "A) Kamu düzenini sağlamak ve denetlemek",
+    B: "B) Cinayet davalarına hüküm vermek",
+    C: "C) Ticari aldatmacaları engellemek",
+    D: "D) Toplumda ahlaki değerleri korumak",
+    richtig: "B"
+},
+{
+    frage: "110. İslam hukukunda sulh hangi temel özellikleri taşıyan bir uyuşmazlık çözüm yoludur?",
+    A: "A) Devlet tarafından zorla uygulanan bağlayıcı bir karar mekanizmasıdır.",
+    B: "B) Tarafların anlaşarak uyuşmazlığı çözmesi üzerine kurulu bir akittir.",
+    C: "C) Mahkeme tarafından belirlenen tarafsız bir hakem tarafından yürütülür.",
+    D: "D) Sadece müftînin verdiği fetvalar doğrultusunda gerçekleşebilir.",
+    richtig: "B"
+},
+{
+    frage: "111. 'İçtihat içtihadı nakzetmez.' ilkesi ne anlama gelmektedir?",
+    A: "A) Bir müçtehidin verdiği hüküm mutlak hakikattir ve değiştirilemez.",
+    B: "B) Müftî, verdiği fetvayı geri alamaz ve yeni fetva veremez.",
+    C: "C) Yeni bir içtihat önceki içtihadın geçerliliğini ortadan kaldırmaz.",
+    D: "D) Kadılar verdikleri kararı değiştiremezler.",
+    richtig: "C"
+},
+{
+    frage: "112. Tahkim (hakem) yöntemi ile ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+    A: "A) Hakem, kararını verdikten sonra taraflar karara uymak zorunda değildir.",
+    B: "B) Kamu davalarında hakem tayin edilebilir.",
+    C: "C) Tarafların seçtiği hakem, onların rızası olmadan karar veremez.",
+    D: "D) Hakem kararı mahkeme kararından daha bağlayıcıdır.",
+    richtig: "C"
+},
+{
+    frage: "113. Fıkıh usulüne göre müsteftî hangi durumda aldığı fetvaya uymak zorunda değildir?",
+    A: "A) Fetva aldığı müftî en bilgili kişi değilse",
+    B: "B) Fetvanın sonucundan hoşlanmadıysa",
+    C: "C) Sorduğu soruda yönlendirici bir tavır sergileyip vicdanen rahatsızlık duyuyorsa",
+    D: "D) Aynı konuda birden fazla fetva almışsa",
+    richtig: "C"
+},
+{
+    frage: "114. Müftînin bilmediği bir konu hakkında fetva vermemesini gerektiren en önemli ilke aşağıdakilerden hangisidir?",
+    A: "A) Fetvanın mutlak doğruluk içermesi gerektiği anlayışı",
+    B: "B) İslam hukukunda her konuda fetva bulunmaması",
+    C: "C) Bilgisizce fetva vermenin büyük günahlardan sayılması",
+    D: "D) Sadece devletin yetkilendirdiği kişilerin fetva verebilmesi",
+    richtig: "C"
+},
+{
+    frage: "115. Fetva ile mahkeme kararı arasındaki en temel fark aşağıdakilerden hangisidir?",
+    A: "A) Fetva, mahkeme kararı kadar bağlayıcıdır.",
+    B: "B) Fetva, yalnızca kişisel vicdana hitap ederken, mahkeme kararı taraflar için bağlayıcıdır.",
+    C: "C) Mahkeme kararı değiştirilemezken, fetva her zaman değiştirilebilir.",
+    D: "D) Fetva devletin resmi otoritesini temsil ederken, mahkeme kararları bireyseldir.",
+    richtig: "B"
+},
+{
+    frage: "116. Müsteftî, bir mesele hakkında aldığı fetvanın yanlış olduğunu düşünüyorsa nasıl hareket etmelidir?",
+    A: "A) Müftîye güvenip ona göre hareket etmelidir.",
+    B: "B) Vicdanını yoklayarak fetvanın sonucuna göre karar vermelidir.",
+    C: "C) Mutlaka başka bir müftîye sorarak yeni bir fetva almalıdır.",
+    D: "D) Fetva bağlayıcı olduğu için ona uygun hareket etmek zorundadır.",
+    richtig: "B"
+},
+{
+    frage: "117. Müftîlerin fetva verirken örfe dikkat etmeleri neden önemlidir?",
+    A: "A) Çünkü örf, naslardan daha üstün bir kaynak olarak kabul edilir.",
+    B: "B) Aynı kelimenin farklı bölgelerde farklı anlamlara sahip olması hükmü değiştirebilir.",
+    C: "C) Örf, sadece kıyas yöntemiyle hüküm oluşturma açısından değerlidir.",
+    D: "D) Örf, her zaman değişmez ve mutlak kabul edilir.",
+    richtig: "B"
+},
+{
+    frage: "118. Hisbe teşkilatı ile yargı (kaza) arasındaki temel fark nedir?",
+    A: "A) Hisbe teşkilatı mahkeme kararlarını uygular.",
+    B: "B) Hisbe daha geniş yetkilere sahiptir ve her alanda hüküm verebilir.",
+    C: "C) Hisbe teşkilatı, anlık toplumsal düzeni korumaya yönelik önleyici bir mekanizmadır.",
+    D: "D) Kaza, yalnızca kadıların verdiği kararlara dayanırken hisbe halk tarafından yürütülür.",
+    richtig: "C"
+}
+	];
+	
+	var nr = 0;
+	function anzeigen() {
+    document.getElementById("frageText").innerHTML = fragen[nr].frage;
+    document.getElementById("textA").innerHTML = fragen[nr].A;
+    document.getElementById("textB").innerHTML = fragen[nr].B;
+    document.getElementById("textC").innerHTML = fragen[nr].C;
+    document.getElementById("textD").innerHTML = fragen[nr].D;
+    document.getElementById("meldung").innerHTML = "";
+
+    var radios = document.querySelectorAll('input[name="ant"]');
+    for (var i = 0; i < radios.length; i++) {
+        radios[i].checked = false;
+    }
+    document.querySelector('form').style.display = "block";
+	}
+
+	function weiter() {
+		var auswahl = document.querySelector('input[name="ant"]:checked');
+		if(auswahl == null){
+			document.getElementById("meldung").innerHTML = "Lütfen bir cevap seçiniz!";
+			return;
+		}
+		if(auswahl.value == fragen[nr].richtig){
+			nr = nr + 1;
+
+			if(nr < fragen.length){
+				anzeigen();
+			} else {
+				document.getElementById("frageText").innerHTML = "Bölüm tamamlandı";
+				document.getElementById("meldung").innerHTML = "Tüm soruları doğru cevapladın! <br> Aferin...";
+				document.querySelector('form').style.display = "none";
+				}
+		} else {
+			document.getElementById("meldung").innerHTML = "Cevabın yanlış, tekrar dene";
+		}
+	}
+	
+	function springeZuFrage() {
+    var nummer = parseInt(document.getElementById("frageNummer").value);
+    if(isNaN(nummer) || nummer < 1){
+        document.getElementById("meldungSprung").innerHTML = "Lütfen geçerli bir sayı girin!";
+        return;
+    }
+    if(nummer > fragen.length){
+        document.getElementById("meldungSprung").innerHTML = 
+            "O kadar soru yok! <br> Fıkıh bölümünde en fazla " + fragen.length + " soru bulunmaktadır.";
+        return;
+    }
+    nr = nummer - 1;
+    anzeigen();
+    document.getElementById("meldungSprung").innerHTML = "";
+	}
+	
+	anzeigen();
+	</script>
+	</body>
+</html>
